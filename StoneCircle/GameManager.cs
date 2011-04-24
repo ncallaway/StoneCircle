@@ -35,7 +35,7 @@ namespace StoneCircle
         private UIManager uiManager;
         private ContentManager contentManager;
         private StageManager stageManager;
-        
+
         /// <summary>
         /// Creates a new game manager object (including the important sub-manager objects, like the UIManager). This
         /// also attaches the given contentManager to the new GameManager.
@@ -51,11 +51,6 @@ namespace StoneCircle
             uiManager = new UIManager(this);
             stageManager = new StageManager(ContentManager, this);
 
-            
-            
-            
-            
-
         }
 
         public void LoadContent()
@@ -69,23 +64,20 @@ namespace StoneCircle
             StageManager.Initialize();
             AudioManager.Initialize();
             UIManager.Initialize();
-
-
         }
 
         public void Update(GameTime T)
-        {   
+        {
             UIManager.Update(T);
-           if(!UIManager.OpenMenus) StageManager.Update(T);
-          
+            if (!UIManager.OpenMenus) StageManager.Update(T);
         }
 
         public void Draw(GraphicsDevice device, SpriteBatch batch, RenderTarget2D shadeTemp)
         {
-           StageManager.Draw(device, batch, shadeTemp);
-           batch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.BackToFront, SaveStateMode.None);
-           UIManager.Draw(batch);
-           batch.End();
+            StageManager.Draw(device, batch, shadeTemp);
+            batch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.BackToFront, SaveStateMode.None);
+            UIManager.Draw(batch);
+            batch.End();
 
         }
 
