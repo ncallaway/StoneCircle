@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace UserMenus
 {
-    public class InventoryItem : MenuItem
+    class InventoryItem : MenuItem
     {
         protected List<String> properties = new List<String>();
         protected int quantity;

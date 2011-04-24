@@ -12,7 +12,7 @@ using StoneCircle;
 
 namespace UserMenus
 {
-   class UIManager
+    class UIManager
     {
         private Stack<Menu> currentMenus = new Stack<Menu>();
         public bool OpenMenus { get { return currentMenus.Count != 0; } }
@@ -21,38 +21,33 @@ namespace UserMenus
         public SpriteFont Font { get { return font; } }
 
         private Texture2D image;
-        public Texture2D Image { get {return image;}}
+        public Texture2D Image { get { return image; } }
 
-        public GameManager GameManager { get { return manager; } }
-        private GameManager manager;
-        public ContentManager CM;
+        /// <summary>
+        /// Gets the GameManager that this UIManager is attached to.
+        /// </summary>
+        public GameManager GameManager { get { return gameManager; } }
+        private GameManager gameManager;
 
-
+        private ContentManager contentManager;
         private RingMenu pauseMenu1;
-
-        public Player player;
-
+        private Player player;
 
         public UIManager(GameManager gameManager)
         {
-            manager = gameManager;
-            CM = gameManager.ContentManager;
+            this.gameManager = gameManager;
+            contentManager = gameManager.ContentManager;
 
             player = gameManager.Player;
-            pauseMenu1 = new RingMenu(this);
-            pauseMenu1.addMenuItem(new ChangeLevelItem("region1", manager.StageManager, this));
-            pauseMenu1.addMenuItem(new ChangeLevelItem("region2", manager.StageManager, this));
-            
-            
+            pauseMenu1 = new RingMenu(gameManager);
+            pauseMenu1.addMenuItem(new ChangeLevelItem("region1", gameManager.StageManager, this));
+            pauseMenu1.addMenuItem(new ChangeLevelItem("region2", gameManager.StageManager, this));
         }
 
 
-        public void Initialize(){
-
+        public void Initialize()
+        {
             pauseMenu1.Initialize();
-           
-
-        
         }
 
 
@@ -62,44 +57,37 @@ namespace UserMenus
             pauseMenu1.Load(CM);
         }
 
-        
+
 
 
         public void CloseMenu()
-        {   
+        {
             currentMenus.Pop();
-           // if (currentMenus.Count == 0) Manager.AM.ResumeSounds();
-            
+            // if (currentMenus.Count == 0) Manager.AM.ResumeSounds();
+
         }
 
         public void Pause()
         {
-
             currentMenus.Push(pauseMenu1);
-
         }
 
-      
+
         public void OpenMenu(Menu menu)
         {
-           // Manager.AM.PauseSounds();
+            // Manager.AM.PauseSounds();
             currentMenus.Push(menu);
         }
 
         public void Update(GameTime t)
-        {   if(currentMenus.Count != 0) currentMenus.Peek().Update(t);
-           
+        {
+            if (currentMenus.Count != 0) currentMenus.Peek().Update(t);
+
         }
 
         public void Draw(SpriteBatch batch)
         {
-            if(currentMenus.Count !=0) currentMenus.Peek().Draw(batch);
-           
-
+            if (currentMenus.Count != 0) currentMenus.Peek().Draw(batch);
         }
-
-
-
-
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace StoneCircle.UI
 {
-    public class LevelMap
+    class LevelMap
     {
     }
 }

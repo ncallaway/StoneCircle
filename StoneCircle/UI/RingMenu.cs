@@ -23,15 +23,15 @@ namespace  UserMenus
     class RingMenu : Menu
     {
         protected int degree;
-        protected AudioManager AM;
+        protected AudioManager audioManager;
 
         public RingMenu() {  }
 
-        public RingMenu(UIManager parent)
+        public RingMenu(GameManager gameManager)
         {
-            parent = parent;
-            player = parent.player;
-            AM = parent.GameManager.AudioManager;
+            this.parent = gameManager.UIManager;
+            player = gameManager.Player;
+            audioManager = gameManager.AudioManager;
         }
 
         public override void Initialize()
@@ -40,7 +40,7 @@ namespace  UserMenus
             font = parent.Font;
             current_index = 0;
             title = "";
-            player = parent.player;
+
             
         }
 

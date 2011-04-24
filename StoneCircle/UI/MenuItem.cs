@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework;
 
 namespace UserMenus
 {
-    public class MenuItem
+    class MenuItem
     {
         protected String id;
         public String Id { get { return id; } }
