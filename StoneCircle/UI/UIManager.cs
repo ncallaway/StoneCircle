@@ -36,8 +36,8 @@ namespace UserMenus
             CM = theCM;
             player = Manager.player;
             pauseMenu1 = new RingMenu(this);
-            pauseMenu1.addMenuItem(new ChangeLevelItem("region1", Manager.SM, this));
-            pauseMenu1.addMenuItem(new ChangeLevelItem("region2", Manager.SM, this));
+            pauseMenu1.addMenuItem(new ChangeLevelItem("region1", Manager.StageManager, this));
+            pauseMenu1.addMenuItem(new ChangeLevelItem("region2", Manager.StageManager, this));
             
             
         }

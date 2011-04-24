@@ -19,13 +19,15 @@ namespace StoneCircle
     /// </summary>
     public class StoneCircle : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-        GameManager Manager;
-        RenderTarget2D shadeTemp;
-        
-        SpriteFont font;
+        internal GameManager Manager;
 
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
+        private RenderTarget2D shadeTemp;
+
+        /// <summary>
+        /// Constructs a new StoneCircle object. This creates an internal <see>GraphicsDeviceManager</see>.
+        /// </summary>
         public StoneCircle()
         {
             // This is setting up the Graphics for the game. Default is for 720p, in a window.

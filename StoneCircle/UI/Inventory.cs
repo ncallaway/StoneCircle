@@ -20,9 +20,6 @@ namespace UserMenus{
 
    class Inventory : RingMenu
     {
-       public AudioManager AM;
-       
-
         public Inventory(Player Owner)
         {
             player = Owner;
@@ -50,7 +47,7 @@ namespace UserMenus{
             List<InventoryItem> remove = new List<InventoryItem>();
             foreach (InventoryItem Item in menuitems) if (Item.Quantity <= 0) remove.Add(Item);
             foreach (InventoryItem Item in remove) RemoveItem(Item);
-            if (!player.Input.IsRightBumperPressed()) { player.parent.SM.GM.MM.CloseMenu(); }
+            if (!player.Input.IsRightBumperPressed()) { player.parent.SM.GM.UIManager.CloseMenu(); }
        
 
         }

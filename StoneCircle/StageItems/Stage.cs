@@ -287,7 +287,7 @@ namespace StoneCircle
                lightSourceShader.Parameters["fatigue"].SetValue(player.CurrentFatigue / player.TotalFatigue * .707f);
            
             input.Update();
-            if (input.IsPauseMenuNewlyPressed()) SM.GM.MM.Pause();
+            if (input.IsPauseMenuNewlyPressed()) SM.GM.UIManager.Pause();
 
 
             List<Lines> finished = new List<Lines>();

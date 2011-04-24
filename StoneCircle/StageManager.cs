@@ -20,6 +20,9 @@ using UserMenus;
 
 namespace StoneCircle
 {
+    /// <summary>
+    /// Manages a stage
+    /// </summary>
     class StageManager
     {
 

@@ -31,8 +31,7 @@ namespace  UserMenus
         {
             parent = Parent;
             player = parent.player;
-            AM = Parent.Manager.AM;
-            
+            AM = Parent.Manager.AudioManager;
         }
 
         public override void Initialize()

@@ -44,7 +44,7 @@ namespace StoneCircle
                    if (parent.player.CurrentItem.HasProperty("Fire") && current_Action.ID !="Burning") { 
                        current_Action = burning; 
                        parent.addLight(lit);
-                       parent.SM.GM.AM.InstantiateEffect("fire", this, true);
+                       parent.SM.GM.AudioManager.InstantiateEffect("fire", this, true);
                       }
                    if (parent.player.CurrentItem.HasProperty("Water") && current_Action.id == "Burning") { SetAction("Standing"); parent.removeLight(lit); }
 

@@ -123,20 +123,11 @@ namespace StoneCircle
             if (currentFatigue > totalFatigue) currentFatigue = totalFatigue;
             currentFatigue += current_Action.Fatigue;
 
-            if (Input.IsRightBumperNewlyPressed()){parent.SM.GM.MM.OpenMenu(inventory);}
+            if (Input.IsRightBumperNewlyPressed()){parent.SM.GM.UIManager.OpenMenu(inventory);}
 
             current_Action.Update(t, targets);
             SetAction(ChooseAction(t, targets));
         }
-
-     
-
-        public override void Initialize()
-        {
-            inventory.AM = parent.SM.GM.AM;
-        }
-
-
 
         public override void Draw(SpriteBatch theSpriteBatch, Vector2 camera_pos, float camera_scale, float intensity, SpriteFont font)
         {
@@ -148,7 +139,7 @@ namespace StoneCircle
 
         public void CloseInventory()
         {
-            parent.SM.GM.MM.CloseMenu();
+            parent.SM.GM.UIManager.CloseMenu();
         }
 
 

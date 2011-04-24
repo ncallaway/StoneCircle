@@ -20,56 +20,57 @@ namespace StoneCircle
     class GameManager
     {
 
-        public AudioManager AM;
-        public UIManager MM;
-        public ContentManager CM;
-        public StageManager SM;
+        public AudioManager AudioManager { get { return audioManager; } }
+        public UIManager UIManager { get { return uiManager; } }
+        public ContentManager ContentManager { get { return contentManager; } }
+        public StageManager StageManager { get { return stageManager; } }
+
         public Player player;
         public Camera Camera;
+
+        private AudioManager audioManager;
+        private UIManager uiManager;
+        private ContentManager contentManager;
+        private StageManager stageManager;
         
-
-
-
         public GameManager(ContentManager cM)
         {
-            CM = cM;
+            contentManager = cM;
             player = new Player("Player", "male_select", Vector2.Zero, new InputController(InputController.InputMode.Player1));
             
             Camera = new Camera(player, new InputController());
             
-            MM = new UIManager(this, CM);
-            SM = new StageManager(CM, this);
-            
+            uiManager = new UIManager(this, ContentManager);
+            stageManager = new StageManager(ContentManager, this);
         }
 
         public void LoadContent()
         {
-            MM.Load(CM);
-            SM.SetStage("region1");
-            
+            UIManager.Load(ContentManager);
+            StageManager.SetStage("region1");
         }
 
         public void Initialize()
         {
-            SM.Initialize();
-            AM.Initialize();
-            MM.Initialize();
+            StageManager.Initialize();
+            AudioManager.Initialize();
+            UIManager.Initialize();
 
 
         }
 
         public void Update(GameTime T)
         {   
-            MM.Update(T);
-           if(!MM.OpenMenus) SM.Update(T);
+            UIManager.Update(T);
+           if(!UIManager.OpenMenus) StageManager.Update(T);
           
         }
 
         public void Draw(GraphicsDevice device, SpriteBatch batch, RenderTarget2D shadeTemp)
         {
-           SM.Draw(device, batch, shadeTemp);
+           StageManager.Draw(device, batch, shadeTemp);
            batch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.BackToFront, SaveStateMode.None);
-           MM.Draw(batch);
+           UIManager.Draw(batch);
            batch.End();
 
         }
