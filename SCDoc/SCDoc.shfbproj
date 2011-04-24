@@ -19,8 +19,7 @@
     <HtmlHelpName>StoneCircle Documentation</HtmlHelpName>
     <Language>en-US</Language>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\StoneCircle\bin\x86\Release\StoneCircle.exe" xmlns="" />
-      <DocumentationSource sourceFile="..\StoneCircle\bin\x86\Release\StoneCircle.XML" xmlns="" />
+      <DocumentationSource sourceFile="..\StoneCircle\StoneCircle.csproj" />
     </DocumentationSources>
     <HelpFileFormat>Website</HelpFileFormat>
     <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Internals, Protected, SealedProtected</VisibleItems>
