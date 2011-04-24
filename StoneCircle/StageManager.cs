@@ -100,7 +100,7 @@ namespace StoneCircle
             region1.AddEvent(new EventGroup("Intro2", ""));
 
 
-            region1.events["Intro1"].AddEvent(new MoveActorEvent(GM.player, new Vector2(150, 600), region1));
+            region1.events["Intro1"].AddEvent(new MoveActorEvent(GM.Player, new Vector2(150, 600), region1));
             region1.events["Intro1"].AddEvent(new SetCameraEvent(region1.camera, new Vector2(684, 600)));
             region1.events["Intro2"].AddEvent(new DialogueEvent("Forest1", region1));
             region1.RunEvent("Intro1");
@@ -113,7 +113,7 @@ namespace StoneCircle
             Stages.Add("region1", region1);
             Stages.Add("region2", new Stage("Region2", this));
             Stages["region2"].AddTrigger(new StageTrigger("Village", new Vector3(350, 0, 0), new Vector3(360, 2000, 1), Stages["region2"], new Vector2( 2000, 3750)));
-            Stages["region2"].addLight(new ActorLightSource(GM.player, 1200f));
+            Stages["region2"].addLight(new ActorLightSource(GM.Player, 1200f));
 
 
 
@@ -183,7 +183,7 @@ namespace StoneCircle
             Stages["Village"].AddEvent(zoomOut);
             //Stages["Village"].RunEvent("Zoom");
             //GM.player.SetAction("FightStance");
-            GM.player.StartBleeding();
+            GM.Player.StartBleeding();
         }
 
 
@@ -218,7 +218,7 @@ namespace StoneCircle
                 openStage.AM.StopSong();
             }
             Stage nextStage = Stages[Next];
-            nextStage.addPlayer(GM.player, startingPosition);
+            nextStage.addPlayer(GM.Player, startingPosition);
           
             nextStage.setCamera(); 
             nextStage.Load(CM);

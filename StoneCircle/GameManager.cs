@@ -25,23 +25,37 @@ namespace StoneCircle
         public ContentManager ContentManager { get { return contentManager; } }
         public StageManager StageManager { get { return stageManager; } }
 
-        public Player player;
-        public Camera Camera;
+        public Player Player { get { return player; } }
+        public Camera Camera { get { return camera; } }
+
+        private Player player;
+        private Camera camera;
 
         private AudioManager audioManager;
         private UIManager uiManager;
         private ContentManager contentManager;
         private StageManager stageManager;
         
-        public GameManager(ContentManager cM)
+        /// <summary>
+        /// Creates a new game manager object (including the important sub-manager objects, like the UIManager). This
+        /// also attaches the given contentManager to the new GameManager.
+        /// </summary>
+        /// <param name="contentManager">The ContentManager that the new GameManager should use</param>
+        public GameManager(ContentManager contentManager)
         {
-            contentManager = cM;
+            /* Other managers are dependant on these fields being ready */
+            this.contentManager = contentManager;
             player = new Player("Player", "male_select", Vector2.Zero, new InputController(InputController.InputMode.Player1));
-            
-            Camera = new Camera(player, new InputController());
-            
-            uiManager = new UIManager(this, ContentManager);
+            camera = new Camera(Player, new InputController());
+
+            uiManager = new UIManager(this);
             stageManager = new StageManager(ContentManager, this);
+
+            
+            
+            
+            
+
         }
 
         public void LoadContent()

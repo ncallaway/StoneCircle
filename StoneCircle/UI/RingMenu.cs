@@ -20,18 +20,18 @@ using StoneCircle;
 namespace  UserMenus
 {
 
-    class RingMenu: Menu
+    class RingMenu : Menu
     {
         protected int degree;
         protected AudioManager AM;
 
         public RingMenu() {  }
 
-        public RingMenu(UIManager Parent)
+        public RingMenu(UIManager parent)
         {
-            parent = Parent;
+            parent = parent;
             player = parent.player;
-            AM = Parent.Manager.AudioManager;
+            AM = parent.GameManager.AudioManager;
         }
 
         public override void Initialize()

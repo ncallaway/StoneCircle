@@ -23,21 +23,25 @@ namespace UserMenus
         private Texture2D image;
         public Texture2D Image { get {return image;}}
 
-        public GameManager Manager;
+        public GameManager GameManager { get { return manager; } }
+        private GameManager manager;
         public ContentManager CM;
+
 
         private RingMenu pauseMenu1;
 
         public Player player;
 
-        public UIManager(GameManager GM, ContentManager theCM)
+
+        public UIManager(GameManager gameManager)
         {
-            Manager = GM;
-            CM = theCM;
-            player = Manager.player;
+            manager = gameManager;
+            CM = gameManager.ContentManager;
+
+            player = gameManager.Player;
             pauseMenu1 = new RingMenu(this);
-            pauseMenu1.addMenuItem(new ChangeLevelItem("region1", Manager.StageManager, this));
-            pauseMenu1.addMenuItem(new ChangeLevelItem("region2", Manager.StageManager, this));
+            pauseMenu1.addMenuItem(new ChangeLevelItem("region1", manager.StageManager, this));
+            pauseMenu1.addMenuItem(new ChangeLevelItem("region2", manager.StageManager, this));
             
             
         }

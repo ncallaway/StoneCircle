@@ -18,10 +18,10 @@ namespace StoneCircle
         name = Id;
         Location = new Vector3(starting, 0);
         parent = Parent;
-        follow.condition = new FarToActor(parent.SM.GM.player, this);
-        follow.action = new WalkToActor(this, parent.SM.GM.player);
+        follow.condition = new FarToActor(parent.SM.GM.Player, this);
+        follow.action = new WalkToActor(this, parent.SM.GM.Player);
 
-        runaway.condition = new MidToActor(parent.SM.GM.player, this);
+        runaway.condition = new MidToActor(parent.SM.GM.Player, this);
          runaway.action = new AIAction();
 
         AIStance.Add(follow);
