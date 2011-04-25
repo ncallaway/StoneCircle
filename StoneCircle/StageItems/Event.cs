@@ -48,7 +48,7 @@ namespace StoneCircle
 
 
 
-    class Event
+    public class Event
     {
         protected String id;
         protected bool ready;
@@ -61,13 +61,13 @@ namespace StoneCircle
 
     }
 
-    class DialogueEvent : Event
+    public class DialogueEvent : Event
     {
 
         private String dialogueID;
         private Stage Stage;
 
-        public DialogueEvent(String callID, Stage stage)
+        internal DialogueEvent(String callID, Stage stage)
         {
             dialogueID = callID;
             Stage = stage;
@@ -85,7 +85,7 @@ namespace StoneCircle
 
     }
 
-    class DramaticPauseEvent : Event
+    public class DramaticPauseEvent : PauseEvent
     {
         float time;
         float etime;
@@ -105,12 +105,17 @@ namespace StoneCircle
 
     }
 
-    class AcknowledgePauseEvent : Event
+    public abstract class PauseEvent : Event
+    {
+        /* Test event */
+    }
+
+    public class AcknowledgePauseEvent : PauseEvent
     {
 
         private Stage Stage;
 
-        public AcknowledgePauseEvent(Stage stage) {Stage = stage ; }
+        internal AcknowledgePauseEvent(Stage stage) {Stage = stage ; }
 
 
         public override void Update(GameTime t)

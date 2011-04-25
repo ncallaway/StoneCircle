@@ -9,3 +9,6 @@ StoneCircle/StoneCircle.csproj.Debug.cachefile
 StoneCircle/StoneCircle.csproj.Release.cachefile
 SCDoc/Documentation
 SCDoc/SCDoc.shfbproj_*
+SCEd/bin
+SCEd/obj
+SCEd/SCEd.csproj.user
