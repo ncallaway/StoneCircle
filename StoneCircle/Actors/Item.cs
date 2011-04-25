@@ -10,6 +10,10 @@ namespace StoneCircle
     {
         InventoryItem item;
 
+        public Item(GameManager gameManager)
+            : base(gameManager)
+        {
+        }
 
         public override void ApplyAction(Actionstate affected, Actor affector)
         {

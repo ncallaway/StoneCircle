@@ -21,7 +21,7 @@ namespace StoneCircle
        // These variables represent the location and position of the actor. 
 
 
-        public Player(String Id, String asset_name, Vector2 starting, Stage Parent, InputController Input)
+        public Player(String Id, String asset_name, Vector2 starting, Stage Parent, InputController Input, GameManager gameManager) : base(gameManager)
         {
             asset_Name = "PlayerSheet";
             speed = 150;
@@ -30,7 +30,7 @@ namespace StoneCircle
             Location = new Vector3( starting.X, starting.Y, 0);
             name = Id;
             parent = Parent;
-            inventory = new Inventory(this);
+            inventory = new Inventory(this, gameManager);
             inventoryOpen = false;
             
             inventory.addMenuItem(new InventoryItem("Lantern", "Fire"));
@@ -42,7 +42,8 @@ namespace StoneCircle
             
         }
 
-        public Player(String Id, String asset_name, Vector2 starting, InputController Input)
+        public Player(String Id, String asset_name, Vector2 starting, GameManager gameManager, InputController Input)
+            : base(gameManager)
         {
             asset_Name = "PlayerSheet";
             speed = 125;
@@ -50,7 +51,7 @@ namespace StoneCircle
             interact = new PInteract(Input);
             Location = new Vector3(starting.X, starting.Y, 0);
             name = Id;
-            inventory = new Inventory(this);
+            inventory = new Inventory(this, gameManager);
             ImageHeight = 75;
             ImageWidth = 40;
             
@@ -123,7 +124,7 @@ namespace StoneCircle
             if (currentFatigue > totalFatigue) currentFatigue = totalFatigue;
             currentFatigue += current_Action.Fatigue;
 
-            if (Input.IsRightBumperNewlyPressed()){parent.SM.GM.UIManager.OpenMenu(inventory);}
+            if (Input.IsRightBumperNewlyPressed()){gameManager.UIManager.OpenMenu(inventory);}
 
             current_Action.Update(t, targets);
             SetAction(ChooseAction(t, targets));
@@ -139,7 +140,7 @@ namespace StoneCircle
 
         public void CloseInventory()
         {
-            parent.SM.GM.UIManager.CloseMenu();
+            gameManager.UIManager.CloseMenu();
         }
 
 

@@ -17,6 +17,13 @@ using UserMenus;
 
 namespace StoneCircle
 {
+    /// <summary>
+    /// Top Level Manager for StoneCircle. This class is the driver of update and draw calls to all of the
+    /// game subcomponents. The GameManager also provides access to many key components of the Game (such as
+    /// other Managers, the Camera, the Player, etc.
+    /// 
+    /// Right now the GameManager holds a lot of "global state". 
+    /// </summary>
     class GameManager
     {
 
@@ -45,11 +52,12 @@ namespace StoneCircle
         {
             /* Other managers are dependant on these fields being ready */
             this.contentManager = contentManager;
-            player = new Player("Player", "male_select", Vector2.Zero, new InputController(InputController.InputMode.Player1));
+            player = new Player("Player", "male_select", Vector2.Zero, this, new InputController(InputController.InputMode.Player1));
             camera = new Camera(Player, new InputController());
 
             uiManager = new UIManager(this);
-            stageManager = new StageManager(ContentManager, this);
+            stageManager = new StageManager(this);
+            audioManager = new AudioManager();
 
         }
 

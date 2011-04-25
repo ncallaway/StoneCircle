@@ -14,7 +14,7 @@ namespace StoneCircle
 {
     class SomeGuy:Actor
     {
-        public SomeGuy(Vector2 starting, Stage Parent)
+        public SomeGuy(Vector2 starting, Stage Parent, GameManager gameManager) : base(gameManager)
         {
              name = "SomeGuy";
              Location = new Vector3(starting, 0);

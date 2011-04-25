@@ -7,31 +7,32 @@ using Microsoft.Xna.Framework;
 
 namespace StoneCircle
 {
-    class Follower: Actor
+    class Follower : Actor
     {
 
         AIOption follow = new AIOption();
         AIOption runaway = new AIOption();
-         public Follower(String Id, Vector2 starting, Stage Parent)
-    {
-        asset_Name = "Actor2";
-        name = Id;
-        Location = new Vector3(starting, 0);
-        parent = Parent;
-        follow.condition = new FarToActor(parent.SM.GM.Player, this);
-        follow.action = new WalkToActor(this, parent.SM.GM.Player);
+        public Follower(String Id, Vector2 starting, Stage Parent, GameManager gameManager)
+            : base(gameManager)
+        {
+            asset_Name = "Actor2";
+            name = Id;
+            Location = new Vector3(starting, 0);
+            parent = Parent;
+            follow.condition = new FarToActor(gameManager.Player, this);
+            follow.action = new WalkToActor(this, gameManager.Player);
 
-        runaway.condition = new MidToActor(parent.SM.GM.Player, this);
-         runaway.action = new AIAction();
+            runaway.condition = new MidToActor(gameManager.Player, this);
+            runaway.action = new AIAction();
 
-        AIStance.Add(follow);
-        AIStance.Add(runaway);
-        Facing = new Vector2(1, 0);
+            AIStance.Add(follow);
+            AIStance.Add(runaway);
+            Facing = new Vector2(1, 0);
 
-    }
+        }
 
 
-        
+
 
 
 

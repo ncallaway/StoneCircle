@@ -24,11 +24,11 @@ namespace  UserMenus
     {
         protected int degree;
         protected AudioManager audioManager;
-
-        public RingMenu() {  }
+        protected GameManager gameManager;
 
         public RingMenu(GameManager gameManager)
         {
+            this.gameManager = gameManager;
             this.parent = gameManager.UIManager;
             player = gameManager.Player;
             audioManager = gameManager.AudioManager;

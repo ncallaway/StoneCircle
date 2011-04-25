@@ -16,7 +16,7 @@ namespace StoneCircle
         Actionstate burning = new Burning();
         ActorLightSource onFire;
 
-        public Tree(Vector2 starting, Stage Parent)
+        public Tree(Vector2 starting, Stage Parent, GameManager gameManager) : base(gameManager)
         {
              name = "Tree";
              Location = new Vector3(starting, 0);

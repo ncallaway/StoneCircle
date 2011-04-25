@@ -28,55 +28,58 @@ namespace StoneCircle
 
         Dictionary<String, Stage> Stages = new Dictionary<String,Stage>();
         Stage openStage;
-        ContentManager CM;
+        ContentManager contentManager;
+
         public Stage region1;
-        public GameManager GM;
+        private GameManager gameManager;
 
 
-        public StageManager(ContentManager theCM, GameManager GM)
+
+        public StageManager(GameManager gameManager)
         {
 
-            CM = theCM;
-            this.GM = GM;
+            
+            this.gameManager = gameManager;
+            contentManager = gameManager.ContentManager;
 
 
             region1 = new Stage("Default", this);
-            region1.addActor("Tree1", new Tree(new Vector2(0, 400), region1));
-            region1.addActor("Tree2", new Tree(new Vector2(100, 400), region1));
-            region1.addActor("Tree3", new Tree(new Vector2(200, 400), region1));
-            region1.addActor("Tree4", new Tree(new Vector2(300, 400), region1));
-            region1.addActor("Tree5", new Tree(new Vector2(400, 400), region1));
-            region1.addActor("Tree6", new Tree(new Vector2(500, 450), region1));
-            region1.addActor("Tree7", new Tree(new Vector2(600, 500), region1));
-            region1.addActor("Tree8", new Tree(new Vector2(750, 550), region1));
+            region1.addActor("Tree1", new Tree(new Vector2(0, 400), region1, gameManager));
+            region1.addActor("Tree2", new Tree(new Vector2(100, 400), region1, gameManager));
+            region1.addActor("Tree3", new Tree(new Vector2(200, 400), region1, gameManager));
+            region1.addActor("Tree4", new Tree(new Vector2(300, 400), region1, gameManager));
+            region1.addActor("Tree5", new Tree(new Vector2(400, 400), region1, gameManager));
+            region1.addActor("Tree6", new Tree(new Vector2(500, 450), region1, gameManager));
+            region1.addActor("Tree7", new Tree(new Vector2(600, 500), region1, gameManager));
+            region1.addActor("Tree8", new Tree(new Vector2(750, 550), region1, gameManager));
 
 
-            region1.addActor("Tree1b", new Tree(new Vector2(0, 750), region1));
-            region1.addActor("Tree2b", new Tree(new Vector2(50, 950), region1));
-            region1.addActor("Tree3b", new Tree(new Vector2(200, 950), region1));
-            region1.addActor("Tree4b", new Tree(new Vector2(300, 850), region1));
-            region1.addActor("Tree5b", new Tree(new Vector2(400, 800), region1));
-            region1.addActor("Tree6b", new Tree(new Vector2(500, 850), region1));
-            region1.addActor("Tree7b", new Tree(new Vector2(600, 800), region1));
-            region1.addActor("Tree8b", new Tree(new Vector2(750, 850), region1));
+            region1.addActor("Tree1b", new Tree(new Vector2(0, 750), region1, gameManager));
+            region1.addActor("Tree2b", new Tree(new Vector2(50, 950), region1, gameManager));
+            region1.addActor("Tree3b", new Tree(new Vector2(200, 950), region1, gameManager));
+            region1.addActor("Tree4b", new Tree(new Vector2(300, 850), region1, gameManager));
+            region1.addActor("Tree5b", new Tree(new Vector2(400, 800), region1, gameManager));
+            region1.addActor("Tree6b", new Tree(new Vector2(500, 850), region1, gameManager));
+            region1.addActor("Tree7b", new Tree(new Vector2(600, 800), region1, gameManager));
+            region1.addActor("Tree8b", new Tree(new Vector2(750, 850), region1, gameManager));
 
 
-            region1.addActor("Treea1", new Tree(new Vector2(50, 350), region1));
-            region1.addActor("Tree2a", new Tree(new Vector2(150, 350), region1));
-            region1.addActor("Tree3a", new Tree(new Vector2(250, 350), region1));
-            region1.addActor("Tree4a", new Tree(new Vector2(350, 350), region1));
-            region1.addActor("Tree5a", new Tree(new Vector2(450, 350), region1));
-            region1.addActor("Tree6a", new Tree(new Vector2(500, 400), region1));
-            region1.addActor("Tree7a", new Tree(new Vector2(600, 450), region1));
-            region1.addActor("Tree8a", new Tree(new Vector2(750, 550), region1));
-            region1.addActor("Tree8a2", new Tree(new Vector2(850, 550), region1));
-            region1.addActor("Tree8q", new Tree(new Vector2(950, 550), region1));
-            region1.addActor("Tree8r", new Tree(new Vector2(1050, 550), region1));
-            region1.addActor("Tree8e", new Tree(new Vector2(750, 850), region1));
-            region1.addActor("Tree8c", new Tree(new Vector2(850, 850), region1));
-            region1.addActor("Tree8f", new Tree(new Vector2(950, 850), region1));
-            region1.addActor("Tree8g", new Tree(new Vector2(1050, 875), region1));
-            region1.addActor("Tree8h", new Tree(new Vector2(1150, 850), region1));
+            region1.addActor("Treea1", new Tree(new Vector2(50, 350), region1, gameManager));
+            region1.addActor("Tree2a", new Tree(new Vector2(150, 350), region1, gameManager));
+            region1.addActor("Tree3a", new Tree(new Vector2(250, 350), region1, gameManager));
+            region1.addActor("Tree4a", new Tree(new Vector2(350, 350), region1, gameManager));
+            region1.addActor("Tree5a", new Tree(new Vector2(450, 350), region1, gameManager));
+            region1.addActor("Tree6a", new Tree(new Vector2(500, 400), region1, gameManager));
+            region1.addActor("Tree7a", new Tree(new Vector2(600, 450), region1, gameManager));
+            region1.addActor("Tree8a", new Tree(new Vector2(750, 550), region1, gameManager));
+            region1.addActor("Tree8a2", new Tree(new Vector2(850, 550), region1, gameManager));
+            region1.addActor("Tree8q", new Tree(new Vector2(950, 550), region1, gameManager));
+            region1.addActor("Tree8r", new Tree(new Vector2(1050, 550), region1, gameManager));
+            region1.addActor("Tree8e", new Tree(new Vector2(750, 850), region1, gameManager));
+            region1.addActor("Tree8c", new Tree(new Vector2(850, 850), region1, gameManager));
+            region1.addActor("Tree8f", new Tree(new Vector2(950, 850), region1, gameManager));
+            region1.addActor("Tree8g", new Tree(new Vector2(1050, 875), region1, gameManager));
+            region1.addActor("Tree8h", new Tree(new Vector2(1150, 850), region1, gameManager));
 
             region1.addActor("Body1", new Actor("Body1", "Body1", new Vector2(50, 500)));
             region1.addActor("Body2", new Actor("Body2", "Body1", new Vector2(180, 650)));
@@ -93,14 +96,14 @@ namespace StoneCircle
             region1.AddLines(new Lines("Instructions", "", "Player", "Hold RT and press Y. Don't move until you've finished bandaging.", region1, Lines.LineType.Player));
             region1.AddLines(new Lines("Village", "", "Player", "If I follow this stream to the South I should come across the village of SouthStreamVillage", region1, Lines.LineType.Player));
 
-            region1.addActor("Fire1", new Fire(new Vector2(-100, 900), region1));
+            region1.addActor("Fire1", new Fire(new Vector2(-100, 900), region1, gameManager));
             region1.addLight("Light", new Vector2(-100, 600), 1200);
 
             region1.AddEvent(new EventGroup("Intro1", "Intro2"));
             region1.AddEvent(new EventGroup("Intro2", ""));
 
 
-            region1.events["Intro1"].AddEvent(new MoveActorEvent(GM.Player, new Vector2(150, 600), region1));
+            region1.events["Intro1"].AddEvent(new MoveActorEvent(gameManager.Player, new Vector2(150, 600), region1));
             region1.events["Intro1"].AddEvent(new SetCameraEvent(region1.camera, new Vector2(684, 600)));
             region1.events["Intro2"].AddEvent(new DialogueEvent("Forest1", region1));
             region1.RunEvent("Intro1");
@@ -113,7 +116,7 @@ namespace StoneCircle
             Stages.Add("region1", region1);
             Stages.Add("region2", new Stage("Region2", this));
             Stages["region2"].AddTrigger(new StageTrigger("Village", new Vector3(350, 0, 0), new Vector3(360, 2000, 1), Stages["region2"], new Vector2( 2000, 3750)));
-            Stages["region2"].addLight(new ActorLightSource(GM.Player, 1200f));
+            Stages["region2"].addLight(new ActorLightSource(gameManager.Player, 1200f));
 
 
 
@@ -124,7 +127,7 @@ namespace StoneCircle
             Stages["Village"].addActor("CenterStone", new Actor("CenterStone", "SarcenStone2", new Vector2(2000, 2000), Stages["Village"]));
             Stages["Village"].addLight(new LightSource("SarcenGlow", new Vector2(950, 600), 500f, Stages["Village"], null));
             Stages["Village"].AMBColor = new Vector3(.5f, .5f, 1f);
-            Stages["Village"].addActor("Follower", new Follower("Follower", new Vector2(1400, 600), Stages["Village"]));
+            Stages["Village"].addActor("Follower", new Follower("Follower", new Vector2(1400, 600), Stages["Village"], gameManager));
             
             for (int i = 0; i < 72; i++){Stages["Village"].addActor("SarcenStone" + i, new Actor("Sarcen" + i, "SarcenStoneSmall", 2000 * Vector2.One + 2000 * new Vector2((float)Math.Cos(10 * i), (float)Math.Sin(10 * i)), Stages["Village"]));}
 
@@ -183,7 +186,7 @@ namespace StoneCircle
             Stages["Village"].AddEvent(zoomOut);
             //Stages["Village"].RunEvent("Zoom");
             //GM.player.SetAction("FightStance");
-            GM.Player.StartBleeding();
+            gameManager.Player.StartBleeding();
         }
 
 
@@ -218,10 +221,10 @@ namespace StoneCircle
                 openStage.AM.StopSong();
             }
             Stage nextStage = Stages[Next];
-            nextStage.addPlayer(GM.Player, startingPosition);
+            nextStage.addPlayer(gameManager.Player, startingPosition);
           
             nextStage.setCamera(); 
-            nextStage.Load(CM);
+            nextStage.Load(contentManager);
             nextStage.Initialize();
             openStage = nextStage;
         }
@@ -248,8 +251,7 @@ namespace StoneCircle
 
         public void LevelFromFile(String fileName)
         {
-            Stage newStage = new Stage(this);
-            
+            Stage newStage = new Stage(this.gameManager);
         }
 
 

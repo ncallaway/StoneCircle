@@ -12,7 +12,7 @@ namespace StoneCircle
         ActorLightSource lit;
         Actionstate burning = new Burning();
 
-        public Fire(Vector2 starting, Stage Parent)
+        public Fire(Vector2 starting, Stage Parent, GameManager gameManager) : base(gameManager)
         {
              name = "fire";
              Location = new Vector3(starting, 0);
@@ -44,7 +44,7 @@ namespace StoneCircle
                    if (parent.player.CurrentItem.HasProperty("Fire") && current_Action.ID !="Burning") { 
                        current_Action = burning; 
                        parent.addLight(lit);
-                       parent.SM.GM.AudioManager.InstantiateEffect("fire", this, true);
+                       gameManager.AudioManager.InstantiateEffect("fire", this, true);
                       }
                    if (parent.player.CurrentItem.HasProperty("Water") && current_Action.id == "Burning") { SetAction("Standing"); parent.removeLight(lit); }
 

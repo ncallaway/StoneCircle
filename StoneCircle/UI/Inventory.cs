@@ -20,7 +20,7 @@ namespace UserMenus{
 
    class Inventory : RingMenu
     {
-        public Inventory(Player Owner)
+        public Inventory(Player Owner, GameManager gameManager) : base(gameManager)
         {
             player = Owner;
             title = player.Name + " Inventory";
@@ -47,7 +47,7 @@ namespace UserMenus{
             List<InventoryItem> remove = new List<InventoryItem>();
             foreach (InventoryItem Item in menuitems) if (Item.Quantity <= 0) remove.Add(Item);
             foreach (InventoryItem Item in remove) RemoveItem(Item);
-            if (!player.Input.IsRightBumperPressed()) { player.parent.SM.GM.UIManager.CloseMenu(); }
+            if (!player.Input.IsRightBumperPressed()) { gameManager.UIManager.CloseMenu(); }
        
 
         }

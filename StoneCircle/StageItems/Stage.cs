@@ -28,13 +28,14 @@ namespace StoneCircle
         List<TriggerBox> triggers = new List<TriggerBox>();
         public InputController input = new InputController();
         public Camera camera;
-        
+
         private Texture2D terrain;
+        private GameManager gameManager;
 
         [XmlIgnoreAttribute]
         public Player player;
         Stack<Menu> activeMenus = new Stack<Menu>();
-        
+
 
         public String BGMTitle;
         public Vector3 AMBColor;
@@ -56,7 +57,7 @@ namespace StoneCircle
         [XmlIgnoreAttribute]
         public StageManager SM;
         private bool loaded;
-       // LightSource sun = new LightSource("sun", new Vector2(200000, 10000), 3000000f, null, null);
+        // LightSource sun = new LightSource("sun", new Vector2(200000, 10000), 3000000f, null, null);
 
         [XmlIgnoreAttribute]
         Effect ambientLightShader;
@@ -92,17 +93,19 @@ namespace StoneCircle
             loaded = false;
         }
 
-        public Stage(StageManager SM)
+        public Stage(GameManager gameManager)
         {
+            this.gameManager = gameManager;
+            this.SM = gameManager.StageManager;
+            this.AM = gameManager.AudioManager;
             position = new Vector2(0, 0);
             max_X = 4000;
             max_Y = 4000;
             camera = new Camera(this, input);
-            this.SM = SM;
+            
             BGMTitle = "LXD";
             AMBColor = new Vector3(1f, 1f, .4f);
             AMBStrength = .8f;
-            AM = new AudioManager();
             loaded = false;
         }
 
@@ -110,15 +113,14 @@ namespace StoneCircle
         {
             foreach (Actor A in exists.Values) A.Initialize();
             AM.SetSong(BGMTitle);
-            if (currentEvent != null) currentEvent.Start();           
-            
+            if (currentEvent != null) currentEvent.Start();
+
         }
 
 
-        public void Load( ContentManager CM)
+        public void Load(ContentManager CM)
         {
-            if (!loaded)
-            {
+            if (!loaded) {
                 this.CM = CM;
                 terrain = CM.Load<Texture2D>("Grass");
                 font = CM.Load<SpriteFont>("Text");
@@ -130,7 +132,7 @@ namespace StoneCircle
                 loaded = true;
                 foreach (Lines D in conversations.Values) D.Load(CM);
 
-            }         
+            }
         }
 
 
@@ -143,7 +145,7 @@ namespace StoneCircle
 
         public void AddTrigger(TriggerBox newT) { triggers.Add(newT); }
 
-        public void AddLines(Lines dialouge){conversations.Add(dialouge.CallID, dialouge);}
+        public void AddLines(Lines dialouge) { conversations.Add(dialouge.CallID, dialouge); }
 
         public void AddEvent(EventGroup add)
         {
@@ -151,30 +153,32 @@ namespace StoneCircle
         }
         public void RunEvent(String next)
         {
-            if (events.ContainsKey(next)) { currentEvent = events[next]; currentEvent.Start(); }
-            else currentEvent = null;
+            if (events.ContainsKey(next)) { currentEvent = events[next]; currentEvent.Start(); } else currentEvent = null;
 
         }
-    
-        public void RunLine(String dialouge)        {            if (conversations.ContainsKey(dialouge)) 
-        { conversations[dialouge].Start(); 
-            openConversations.Add(conversations[dialouge]); }   
+
+        public void RunLine(String dialouge)
+        {
+            if (conversations.ContainsKey(dialouge)) {
+                conversations[dialouge].Start();
+                openConversations.Add(conversations[dialouge]);
+            }
         }
 
 
 
-        public void RemoveDialogue(Lines dialogue)        {            openConversations.Remove(dialogue);        }
+        public void RemoveDialogue(Lines dialogue) { openConversations.Remove(dialogue); }
 
         public void RemoveDialogue(String dialogue) { openConversations.Remove(conversations[dialogue]); }
 
-        public void addPlayer(String id, String asset_name, Vector2 starting)        {            addPlayer(new Player(id, asset_name, starting, this, input), starting);        }
+        public void addPlayer(String id, String asset_name, Vector2 starting) { addPlayer(new Player(id, asset_name, starting, gameManager, input), starting); }
 
 
         public void addPlayer(Player Player, Vector2 starting)
         {
             player = Player;
             player.Location = new Vector3(starting.X, starting.Y, 1);
-             player.parent = this;
+            player.parent = this;
             exists.Add("Player", player);
         }
 
@@ -183,15 +187,15 @@ namespace StoneCircle
 
         public void addLight(String id, Vector2 starting, float radius)
         {
-            LightSource temp = new LightSource(id,starting,radius, this, lightSourceShader);
+            LightSource temp = new LightSource(id, starting, radius, this, lightSourceShader);
             addLight(temp);
         }
 
-        public void addLight(LightSource light){ lights.Add(light);}
+        public void addLight(LightSource light) { lights.Add(light); }
 
         public void addActor(String id, Actor actor)
         {
-            exists.Add(id, actor);   
+            exists.Add(id, actor);
         }
 
         public Actor GetActor(String actor)
@@ -199,104 +203,99 @@ namespace StoneCircle
             return exists[actor];
         }
 
-        public void removeActor(String target)        { exists.Remove(target); }
+        public void removeActor(String target) { exists.Remove(target); }
 
-        public void removeLight(LightSource light)     {   lights.Remove(light);    }
-
-       
+        public void removeLight(LightSource light) { lights.Remove(light); }
 
 
-        
-        public void setCamera()   {            camera.setSubject(player);        }
+
+
+
+        public void setCamera() { camera.setSubject(player); }
 
 
 
         public void Draw(GraphicsDevice device, SpriteBatch theSpriteBatch, RenderTarget2D shadeTemp)
         {
 
-           device.SetRenderTarget(0, shadeTemp);
-                     
+            device.SetRenderTarget(0, shadeTemp);
+
             theSpriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.BackToFront, SaveStateMode.None);
             device.Clear(Color.Ivory);
-            for (int i = 0; i < 40; i++)
-                {
-                    for (int j = 0; j < 40; j++)
-                        theSpriteBatch.Draw(terrain, ((new Vector2(i * terrain.Width, j * terrain.Height)) - camera.Location) * camera.Scale + camera.screenadjust, new Rectangle(0, 0, terrain.Width, terrain.Height), Color.White, 0f, new Vector2(0, 0), camera.Scale, SpriteEffects.None, 1f);
+            for (int i = 0; i < 40; i++) {
+                for (int j = 0; j < 40; j++)
+                    theSpriteBatch.Draw(terrain, ((new Vector2(i * terrain.Width, j * terrain.Height)) - camera.Location) * camera.Scale + camera.screenadjust, new Rectangle(0, 0, terrain.Width, terrain.Height), Color.White, 0f, new Vector2(0, 0), camera.Scale, SpriteEffects.None, 1f);
+            }
+
+            foreach (Actor y in exists.Values) {
+                y.Draw(theSpriteBatch, camera.Location, camera.Scale, 1f, font);
+                // float rotation = sun.calcRotate(y);
+                // float intensity = sun.calcIntensity(y);
+                // y.DrawShadow(theSpriteBatch, camera.Location, camera.Scale, rotation, intensity);
+
+                foreach (LightSource x in lights) {
+                    float rotation = x.calcRotate(y);
+                    float intensity = x.calcIntensity(y);
+                    y.DrawShadow(theSpriteBatch, camera.Location, camera.Scale, rotation, intensity);
                 }
 
-                foreach (Actor y in exists.Values)
-                {
-                    y.Draw(theSpriteBatch, camera.Location, camera.Scale, 1f, font);
-                   // float rotation = sun.calcRotate(y);
-                   // float intensity = sun.calcIntensity(y);
-                   // y.DrawShadow(theSpriteBatch, camera.Location, camera.Scale, rotation, intensity);
-              
-                    foreach (LightSource x in lights)
-                    {
-                          float rotation = x.calcRotate(y);
-                          float intensity = x.calcIntensity(y);
-                           y.DrawShadow(theSpriteBatch, camera.Location, camera.Scale, rotation, intensity);
-                    }
 
-                   
-                   }
-                          
-                    theSpriteBatch.End();
-                    device.SetRenderTarget(0, null);
-                    Texture2D ShaderTexture = shadeTemp.GetTexture();
-                    //device.SetRenderTarget(0, shadeTemp);
-                    theSpriteBatch.Begin(SpriteBlendMode.None, SpriteSortMode.Immediate, SaveStateMode.None);
-                    lightSourceShader.Begin();
+            }
 
-                    lightSourceShader.CurrentTechnique.Passes[0].Begin();
-                    theSpriteBatch.Draw(ShaderTexture, Vector2.Zero, Color.White);
-                    theSpriteBatch.End();
+            theSpriteBatch.End();
+            device.SetRenderTarget(0, null);
+            Texture2D ShaderTexture = shadeTemp.GetTexture();
+            //device.SetRenderTarget(0, shadeTemp);
+            theSpriteBatch.Begin(SpriteBlendMode.None, SpriteSortMode.Immediate, SaveStateMode.None);
+            lightSourceShader.Begin();
+
+            lightSourceShader.CurrentTechnique.Passes[0].Begin();
+            theSpriteBatch.Draw(ShaderTexture, Vector2.Zero, Color.White);
+            theSpriteBatch.End();
 
 
-                    lightSourceShader.CurrentTechnique.Passes[0].End();
-                    lightSourceShader.End();
-              
-                    theSpriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.BackToFront, SaveStateMode.None);
-                    foreach (Lines D in openConversations) D.Draw(theSpriteBatch, camera.Location, camera.Scale);
-                    theSpriteBatch.End();
-                
-         }
+            lightSourceShader.CurrentTechnique.Passes[0].End();
+            lightSourceShader.End();
+
+            theSpriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.BackToFront, SaveStateMode.None);
+            foreach (Lines D in openConversations) D.Draw(theSpriteBatch, camera.Location, camera.Scale);
+            theSpriteBatch.End();
+
+        }
 
 
         public void Update(GameTime t)
-        {        
+        {
             Vector2[] LPosition = new Vector2[6];
             float[] Radius = new float[6];
-               foreach (LightSource l in lights) {
-                   l.Update(t);
-                    Vector2 temp = l.Location + camera.screenadjust - camera.Location;
-                     temp.X /= 1366; temp.Y /= 768;
-                     LPosition[lights.IndexOf(l)] = temp;
-                     Radius[lights.IndexOf(l)] = l.Radius;
-        }
-            Vector2 tempPlayer = (player.Position - camera.Location)*camera.Scale + camera.screenadjust;
+            foreach (LightSource l in lights) {
+                l.Update(t);
+                Vector2 temp = l.Location + camera.screenadjust - camera.Location;
+                temp.X /= 1366; temp.Y /= 768;
+                LPosition[lights.IndexOf(l)] = temp;
+                Radius[lights.IndexOf(l)] = l.Radius;
+            }
+            Vector2 tempPlayer = (player.Position - camera.Location) * camera.Scale + camera.screenadjust;
             tempPlayer.X /= 1366; tempPlayer.Y /= 768;
-               lightSourceShader.Parameters["health"].SetValue(player.CurrentLife/player.TotalLife*.707f);
-               lightSourceShader.Parameters["Position"].SetValue(LPosition);
-               lightSourceShader.Parameters["index"].SetValue(lights.Count);
-               lightSourceShader.Parameters["player"].SetValue(tempPlayer);
-               lightSourceShader.Parameters["Radius"].SetValue(Radius);
-               lightSourceShader.Parameters["AMBColor"].SetValue(AMBColor);
-               lightSourceShader.Parameters["AMBStrength"].SetValue(AMBStrength);
-               lightSourceShader.Parameters["GLOColor"].SetValue(new Vector3(1f, .6f, -.1f));
-               lightSourceShader.Parameters["fatigue"].SetValue(player.CurrentFatigue / player.TotalFatigue * .707f);
-           
+            lightSourceShader.Parameters["health"].SetValue(player.CurrentLife / player.TotalLife * .707f);
+            lightSourceShader.Parameters["Position"].SetValue(LPosition);
+            lightSourceShader.Parameters["index"].SetValue(lights.Count);
+            lightSourceShader.Parameters["player"].SetValue(tempPlayer);
+            lightSourceShader.Parameters["Radius"].SetValue(Radius);
+            lightSourceShader.Parameters["AMBColor"].SetValue(AMBColor);
+            lightSourceShader.Parameters["AMBStrength"].SetValue(AMBStrength);
+            lightSourceShader.Parameters["GLOColor"].SetValue(new Vector3(1f, .6f, -.1f));
+            lightSourceShader.Parameters["fatigue"].SetValue(player.CurrentFatigue / player.TotalFatigue * .707f);
+
             input.Update();
-            if (input.IsPauseMenuNewlyPressed()) SM.GM.UIManager.Pause();
+            if (input.IsPauseMenuNewlyPressed()) gameManager.UIManager.Pause();
 
 
             List<Lines> finished = new List<Lines>();
             foreach (Lines D in openConversations) if (D.Update(t)) finished.Add(D);
-            foreach (Lines D in finished) { if(D.NextLine!=null) RunLine(D.NextLine); RemoveDialogue(D); }
+            foreach (Lines D in finished) { if (D.NextLine != null) RunLine(D.NextLine); RemoveDialogue(D); }
 
-            if (currentEvent != null) { if (currentEvent.Update(t)) RunEvent(currentEvent.NextEvent); }
-            else
-            {
+            if (currentEvent != null) { if (currentEvent.Update(t)) RunEvent(currentEvent.NextEvent); } else {
                 foreach (Actor x in exists.Values) // This will update all the actors, 
                 //  it makes sure that nobody leaves or moves through anybody else.
                 {
@@ -311,13 +310,13 @@ namespace StoneCircle
                 camera.Update(t); //Updates the camera's position. 
             }
 
-                AM.Update(player.Location);
-                foreach (TriggerBox T in triggers) T.Update(t, exists["Player"]);
-             
-            }
+            AM.Update(player.Location);
+            foreach (TriggerBox T in triggers) T.Update(t, exists["Player"]);
+
+        }
 
 
-        
+
 
     }
 }
