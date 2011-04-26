@@ -27,94 +27,88 @@ namespace StoneCircle
     public class StageManager
     {
 
-        [NonSerialized] internal Dictionary<String, Stage> Stages = new Dictionary<String, Stage>();
-        [NonSerialized] internal Stage openStage;
+        internal Dictionary<String, Stage> Stages = new Dictionary<String, Stage>();
+        internal Stage openStage;
+
         [NonSerialized] internal ContentManager contentManager;
-
-        [NonSerialized] internal Stage region1;
         [NonSerialized] private GameManager gameManager;
-
-
 
         public StageManager(GameManager gameManager)
         {
-
-            
             this.gameManager = gameManager;
             contentManager = gameManager.ContentManager;
 
-
-            region1 = new Stage("Default", this);
-            region1.addActor("Tree1", new Tree(new Vector2(0, 400), region1, gameManager));
-            region1.addActor("Tree2", new Tree(new Vector2(100, 400), region1, gameManager));
-            region1.addActor("Tree3", new Tree(new Vector2(200, 400), region1, gameManager));
-            region1.addActor("Tree4", new Tree(new Vector2(300, 400), region1, gameManager));
-            region1.addActor("Tree5", new Tree(new Vector2(400, 400), region1, gameManager));
-            region1.addActor("Tree6", new Tree(new Vector2(500, 450), region1, gameManager));
-            region1.addActor("Tree7", new Tree(new Vector2(600, 500), region1, gameManager));
-            region1.addActor("Tree8", new Tree(new Vector2(750, 550), region1, gameManager));
-
-
-            region1.addActor("Tree1b", new Tree(new Vector2(0, 750), region1, gameManager));
-            region1.addActor("Tree2b", new Tree(new Vector2(50, 950), region1, gameManager));
-            region1.addActor("Tree3b", new Tree(new Vector2(200, 950), region1, gameManager));
-            region1.addActor("Tree4b", new Tree(new Vector2(300, 850), region1, gameManager));
-            region1.addActor("Tree5b", new Tree(new Vector2(400, 800), region1, gameManager));
-            region1.addActor("Tree6b", new Tree(new Vector2(500, 850), region1, gameManager));
-            region1.addActor("Tree7b", new Tree(new Vector2(600, 800), region1, gameManager));
-            region1.addActor("Tree8b", new Tree(new Vector2(750, 850), region1, gameManager));
+            Stages.Add("region1", new Stage("region1", this));
+            Stages["region1"].addActor("Tree1", new Tree(new Vector2(0, 400), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree2", new Tree(new Vector2(100, 400), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree3", new Tree(new Vector2(200, 400), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree4", new Tree(new Vector2(300, 400), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree5", new Tree(new Vector2(400, 400), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree6", new Tree(new Vector2(500, 450), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree7", new Tree(new Vector2(600, 500), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree8", new Tree(new Vector2(750, 550), Stages["region1"], gameManager));
 
 
-            region1.addActor("Treea1", new Tree(new Vector2(50, 350), region1, gameManager));
-            region1.addActor("Tree2a", new Tree(new Vector2(150, 350), region1, gameManager));
-            region1.addActor("Tree3a", new Tree(new Vector2(250, 350), region1, gameManager));
-            region1.addActor("Tree4a", new Tree(new Vector2(350, 350), region1, gameManager));
-            region1.addActor("Tree5a", new Tree(new Vector2(450, 350), region1, gameManager));
-            region1.addActor("Tree6a", new Tree(new Vector2(500, 400), region1, gameManager));
-            region1.addActor("Tree7a", new Tree(new Vector2(600, 450), region1, gameManager));
-            region1.addActor("Tree8a", new Tree(new Vector2(750, 550), region1, gameManager));
-            region1.addActor("Tree8a2", new Tree(new Vector2(850, 550), region1, gameManager));
-            region1.addActor("Tree8q", new Tree(new Vector2(950, 550), region1, gameManager));
-            region1.addActor("Tree8r", new Tree(new Vector2(1050, 550), region1, gameManager));
-            region1.addActor("Tree8e", new Tree(new Vector2(750, 850), region1, gameManager));
-            region1.addActor("Tree8c", new Tree(new Vector2(850, 850), region1, gameManager));
-            region1.addActor("Tree8f", new Tree(new Vector2(950, 850), region1, gameManager));
-            region1.addActor("Tree8g", new Tree(new Vector2(1050, 875), region1, gameManager));
-            region1.addActor("Tree8h", new Tree(new Vector2(1150, 850), region1, gameManager));
-
-            region1.addActor("Body1", new Actor("Body1", "Body1", new Vector2(50, 500)));
-            region1.addActor("Body2", new Actor("Body2", "Body1", new Vector2(180, 650)));
-            region1.addActor("Body3", new Actor("Body3", "Body1", new Vector2(350, 500)));
-            region1.addActor("Body4", new Actor("Body4", "Body1", new Vector2(550, 650)));
-
-            region1.AddTrigger(new DialogueTrigger("Forest1", new Vector3(300, 400, 0), new Vector3(301, 800, 1), region1));
-            region1.AddTrigger(new DialogueTrigger("Bandage", new Vector3(700, 400, 0), new Vector3(701, 1000, 1), region1));
-            region1.AddTrigger(new DialogueTrigger("Village", new Vector3(1400, 400, 0), new Vector3(1401, 1000, 1), region1));
-            region1.AddTrigger(new StageTrigger("region2", new Vector3(300, 1200, 0), new Vector3(2000, 1201, 0), region1));
-
-            region1.AddLines(new Lines("Forest1", "", "Player", "I've got to get out of here... Must... warn... the village", region1, Lines.LineType.Player));
-            region1.AddLines(new Lines("Bandage", "Instructions", "Player", "I'm losing a lot of blood... I'll need to bandage myself if I don't want to bleed to death", region1, Lines.LineType.Player));
-            region1.AddLines(new Lines("Instructions", "", "Player", "Hold RT and press Y. Don't move until you've finished bandaging.", region1, Lines.LineType.Player));
-            region1.AddLines(new Lines("Village", "", "Player", "If I follow this stream to the South I should come across the village of SouthStreamVillage", region1, Lines.LineType.Player));
-
-            region1.addActor("Fire1", new Fire(new Vector2(-100, 900), region1, gameManager));
-            region1.addLight("Light", new Vector2(-100, 600), 1200);
-
-            region1.AddEvent(new EventGroup("Intro1", "Intro2"));
-            region1.AddEvent(new EventGroup("Intro2", ""));
+            Stages["region1"].addActor("Tree1b", new Tree(new Vector2(0, 750), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree2b", new Tree(new Vector2(50, 950), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree3b", new Tree(new Vector2(200, 950), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree4b", new Tree(new Vector2(300, 850), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree5b", new Tree(new Vector2(400, 800), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree6b", new Tree(new Vector2(500, 850), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree7b", new Tree(new Vector2(600, 800), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree8b", new Tree(new Vector2(750, 850), Stages["region1"], gameManager));
 
 
-            region1.events["Intro1"].AddEvent(new MoveActorEvent(gameManager.Player, new Vector2(150, 600), region1));
-            region1.events["Intro1"].AddEvent(new SetCameraEvent(region1.camera, new Vector2(684, 600)));
-            region1.events["Intro2"].AddEvent(new DialogueEvent("Forest1", region1));
-            region1.RunEvent("Intro1");
-            region1.events["Intro2"].AddEvent(new MoveCameraEvent(region1.camera, new Vector2(900, 600), 2000f));
-            region1.events["Intro2"].AddEvent(new ScaleCameraEvent(region1.camera, .8f, 2000f));
-            region1.events["Intro2"].AddEvent(new DramaticPauseEvent(2000f));
+            Stages["region1"].addActor("Treea1", new Tree(new Vector2(50, 350), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree2a", new Tree(new Vector2(150, 350), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree3a", new Tree(new Vector2(250, 350), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree4a", new Tree(new Vector2(350, 350), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree5a", new Tree(new Vector2(450, 350), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree6a", new Tree(new Vector2(500, 400), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree7a", new Tree(new Vector2(600, 450), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree8a", new Tree(new Vector2(750, 550), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree8a2", new Tree(new Vector2(850, 550), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree8q", new Tree(new Vector2(950, 550), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree8r", new Tree(new Vector2(1050, 550), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree8e", new Tree(new Vector2(750, 850), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree8c", new Tree(new Vector2(850, 850), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree8f", new Tree(new Vector2(950, 850), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree8g", new Tree(new Vector2(1050, 875), Stages["region1"], gameManager));
+            Stages["region1"].addActor("Tree8h", new Tree(new Vector2(1150, 850), Stages["region1"], gameManager));
+
+            Stages["region1"].addActor("Body1", new Actor("Body1", "Body1", new Vector2(50, 500)));
+            Stages["region1"].addActor("Body2", new Actor("Body2", "Body1", new Vector2(180, 650)));
+            Stages["region1"].addActor("Body3", new Actor("Body3", "Body1", new Vector2(350, 500)));
+            Stages["region1"].addActor("Body4", new Actor("Body4", "Body1", new Vector2(550, 650)));
+
+            Stages["region1"].AddTrigger(new DialogueTrigger("Forest1", new Vector3(300, 400, 0), new Vector3(301, 800, 1), Stages["region1"]));
+            Stages["region1"].AddTrigger(new DialogueTrigger("Bandage", new Vector3(700, 400, 0), new Vector3(701, 1000, 1), Stages["region1"]));
+            Stages["region1"].AddTrigger(new DialogueTrigger("Village", new Vector3(1400, 400, 0), new Vector3(1401, 1000, 1), Stages["region1"]));
+            Stages["region1"].AddTrigger(new StageTrigger("region2", new Vector3(300, 1200, 0), new Vector3(2000, 1201, 0), Stages["region1"]));
+
+            Stages["region1"].AddLines(new Lines("Forest1", "", "Player", "I've got to get out of here... Must... warn... the village", Stages["region1"], Lines.LineType.Player));
+            Stages["region1"].AddLines(new Lines("Bandage", "Instructions", "Player", "I'm losing a lot of blood... I'll need to bandage myself if I don't want to bleed to death", Stages["region1"], Lines.LineType.Player));
+            Stages["region1"].AddLines(new Lines("Instructions", "", "Player", "Hold RT and press Y. Don't move until you've finished bandaging.", Stages["region1"], Lines.LineType.Player));
+            Stages["region1"].AddLines(new Lines("Village", "", "Player", "If I follow this stream to the South I should come across the village of SouthStreamVillage", Stages["region1"], Lines.LineType.Player));
+
+            Stages["region1"].addActor("Fire1", new Fire(new Vector2(-100, 900), Stages["region1"], gameManager));
+            Stages["region1"].addLight("Light", new Vector2(-100, 600), 1200);
+
+            Stages["region1"].AddEvent(new EventGroup("Intro1", "Intro2"));
+            Stages["region1"].AddEvent(new EventGroup("Intro2", ""));
+
+
+            Stages["region1"].events["Intro1"].AddEvent(new MoveActorEvent(gameManager.Player, new Vector2(150, 600), Stages["region1"]));
+            Stages["region1"].events["Intro1"].AddEvent(new SetCameraEvent(Stages["region1"].camera, new Vector2(684, 600)));
+            Stages["region1"].events["Intro2"].AddEvent(new DialogueEvent("Forest1", Stages["region1"]));
+            Stages["region1"].RunEvent("Intro1");
+            Stages["region1"].events["Intro2"].AddEvent(new MoveCameraEvent(Stages["region1"].camera, new Vector2(900, 600), 2000f));
+            Stages["region1"].events["Intro2"].AddEvent(new ScaleCameraEvent(Stages["region1"].camera, .8f, 2000f));
+            Stages["region1"].events["Intro2"].AddEvent(new DramaticPauseEvent(2000f));
 
 
 
-            Stages.Add("region1", region1);
+            
             Stages.Add("region2", new Stage("Region2", this));
             Stages["region2"].AddTrigger(new StageTrigger("Village", new Vector3(350, 0, 0), new Vector3(360, 2000, 1), Stages["region2"], new Vector2( 2000, 3750)));
             Stages["region2"].addLight(new ActorLightSource(gameManager.Player, 1200f));
@@ -214,7 +208,6 @@ namespace StoneCircle
 
         public void SetStage(String Next, Vector2 startingPosition)
         {
-
             if (openStage != null)
             {
                 openStage.RemovePlayer();

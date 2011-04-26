@@ -14,55 +14,56 @@ using UserMenus;
 namespace StoneCircle
 {
 
+    [Serializable]
     class Stage
     {
-        private String id;
-        private Texture2D background;
-        private Vector2 position;
-        public int max_X;
-        public int max_Y;
+        [NonSerialized] private String id;
+        [NonSerialized] private Texture2D background;
+        [NonSerialized] private Vector2 position;
+        [NonSerialized] public int max_X;
+        [NonSerialized] public int max_Y;
 
-        Dictionary<String, Actor> exists = new Dictionary<String, Actor>();
+        [NonSerialized] Dictionary<String, Actor> exists = new Dictionary<String, Actor>();
         public Dictionary<String, Actor>.ValueCollection Actors { get { return exists.Values; } }
-        List<LightSource> lights = new List<LightSource>();
-        List<TriggerBox> triggers = new List<TriggerBox>();
-        public InputController input = new InputController();
-        public Camera camera;
+        [NonSerialized] List<LightSource> lights = new List<LightSource>();
+        [NonSerialized] List<TriggerBox> triggers = new List<TriggerBox>();
+        [NonSerialized] public InputController input = new InputController();
+        [NonSerialized] public Camera camera;
 
-        private Texture2D terrain;
-        private GameManager gameManager;
-
-        [XmlIgnoreAttribute]
-        public Player player;
-        Stack<Menu> activeMenus = new Stack<Menu>();
-
-
-        public String BGMTitle;
-        public Vector3 AMBColor;
-        public float AMBStrength;
-
+        [NonSerialized] private Texture2D terrain;
+        [NonSerialized] private GameManager gameManager;
 
         [XmlIgnoreAttribute]
-        public SpriteFont font;
-        Dictionary<String, Lines> conversations = new Dictionary<String, Lines>();
-        List<Lines> openConversations = new List<Lines>();
-        EventGroup currentEvent;
+        [NonSerialized] public Player player;
+        [NonSerialized] Stack<Menu> activeMenus = new Stack<Menu>();
+
+
+        [NonSerialized] public String BGMTitle;
+        [NonSerialized] public Vector3 AMBColor;
+        [NonSerialized] public float AMBStrength;
+
 
         [XmlIgnoreAttribute]
-        public Dictionary<String, EventGroup> events = new Dictionary<String, EventGroup>();
+        [NonSerialized] public SpriteFont font;
+        [NonSerialized] Dictionary<String, Lines> conversations = new Dictionary<String, Lines>();
+        [NonSerialized] List<Lines> openConversations = new List<Lines>();
+        [NonSerialized] EventGroup currentEvent;
 
-        public AudioManager AM;
         [XmlIgnoreAttribute]
-        public ContentManager CM;
+        [NonSerialized] public Dictionary<String, EventGroup> events = new Dictionary<String, EventGroup>();
+
+        [NonSerialized] public AudioManager AM;
         [XmlIgnoreAttribute]
-        public StageManager SM;
-        private bool loaded;
+        [NonSerialized] public ContentManager CM;
+        [XmlIgnoreAttribute]
+        [NonSerialized] public StageManager SM;
+        [NonSerialized] private bool loaded;
         // LightSource sun = new LightSource("sun", new Vector2(200000, 10000), 3000000f, null, null);
 
         [XmlIgnoreAttribute]
-        Effect ambientLightShader;
+        [NonSerialized] Effect ambientLightShader;
         [XmlIgnoreAttribute]
-        Effect lightSourceShader;
+        [NonSerialized] Effect lightSourceShader;
 
 
         public Stage()
