@@ -19,7 +19,7 @@ namespace StoneCircle
     /// </summary>
     public class StoneCircle : Microsoft.Xna.Framework.Game
     {
-        internal GameManager Manager;
+        public GameManager Manager;
 
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;

@@ -24,16 +24,16 @@ namespace StoneCircle
     /// 
     /// Right now the GameManager holds a lot of "global state". 
     /// </summary>
-    class GameManager
+    public class GameManager
     {
 
-        public AudioManager AudioManager { get { return audioManager; } }
-        public UIManager UIManager { get { return uiManager; } }
-        public ContentManager ContentManager { get { return contentManager; } }
+        internal AudioManager AudioManager { get { return audioManager; } }
+        internal UIManager UIManager { get { return uiManager; } }
+        internal ContentManager ContentManager { get { return contentManager; } }
         public StageManager StageManager { get { return stageManager; } }
 
-        public Player Player { get { return player; } }
-        public Camera Camera { get { return camera; } }
+        internal Player Player { get { return player; } }
+        internal Camera Camera { get { return camera; } }
 
         private Player player;
         private Camera camera;

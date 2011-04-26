@@ -23,15 +23,16 @@ namespace StoneCircle
     /// <summary>
     /// Manages a stage
     /// </summary>
-    class StageManager
+    [Serializable]
+    public class StageManager
     {
 
-        Dictionary<String, Stage> Stages = new Dictionary<String,Stage>();
-        Stage openStage;
-        ContentManager contentManager;
+        [NonSerialized] internal Dictionary<String, Stage> Stages = new Dictionary<String, Stage>();
+        [NonSerialized] internal Stage openStage;
+        [NonSerialized] internal ContentManager contentManager;
 
-        public Stage region1;
-        private GameManager gameManager;
+        [NonSerialized] internal Stage region1;
+        [NonSerialized] private GameManager gameManager;
 
 
 
@@ -234,26 +235,5 @@ namespace StoneCircle
             SetStage(nextStage, new Vector2(-150,600));
 
         }
-
-        public void LevelToFile(Stage stage, String fileName, StorageDevice device)
-        {
-            StorageContainer container = device.OpenContainer("Levels");
-            fileName = Path.Combine(container.Path, fileName + ".lvl");
-            FileStream saveFile = File.Open(fileName, FileMode.Create);
-            XmlSerializer serializer = new XmlSerializer(typeof(Stage));
-            serializer.Serialize(saveFile, stage);
-            saveFile.Close();
-        }
-
-        public void LevelToFile(Stage stage, String fileName)
-        {
-        }
-
-        public void LevelFromFile(String fileName)
-        {
-            Stage newStage = new Stage(this.gameManager);
-        }
-
-
     }
 }
