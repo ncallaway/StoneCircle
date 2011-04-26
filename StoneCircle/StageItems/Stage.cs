@@ -17,11 +17,11 @@ namespace StoneCircle
     [Serializable]
     class Stage
     {
-        [NonSerialized] private String id;
+        private String id;
         [NonSerialized] private Texture2D background;
-        [NonSerialized] private Vector2 position;
-        [NonSerialized] public int max_X;
-        [NonSerialized] public int max_Y;
+        private Vector2 position;
+        public int max_X;
+        public int max_Y;
 
         [NonSerialized] Dictionary<String, Actor> exists = new Dictionary<String, Actor>();
         public Dictionary<String, Actor>.ValueCollection Actors { get { return exists.Values; } }
