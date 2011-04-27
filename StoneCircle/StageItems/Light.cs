@@ -12,9 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace StoneCircle
 {
-   
-
-
+    [Serializable]
     class LightSource
     {
         protected Vector2 location;
@@ -24,7 +22,8 @@ namespace StoneCircle
         public Vector3 LightColor {get{return color.ToVector3();}}
         public float Radius { get { return radius/1366; } }
         public Vector2 Location { get { return new Vector2(location.X, location.Y); } }
-        Effect light;
+        
+        [NonSerialized] Effect light;
         private Stage parent;
 
         public LightSource() { }
@@ -101,10 +100,10 @@ namespace StoneCircle
 
 
 
-
+    [Serializable]
     class ActorLightSource : LightSource
     {
-        Actor owner;
+        [NonSerialized] Actor owner;
 
         public override void Update(GameTime t)
         {

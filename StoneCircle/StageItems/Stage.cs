@@ -39,8 +39,8 @@ namespace StoneCircle
 
 
         [NonSerialized] public String BGMTitle;
-        [NonSerialized] public Vector3 AMBColor;
-        [NonSerialized] public float AMBStrength;
+        public Vector3 AMBColor;
+        public float AMBStrength;
 
 
         [XmlIgnoreAttribute]
