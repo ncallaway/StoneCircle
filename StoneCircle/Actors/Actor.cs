@@ -34,6 +34,8 @@ namespace StoneCircle
         public int ImageXindex;
         public int ImageYindex;
 
+        public bool Active;
+
         //Here is the inventory
         protected Inventory inventory;
         public Inventory Inventory { get { return inventory; } }
@@ -109,6 +111,7 @@ namespace StoneCircle
             currentBeatTime = 0;
 
             this.gameManager = gameManager;
+            Active = true;
         }
 
         public Actor(String Id, String asset_name, Vector2 starting)  // Basic constructor.
@@ -285,6 +288,12 @@ namespace StoneCircle
             }
             return "Walking";
         }
+
+        public bool HasProperty(String Property)
+        {
+            return properties.Contains(Property);
+        }
+
 
         public virtual void AddAIOption(AIOption next)
         {

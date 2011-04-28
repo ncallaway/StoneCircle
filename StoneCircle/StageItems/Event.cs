@@ -6,38 +6,38 @@ using System.Text;
 using Microsoft.Xna.Framework;
 
 namespace StoneCircle
-{
-    class EventGroup
-    {
-        List<Event> events = new List<Event>();
-        public String NextEvent;
-        private String id;
-        public String ID { get { return id; } }
 
-        public EventGroup(String callID, String nextEvent)
+
+{
+
+    class EventGroup : Event
+    {
+        protected List<Event> events = new List<Event>();
+        
+
+        public void AddEvent(Event add) { events.Add(add); }
+
+    }
+
+    class ParallelEventGroup: EventGroup
+    {
+        public ParallelEventGroup(String callID)
         {
             id = callID;
-            NextEvent = nextEvent;
         }
 
-        public EventGroup() { }
+        public ParallelEventGroup() { }
 
 
 
-        public void Start()
+        public override void Start()
         {
             foreach (Event E in events) E.Start();
         }
 
-        public void AddEvent(Event add)
+
+        public override bool Update(GameTime t)
         {
-            events.Add(add);
-
-        }
-
-        public bool Update(GameTime t)
-        {
-
             bool Ready = true;
             foreach (Event E in events) if (!E.Ready) { E.Update(t); Ready = (Ready && E.Ready); }
             return Ready;
@@ -46,20 +46,177 @@ namespace StoneCircle
 
     }
 
+    class SerialEventGroup : EventGroup
+    {
+        Event currentEvent;
+        int index;
 
+        public SerialEventGroup(String ID)
+        {
+            id = ID;
+        }
+
+        public override void Start()
+        {
+            index = 0;
+            currentEvent = events[index];
+            currentEvent.Start();
+        }
+
+        public override bool Update(GameTime t)
+        {
+            if (currentEvent.Update(t))
+            {
+                index++;
+                if (index >= events.Count) { ready = true; }
+                else { currentEvent = events[index];
+                currentEvent.Start();
+                }
+            }
+            return ready;
+
+        }
+
+    }
 
     public class Event
     {
         protected String id;
+        public String ID { get { return id; } }
         protected bool ready;
         public bool Ready { get { return ready; } }
 
+
+
         public virtual void Start(){  }
 
-        public virtual void Update(GameTime t){ }
+        public virtual bool Update(GameTime t) { return ready; }
+
+        public virtual void End()
+        {
+            ready = true;
+            
+        }
+    }
+
+     class StateConditionONEvent : Event
+    {
+        StageManager SM;
+        String StateCondition;
+
+        public StateConditionONEvent(String sc, StageManager sm)
+        {
+            SM = sm;
+            StateCondition = sc;
+
+        }
+
+        public override void Start()
+        {
+            
+        }
+    }
+
+     class PlayerDeactivateEvent : Event
+    {
+        Player player;
+        public PlayerDeactivateEvent(Player player)
+        { this.player = player; }
+
+
+        public override void Start()
+        {
+            player.Active = false;
+            ready = true;
+        }
+
+    }
+
+    class PlayerReactivateEvent : Event
+    {
+        
+        Player player;
+        public PlayerReactivateEvent(Player player)
+        { this.player = player; }
+
+
+        public override void Start()
+        {
+            player.Active = true;
+            ready = true;
+        }
+
 
 
     }
+
+        class StageDeactivateEvent : Event
+    {
+        Stage stage;
+        
+        public StageDeactivateEvent(Stage stage)
+        { this.stage = stage; }
+
+
+        public override void Start()
+        {
+            foreach ( Actor A in stage.Actors) A.Active = false;
+            ready = true;
+        }
+
+    }
+
+     class StageReactivateEvent : Event
+    {
+        
+        Stage stage;
+        
+        public StageReactivateEvent(Stage stage)
+        { this.stage = stage; }
+
+
+        public override void Start()
+        {
+            foreach ( Actor A in stage.Actors) A.Active = false;
+            ready = true;
+        }
+
+    }
+
+
+     class CameraDeactivateEvent : Event
+     {
+
+         Camera camera;
+
+         public CameraDeactivateEvent(Camera camera)
+         { this.camera = camera; }
+
+
+         public override void Start()
+         {
+             camera.Active = false;
+             ready = true;
+         }
+
+     }
+
+     class CameraReactivateEvent : Event
+     {
+
+         Camera camera;
+
+         public CameraReactivateEvent(Camera camera)
+         { this.camera = camera; }
+
+
+         public override void Start()
+         {
+             camera.Active = true;
+             ready = true;
+         }
+
+     }
 
     public class DialogueEvent : Event
     {
@@ -76,12 +233,15 @@ namespace StoneCircle
         public override void Start()
         {
             Stage.RunLine(dialogueID);
+            
         }
 
-        public override void Update(GameTime t)
+        public override bool Update(GameTime t)
         {
             if (Stage.input.IsAButtonNewlyPressed()) { ready = true; Stage.RemoveDialogue(dialogueID); }
+            return ready;
         }
+
 
     }
 
@@ -97,20 +257,20 @@ namespace StoneCircle
             etime = 0;
         }
 
-        public override void Update(GameTime t)
+        public override bool Update(GameTime t)
         {
             etime += t.ElapsedGameTime.Milliseconds;
             ready = etime >= time;
+            return ready;
         }
 
     }
 
     public abstract class PauseEvent : Event
     {
-        /* Test event */
     }
 
-    public class AcknowledgePauseEvent : PauseEvent
+    class AcknowledgePauseEvent : PauseEvent
     {
 
         private Stage Stage;
@@ -118,9 +278,10 @@ namespace StoneCircle
         internal AcknowledgePauseEvent(Stage stage) {Stage = stage ; }
 
 
-        public override void Update(GameTime t)
+        public override bool Update(GameTime t)
         {
             if (Stage.input.IsAButtonNewlyPressed()) ready = true;
+            return Ready;
         }
 
     }
@@ -148,10 +309,32 @@ namespace StoneCircle
           
         }
 
-        public override void Update(GameTime t)
+        public override bool Update(GameTime t)
         {  
             actor.ActionUpdate(t, Stage.Actors);
             if((destination-actor.Position).LengthSquared() < 50f) ready = true;
+            return ready;
+        }
+
+
+
+    }
+
+    class StageChangeEvent : Event
+    {
+        StageManager SM;
+        String stageName;
+
+        public StageChangeEvent(StageManager sM, String StageName)
+        {
+            SM = sM;
+            stageName = StageName;
+
+        }
+
+        public override void Start()
+        {
+            SM.SetStage(stageName);
         }
 
 
@@ -215,13 +398,15 @@ namespace StoneCircle
             strength -= stage.AMBStrength;
         }
 
-        public override void Update(GameTime t)
+        public override bool Update(GameTime t)
         {
             stage.AMBColor += color * t.ElapsedGameTime.Milliseconds/time;
             stage.AMBStrength += strength * t.ElapsedGameTime.Milliseconds / time;
             etime += t.ElapsedGameTime.Milliseconds;
-            ready = (etime >=time);   
+            ready = (etime >=time);
+            return ready;
         }
+
 
 
     }
@@ -242,15 +427,16 @@ namespace StoneCircle
             etime = 0;
         }
 
-        public override void Start()       { direction = destination - camera.Location; }
+        public override void Start() { camera.Active = false; direction = destination - camera.Location; }
 
-        public override void Update(GameTime t)
+        public override bool Update(GameTime t)
         {
             etime += t.ElapsedGameTime.Milliseconds;
             camera.Pan( direction * (t.ElapsedGameTime.Milliseconds / time));
-            if(etime>= time) ready = true;
+            ready = (etime>= time);
+            return ready;
         }
-  }
+    }
 
     class ScaleCameraEvent: Event
     {
@@ -272,15 +458,18 @@ namespace StoneCircle
         {
             ScaleInterval = EndScale - camera.Scale;
             etime = 0;
+            camera.Active = false;
         }
 
 
-        public override void Update(GameTime t)
+        public override bool Update(GameTime t)
         {
             etime += t.ElapsedGameTime.Milliseconds;
             camera.Zoom( ScaleInterval * t.ElapsedGameTime.Milliseconds / time); 
             ready = (etime>=time);
+            return ready;
         }
+
 
 
 
@@ -292,6 +481,7 @@ namespace StoneCircle
         Actor actor;
         float etime;
         float time;
+
         public PerformActionEvent(Actor Actor, String Action)
         {
             action = Action;
@@ -305,11 +495,12 @@ namespace StoneCircle
             actor.SetAction(action);
         }
 
-        public override void Update(GameTime t)
+        public override bool Update(GameTime t)
         {
             actor.ActionUpdate(t, null);
             etime += t.ElapsedGameTime.Milliseconds;
             ready = true;
+            return ready;
         }
 
     }

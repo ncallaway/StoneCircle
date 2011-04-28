@@ -100,7 +100,7 @@
     <Compile Include="GameManager.cs" />
     <Compile Include="InputController.cs" />
     <Compile Include="StageItems\Lines.cs" />
-    <Compile Include="StageItems\TriggerBox.cs" />
+    <Compile Include="StageItems\Trigger.cs" />
     <Compile Include="UI\LevelMap.cs" />
     <Compile Include="UI\LinesItem.cs" />
     <Compile Include="UI\RingMenu.cs" />

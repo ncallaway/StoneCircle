@@ -15,7 +15,9 @@ namespace StoneCircle
     {
         private Vector2 location;
         public Vector2 Location { get { return location; } set { location = value; } }
-        
+
+        public bool Active;
+
         private Actor subject;
         public Vector2 screenadjust = new Vector2(684, 384);
         List<Actor> seen = new List<Actor>();

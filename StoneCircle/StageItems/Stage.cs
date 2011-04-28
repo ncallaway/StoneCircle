@@ -26,7 +26,7 @@ namespace StoneCircle
         [NonSerialized] Dictionary<String, Actor> exists = new Dictionary<String, Actor>();
         public Dictionary<String, Actor>.ValueCollection Actors { get { return exists.Values; } }
         [NonSerialized] List<LightSource> lights = new List<LightSource>();
-        [NonSerialized] List<TriggerBox> triggers = new List<TriggerBox>();
+        [NonSerialized] List<Trigger> triggers = new List<Trigger>();
         [NonSerialized] public InputController input = new InputController();
         [NonSerialized] public Camera camera;
 
@@ -47,10 +47,10 @@ namespace StoneCircle
         [NonSerialized] public SpriteFont font;
         [NonSerialized] Dictionary<String, Lines> conversations = new Dictionary<String, Lines>();
         [NonSerialized] List<Lines> openConversations = new List<Lines>();
-        [NonSerialized] EventGroup currentEvent;
+        [NonSerialized] Event currentEvent;
 
         [XmlIgnoreAttribute]
-        [NonSerialized] public Dictionary<String, EventGroup> events = new Dictionary<String, EventGroup>();
+        [NonSerialized] public Dictionary<String, Event> events = new Dictionary<String, Event>();
 
         [NonSerialized] public AudioManager AM;
         [XmlIgnoreAttribute]
@@ -144,13 +144,18 @@ namespace StoneCircle
 
         }
 
-        public void AddTrigger(TriggerBox newT) { triggers.Add(newT); }
+        public void AddTrigger(Trigger newT) { triggers.Add(newT); }
 
         public void AddLines(Lines dialouge) { conversations.Add(dialouge.CallID, dialouge); }
 
-        public void AddEvent(EventGroup add)
+        public void AddEvent(Event add)
         {
             events.Add(add.ID, add);
+        }
+
+        public void AddEvent(String callID, Event add)
+        {
+            events.Add(callID, add);
         }
         public void RunEvent(String next)
         {
@@ -296,11 +301,12 @@ namespace StoneCircle
             foreach (Lines D in openConversations) if (D.Update(t)) finished.Add(D);
             foreach (Lines D in finished) { if (D.NextLine != null) RunLine(D.NextLine); RemoveDialogue(D); }
 
-            if (currentEvent != null) { if (currentEvent.Update(t)) RunEvent(currentEvent.NextEvent); } else {
+            if (currentEvent != null) { if (currentEvent.Update(t)) currentEvent = null; }
+                      
                 foreach (Actor x in exists.Values) // This will update all the actors, 
                 //  it makes sure that nobody leaves or moves through anybody else.
                 {
-                    x.Update(t, exists.Values);
+                    if (x.Active)  { x.Update(t, exists.Values);  }
                     if ((int)x.Location.X < x.ImageWidth / 2) x.Location.X = x.ImageWidth / 2;
                     if ((int)x.Location.X > max_X - x.ImageWidth / 2) x.Location.X = max_X - x.ImageWidth / 2;
                     if ((int)x.Location.Y < x.ImageHeight) x.Location.Y = x.ImageHeight;
@@ -308,11 +314,11 @@ namespace StoneCircle
 
 
                 }
-                camera.Update(t); //Updates the camera's position. 
-            }
+                if(camera.Active) camera.Update(t); //Updates the camera's position. 
+            
 
             AM.Update(player.Location);
-            foreach (TriggerBox T in triggers) T.Update(t, exists["Player"]);
+            foreach (Trigger T in triggers) if (T.CheckCondition()) { T.UpdateAvailability(); RunEvent(T.Target); }
 
         }
 

@@ -80,6 +80,7 @@ namespace StoneCircle
         public virtual void Start()
         {
             time = 0;
+
             actor = stage.GetActor(actorID);
             actor.Talking();
         }

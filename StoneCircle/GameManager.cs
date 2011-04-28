@@ -30,7 +30,7 @@ namespace StoneCircle
         internal AudioManager AudioManager { get { return audioManager; } }
         internal UIManager UIManager { get { return uiManager; } }
         internal ContentManager ContentManager { get { return contentManager; } }
-        public StageManager StageManager { get { return stageManager; } }
+        public  StageManager StageManager { get { return stageManager; } }
 
         internal Player Player { get { return player; } }
         internal Camera Camera { get { return camera; } }

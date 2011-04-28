@@ -295,7 +295,8 @@ namespace StoneCircle
             fatigue = -.25f;
         }
 
-
+
+
 
 
         public override void Update(GameTime t, Dictionary<String, Actor>.ValueCollection targets)
