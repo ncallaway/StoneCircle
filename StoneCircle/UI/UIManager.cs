@@ -40,8 +40,8 @@ namespace UserMenus
 
             player = gameManager.Player;
             pauseMenu1 = new RingMenu(gameManager);
-            pauseMenu1.addMenuItem(new ChangeLevelItem("region1", gameManager.StageManager, this));
-            pauseMenu1.addMenuItem(new ChangeLevelItem("region2", gameManager.StageManager, this));
+            pauseMenu1.AddMenuItem(new ChangeLevelItem("region1", gameManager.StageManager, this));
+            pauseMenu1.AddMenuItem(new ChangeLevelItem("region2", gameManager.StageManager, this));
         }
 
 

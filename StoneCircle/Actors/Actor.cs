@@ -37,11 +37,16 @@ namespace StoneCircle
         public bool Active;
 
         //Here is the inventory
-        protected Inventory inventory;
-        public Inventory Inventory { get { return inventory; } }
-        protected InventoryItem currentItem;
-        public InventoryItem CurrentItem { get { return currentItem; } set { currentItem = value; } }
+        protected Inventory inventoryMenu;
+        public Inventory InventoryMenu { get { return inventoryMenu; } }
+        protected List<Item> inventory = new List<Item>();
+        protected Item currentItem;
+        public Item CurrentItem { get { return currentItem; } set { currentItem = value; } }
         protected bool inventoryOpen;
+
+
+        List<Trigger> personalTriggers = new List<Trigger>();
+        List<EVENT> personalEvents = new List<EVENT>();
 
         protected float defaultBeatTimer = 1000;
         protected float currentBeatTimer;
@@ -53,6 +58,7 @@ namespace StoneCircle
         protected Vector2 origin;
         public Vector3 Location;
         public Vector2 Position { get { return new Vector2(Location.X, Location.Y - Location.Z / 2); } }
+
         public Vector2 RenderPosition;
         protected Vector2 facing;
         public Vector2 Facing { get { return facing; } set { facing = value; } }
@@ -184,6 +190,8 @@ namespace StoneCircle
         public virtual void Initialize()
         { }
 
+        public virtual void UnInitialize() { }
+
         public virtual void Draw(SpriteBatch theSpriteBatch, Vector2 camera_pos, float camera_scale, float intensity, SpriteFont font) // Draws the sprite and shadow of actor in relation to camera.
         {
             theSpriteBatch.Draw(image_map, screenadjust + (camera_scale * (Position - camera_pos)), new Rectangle(ImageXindex * ImageWidth, ImageYindex * ImageHeight, ImageWidth, ImageHeight), new Color(intensity, intensity, intensity, 1f), 0f, origin, camera_scale, SpriteEffects.None, .2f - Location.Y / 100000f);
@@ -198,7 +206,6 @@ namespace StoneCircle
             else theSpriteBatch.Draw(image_map, new Rectangle((int)renderTarget.X, (int)renderTarget.Y, (int)(ImageWidth * camera_scale), (int)(ImageHeight * (intensity + 1) * camera_scale)), new Rectangle(ImageXindex * ImageWidth, ImageYindex * ImageHeight, ImageWidth, ImageHeight), new Color(0f, 0f, 0f, intensity), rotation, origin, SpriteEffects.None, .2f - (Location.Y - 2) / 100000f);
         }
 
-
         public virtual BoundingBox GetBounds()   // Returns the bounding box of a non-moving actor for collision detection.
         {
             Vector3 min = new Vector3(Location.X - ImageWidth / 3, Location.Y - ImageHeight / 4, Location.Z);
@@ -206,14 +213,12 @@ namespace StoneCircle
             return new BoundingBox(min, max);
         }
 
-
         public virtual BoundingBox GetBounds(Vector3 update)// Returns the bounding box of a moving actor for collision detection.
         {
             Vector3 min = new Vector3(Location.X + update.X - ImageWidth / 2, Location.Y + update.Y - ImageWidth / 2, Location.Z + update.Z);
             Vector3 max = new Vector3(Location.X + update.X + ImageWidth / 2, Location.Y + update.Y + ImageWidth / 2, Location.Z + update.Z + ImageHeight);
             return new BoundingBox(min, max);
         }
-
 
         public virtual void ApplyAction(Actionstate affected, Actor affector)
         {
@@ -293,11 +298,65 @@ namespace StoneCircle
         {
             return properties.Contains(Property);
         }
-
+        public bool DoesNotHaveProperty(String Property) { return !HasProperty(Property); }
+        public void AddProperty(String Property) {if(!properties.Contains(Property)) properties.Add(Property); }
+        public void RemoveProperty(String Property) { if (properties.Contains(Property)) properties.Remove(Property); }
 
         public virtual void AddAIOption(AIOption next)
         {
             AIStance.Add(next);
         }
+
+        public virtual void AddItem(Item item)
+        {
+            inventory.Add(item);
+            item.II.Load(gameManager.ContentManager);
+            inventoryMenu.AddMenuItem(item.II);
+
+        }
+
+        public void RemoveItem(Item item)
+        {
+            inventoryMenu.RemoveMenuItem(item.II);
+            inventory.Remove(item);
+           
+        }
+
+
+        public void CheckTriggers()
+        {
+            foreach (Trigger T in personalTriggers)
+            {
+                if (T.CheckCondition()) parent.RunEvent(T.Target);
+                
+
+            }
+
+
+        }
+        public void AddTrigger(Trigger T) { personalTriggers.Add(T); }
+
+
     }
-}
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }

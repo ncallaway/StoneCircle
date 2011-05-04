@@ -107,7 +107,6 @@
     <Compile Include="StageManager.cs" />
     <Compile Include="UI\ChangeLevelItem.cs" />
     <Compile Include="UI\ChangeBGMItem.cs" />
-    <Compile Include="UI\InventoryItem.cs" />
     <Compile Include="UI\Inventory.cs" />
     <Compile Include="StageItems\Light.cs" />
     <Compile Include="Actors\Player.cs" />
@@ -117,13 +116,10 @@
     <Compile Include="Actions\Player Actions\UseItem.cs" />
     <Compile Include="UI\ReplaceMenuItem.cs" />
     <Compile Include="UI\DialogueBox.cs" />
-    <Compile Include="Actions\Player Actions\PAction.cs" />
     <Compile Include="Actions\Player Actions\PTalk.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="StoneCircle.cs" />
-    <Compile Include="Actions\Player Actions\PStand.cs" />
-    <Compile Include="Actions\Player Actions\PWalk.cs" />
     <Compile Include="StageItems\Stage.cs" />
     <Compile Include="UI\TextBox.cs" />
   </ItemGroup>

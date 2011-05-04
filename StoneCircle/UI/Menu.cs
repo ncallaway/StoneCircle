@@ -60,12 +60,15 @@ namespace UserMenus
         /// Add a MenuItem to this Menu.
         /// </summary>
         /// <param name="menuitem">The MenuItem to add to this Menu.</param>
-        public void addMenuItem(MenuItem menuitem) { menuitems.Add(menuitem); }
+        public void AddMenuItem(MenuItem menuitem) { menuitems.Add(menuitem); }
 
         /// <summary>
         /// Load the content related to this menu.
         /// </summary>
         /// <param name="contentManager"></param>
+        /// 
+        public void RemoveMenuItem(MenuItem menuitem) { menuitems.Remove(menuitem); }
+
         public void Load(ContentManager contentManager)
         {
 

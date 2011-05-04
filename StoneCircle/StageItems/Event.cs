@@ -10,48 +10,48 @@ namespace StoneCircle
 
 {
 
-    class EventGroup : Event
+    class EVENTGroup : EVENT
     {
-        protected List<Event> events = new List<Event>();
+        protected List<EVENT> EVENTs = new List<EVENT>();
         
 
-        public void AddEvent(Event add) { events.Add(add); }
+        public void AddEVENT(EVENT add) { EVENTs.Add(add); }
 
     }
 
-    class ParallelEventGroup: EventGroup
+    class ParallelEVENTGroup: EVENTGroup
     {
-        public ParallelEventGroup(String callID)
+        public ParallelEVENTGroup(String callID)
         {
             id = callID;
         }
 
-        public ParallelEventGroup() { }
+        public ParallelEVENTGroup() { }
 
 
 
         public override void Start()
         {
-            foreach (Event E in events) E.Start();
+            foreach (EVENT E in EVENTs) E.Start();
         }
 
 
         public override bool Update(GameTime t)
         {
             bool Ready = true;
-            foreach (Event E in events) if (!E.Ready) { E.Update(t); Ready = (Ready && E.Ready); }
+            foreach (EVENT E in EVENTs) if (!E.Ready) { E.Update(t); Ready = (Ready && E.Ready); }
             return Ready;
 
         }
 
     }
 
-    class SerialEventGroup : EventGroup
+    class SerialEVENTGroup : EVENTGroup
     {
-        Event currentEvent;
+        EVENT currentEVENT;
         int index;
 
-        public SerialEventGroup(String ID)
+        public SerialEVENTGroup(String ID)
         {
             id = ID;
         }
@@ -59,18 +59,18 @@ namespace StoneCircle
         public override void Start()
         {
             index = 0;
-            currentEvent = events[index];
-            currentEvent.Start();
+            currentEVENT = EVENTs[index];
+            currentEVENT.Start();
         }
 
         public override bool Update(GameTime t)
         {
-            if (currentEvent.Update(t))
+            if (currentEVENT.Update(t))
             {
                 index++;
-                if (index >= events.Count) { ready = true; }
-                else { currentEvent = events[index];
-                currentEvent.Start();
+                if (index >= EVENTs.Count) { ready = true; }
+                else { currentEVENT = EVENTs[index];
+                currentEVENT.Start();
                 }
             }
             return ready;
@@ -79,7 +79,7 @@ namespace StoneCircle
 
     }
 
-    public class Event
+    public class EVENT
     {
         protected String id;
         public String ID { get { return id; } }
@@ -99,12 +99,12 @@ namespace StoneCircle
         }
     }
 
-     class StateConditionONEvent : Event
+     class EVENTStateConditionON : EVENT
     {
         StageManager SM;
         String StateCondition;
 
-        public StateConditionONEvent(String sc, StageManager sm)
+        public EVENTStateConditionON(String sc, StageManager sm)
         {
             SM = sm;
             StateCondition = sc;
@@ -117,10 +117,10 @@ namespace StoneCircle
         }
     }
 
-     class PlayerDeactivateEvent : Event
+     class EVENTPlayerDeactivate : EVENT
     {
         Player player;
-        public PlayerDeactivateEvent(Player player)
+        public EVENTPlayerDeactivate(Player player)
         { this.player = player; }
 
 
@@ -132,11 +132,11 @@ namespace StoneCircle
 
     }
 
-    class PlayerReactivateEvent : Event
+    class EVENTPlayerReactivate : EVENT
     {
         
         Player player;
-        public PlayerReactivateEvent(Player player)
+        public EVENTPlayerReactivate(Player player)
         { this.player = player; }
 
 
@@ -150,11 +150,11 @@ namespace StoneCircle
 
     }
 
-        class StageDeactivateEvent : Event
+    class EVENTStageDeactivate : EVENT
     {
         Stage stage;
         
-        public StageDeactivateEvent(Stage stage)
+        public EVENTStageDeactivate(Stage stage)
         { this.stage = stage; }
 
 
@@ -166,12 +166,12 @@ namespace StoneCircle
 
     }
 
-     class StageReactivateEvent : Event
+    class EVENTStageReactivate : EVENT
     {
         
         Stage stage;
         
-        public StageReactivateEvent(Stage stage)
+        public EVENTStageReactivate(Stage stage)
         { this.stage = stage; }
 
 
@@ -182,14 +182,13 @@ namespace StoneCircle
         }
 
     }
-
-
-     class CameraDeactivateEvent : Event
+    
+    class EVENTCameraDeactivate : EVENT
      {
 
          Camera camera;
 
-         public CameraDeactivateEvent(Camera camera)
+         public EVENTCameraDeactivate(Camera camera)
          { this.camera = camera; }
 
 
@@ -201,12 +200,12 @@ namespace StoneCircle
 
      }
 
-     class CameraReactivateEvent : Event
+    class EVENTCameraReactivate : EVENT
      {
 
          Camera camera;
 
-         public CameraReactivateEvent(Camera camera)
+         public EVENTCameraReactivate(Camera camera)
          { this.camera = camera; }
 
 
@@ -218,13 +217,13 @@ namespace StoneCircle
 
      }
 
-    public class DialogueEvent : Event
+    class EVENTDialogue : EVENT
     {
 
         private String dialogueID;
         private Stage Stage;
 
-        internal DialogueEvent(String callID, Stage stage)
+        internal EVENTDialogue(String callID, Stage stage)
         {
             dialogueID = callID;
             Stage = stage;
@@ -245,12 +244,12 @@ namespace StoneCircle
 
     }
 
-    public class DramaticPauseEvent : PauseEvent
+    class EVENTDramaticPause : PauseEVENT
     {
         float time;
         float etime;
 
-        public DramaticPauseEvent(float Time) { time = Time; }
+        public EVENTDramaticPause(float Time) { time = Time; }
 
         public override void Start()
         {
@@ -266,16 +265,16 @@ namespace StoneCircle
 
     }
 
-    public abstract class PauseEvent : Event
+    class PauseEVENT : EVENT
     {
     }
 
-    class AcknowledgePauseEvent : PauseEvent
+    class EVENTAcknowledgePause : PauseEVENT
     {
 
         private Stage Stage;
 
-        internal AcknowledgePauseEvent(Stage stage) {Stage = stage ; }
+        internal EVENTAcknowledgePause(Stage stage) {Stage = stage ; }
 
 
         public override bool Update(GameTime t)
@@ -286,13 +285,13 @@ namespace StoneCircle
 
     }
 
-    class MoveActorEvent : Event
+    class EVENTMoveActor : EVENT
     {
         Actor actor;
         Vector2 destination;
         Stage Stage;
 
-        public MoveActorEvent(Actor Actor, Vector2 Destination, Stage stage)
+        public EVENTMoveActor(Actor Actor, Vector2 Destination, Stage stage)
         {
             destination = Destination;
             actor = Actor;          
@@ -320,12 +319,12 @@ namespace StoneCircle
 
     }
 
-    class StageChangeEvent : Event
+    class EVENTStageChange : EVENT
     {
         StageManager SM;
         String stageName;
 
-        public StageChangeEvent(StageManager sM, String StageName)
+        public EVENTStageChange(StageManager sM, String StageName)
         {
             SM = sM;
             stageName = StageName;
@@ -341,12 +340,12 @@ namespace StoneCircle
 
     }
 
-    class SetCameraEvent : Event
+    class EVENTSetCameraLocation : EVENT
     {
         Camera camera;
         Vector2 location;
 
-        public SetCameraEvent(Camera Camera, Vector2 spot)
+        public EVENTSetCameraLocation(Camera Camera, Vector2 spot)
     {
         camera = Camera;
         location = spot;
@@ -363,7 +362,29 @@ namespace StoneCircle
 
     }
 
-    class ChangeAmbient : Event
+    class EVENTSetCameraSubject : EVENT
+    {
+        Camera camera;
+        Actor subject;
+
+
+        public EVENTSetCameraSubject(Camera Camera, Actor Subject)
+        {
+            camera = Camera;
+            subject = Subject;
+
+        }
+
+
+        public override void Start()
+        {
+            camera.setSubject(subject);
+            ready = true;
+        }
+
+    }
+
+    class EVENTChangeAmbient : EVENT
     {
         Stage stage;
         Vector3 color;
@@ -372,7 +393,7 @@ namespace StoneCircle
         float time;
         float etime;
 
-        public ChangeAmbient(Stage Stage, Vector3 Color, float Strength, float Time){
+        public EVENTChangeAmbient(Stage Stage, Vector3 Color, float Strength, float Time){
 
             stage = Stage;
             color = Color;
@@ -381,7 +402,7 @@ namespace StoneCircle
             etime = 0;
         }
 
-        public ChangeAmbient(Stage Stage, Vector3 Color, float Strength)
+        public EVENTChangeAmbient(Stage Stage, Vector3 Color, float Strength)
         {
             stage = Stage;
             color = Color;
@@ -411,7 +432,7 @@ namespace StoneCircle
 
     }
 
-    class MoveCameraEvent : Event
+    class EVENTMoveCamera : EVENT
     {
         Camera camera;
         Vector2 destination;
@@ -419,7 +440,7 @@ namespace StoneCircle
         float time;
         float etime;
 
-        public MoveCameraEvent(Camera Camera, Vector2 Destination, float Time)
+        public EVENTMoveCamera(Camera Camera, Vector2 Destination, float Time)
         {
             camera = Camera;
             destination = Destination;
@@ -438,7 +459,7 @@ namespace StoneCircle
         }
     }
 
-    class ScaleCameraEvent: Event
+    class EVENTScaleCamera: EVENT
     {
         Camera camera;
         float time;
@@ -447,7 +468,7 @@ namespace StoneCircle
         float ScaleInterval;
 
 
-        public ScaleCameraEvent(Camera Camera, float Scale, float Time)
+        public EVENTScaleCamera(Camera Camera, float Scale, float Time)
         {
             camera = Camera;
             EndScale = Scale;
@@ -475,14 +496,14 @@ namespace StoneCircle
 
     }
 
-    class PerformActionEvent : Event
+    class EVENTPerformAction : EVENT
     {
         String action;
         Actor actor;
         float etime;
         float time;
 
-        public PerformActionEvent(Actor Actor, String Action)
+        public EVENTPerformAction(Actor Actor, String Action)
         {
             action = Action;
             actor = Actor;
@@ -505,9 +526,89 @@ namespace StoneCircle
 
     }
 
+    class EVENTActorExitStage : EVENT
+    {
+        Stage stage;
+        String target;
+
+
+        public EVENTActorExitStage(Stage Stage, String Target)
+        {
+            stage = Stage;
+            target = Target;
+        }
+
+        public override void Start()
+        {
+            stage.removeActor(target);
+            ready = true;
+        }
 
 
 
+    }
 
+    class EVENTActorAddItem : EVENT
+    {
+        Actor actor;
+        Item item;
+
+        public EVENTActorAddItem(Actor Actor, Item Item)
+        {
+            actor = Actor;
+            item = Item;
+        }
+
+        public override void Start()
+        {
+            actor.AddItem(item);
+        }
+
+
+
+    }
+
+    class EVENTActorRemoveItem : EVENT
+    {
+        Actor actor;
+        Item item;
+
+        public EVENTActorRemoveItem(Actor Actor, Item Item)
+        {
+            actor = Actor;
+            item = Item;
+            ready = true;
+        }
+
+        public override void Start()
+        {
+            actor.RemoveItem(item);
+            ready = true;
+        }
+    }
+    
+    class EVENTActorAddProperty : EVENT
+    
+    {
+
+        Actor actor;
+        String property;
+
+        public EVENTActorAddProperty(Actor actor, String property)
+        {
+            this.actor = actor;
+            this.property = property;
+        }
+
+        public override void Start()
+        {
+            actor.AddProperty(property);
+            ready = true;
+        }
+
+
+
+    }
+    
 
 }

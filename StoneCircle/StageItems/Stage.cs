@@ -47,10 +47,10 @@ namespace StoneCircle
         [NonSerialized] public SpriteFont font;
         [NonSerialized] Dictionary<String, Lines> conversations = new Dictionary<String, Lines>();
         [NonSerialized] List<Lines> openConversations = new List<Lines>();
-        [NonSerialized] Event currentEvent;
+        [NonSerialized] List<EVENT> currentEvents = new List<EVENT>();
 
         [XmlIgnoreAttribute]
-        [NonSerialized] public Dictionary<String, Event> events = new Dictionary<String, Event>();
+        [NonSerialized] public Dictionary<String, EVENT> events = new Dictionary<String, EVENT>();
 
         [NonSerialized] public AudioManager AM;
         [XmlIgnoreAttribute]
@@ -114,7 +114,7 @@ namespace StoneCircle
         {
             foreach (Actor A in exists.Values) A.Initialize();
             AM.SetSong(BGMTitle);
-            if (currentEvent != null) currentEvent.Start();
+            foreach (EVENT E in currentEvents) E.Start();
 
         }
 
@@ -141,25 +141,25 @@ namespace StoneCircle
         {
             Actor temp = new Actor(id, asset_name, starting);
             exists.Add(id, temp);
-
+            temp.parent = this;
         }
 
         public void AddTrigger(Trigger newT) { triggers.Add(newT); }
 
         public void AddLines(Lines dialouge) { conversations.Add(dialouge.CallID, dialouge); }
 
-        public void AddEvent(Event add)
+        public void AddEVENT(EVENT add)
         {
             events.Add(add.ID, add);
         }
 
-        public void AddEvent(String callID, Event add)
+        public void AddEVENT(String callID, EVENT add)
         {
             events.Add(callID, add);
         }
         public void RunEvent(String next)
         {
-            if (events.ContainsKey(next)) { currentEvent = events[next]; currentEvent.Start(); } else currentEvent = null;
+            if (events.ContainsKey(next)) { EVENT eventInstance = (events[next]); eventInstance.Start(); currentEvents.Add(eventInstance); }
 
         }
 
@@ -175,7 +175,7 @@ namespace StoneCircle
 
         public void RemoveDialogue(Lines dialogue) { openConversations.Remove(dialogue); }
 
-        public void RemoveDialogue(String dialogue) { openConversations.Remove(conversations[dialogue]); }
+        public void RemoveDialogue(String dialogue) { if(conversations.ContainsKey(dialogue)) openConversations.Remove(conversations[dialogue]); }
 
         public void addPlayer(String id, String asset_name, Vector2 starting) { addPlayer(new Player(id, asset_name, starting, gameManager, input), starting); }
 
@@ -201,7 +201,15 @@ namespace StoneCircle
 
         public void addActor(String id, Actor actor)
         {
+            actor.parent = this;
             exists.Add(id, actor);
+        }
+
+        public void AddActor(Actor actor, Vector2 starting)
+        {
+            actor.parent = this;
+            exists.Add(actor.Name, actor);
+            actor.Location = new Vector3(starting, 0);
         }
 
         public Actor GetActor(String actor)
@@ -209,17 +217,11 @@ namespace StoneCircle
             return exists[actor];
         }
 
-        public void removeActor(String target) { exists.Remove(target); }
+        public void removeActor(String target) { exists[target].UnInitialize(); exists.Remove(target); }
 
         public void removeLight(LightSource light) { lights.Remove(light); }
 
-
-
-
-
         public void setCamera() { camera.setSubject(player); }
-
-
 
         public void Draw(GraphicsDevice device, SpriteBatch theSpriteBatch, RenderTarget2D shadeTemp)
         {
@@ -276,10 +278,10 @@ namespace StoneCircle
             float[] Radius = new float[6];
             foreach (LightSource l in lights) {
                 l.Update(t);
-                Vector2 temp = l.Location + camera.screenadjust - camera.Location;
+                Vector2 temp = camera.screenadjust + camera.Scale*(l.Location -camera.Location);
                 temp.X /= 1366; temp.Y /= 768;
                 LPosition[lights.IndexOf(l)] = temp;
-                Radius[lights.IndexOf(l)] = l.Radius;
+                Radius[lights.IndexOf(l)] = l.Radius*camera.Scale;
             }
             Vector2 tempPlayer = (player.Position - camera.Location) * camera.Scale + camera.screenadjust;
             tempPlayer.X /= 1366; tempPlayer.Y /= 768;
@@ -297,11 +299,12 @@ namespace StoneCircle
             if (input.IsPauseMenuNewlyPressed()) gameManager.UIManager.Pause();
 
 
-            List<Lines> finished = new List<Lines>();
-            foreach (Lines D in openConversations) if (D.Update(t)) finished.Add(D);
-            foreach (Lines D in finished) { if (D.NextLine != null) RunLine(D.NextLine); RemoveDialogue(D); }
-
-            if (currentEvent != null) { if (currentEvent.Update(t)) currentEvent = null; }
+            List<Lines> finishedLines = new List<Lines>();
+            foreach (Lines D in openConversations) if (D.Update(t)) finishedLines.Add(D);
+            foreach (Lines D in finishedLines) { if (D.NextLine != null) RunLine(D.NextLine); RemoveDialogue(D); }
+            List<EVENT> finishedEvents = new List<EVENT>();
+            foreach (EVENT E in currentEvents) { if (E.Update(t)) finishedEvents.Add(E); }
+            foreach (EVENT E in finishedEvents) currentEvents.Remove(E);
                       
                 foreach (Actor x in exists.Values) // This will update all the actors, 
                 //  it makes sure that nobody leaves or moves through anybody else.

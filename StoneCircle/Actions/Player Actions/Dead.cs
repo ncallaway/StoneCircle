@@ -7,15 +7,20 @@ namespace StoneCircle
 {
     class Dead: Actionstate
     {
+
+
         public Dead()
         {
             id = "Dead";
         }
         
+        public override void  Update(Microsoft.Xna.Framework.GameTime t, Dictionary<string,Actor>.ValueCollection targets)
+        {
+ 	        Actor.AddProperty("Dead");
+        }
+    
         
     }
-
-
 
     class Unconcious : Actionstate
     {
@@ -24,6 +29,12 @@ namespace StoneCircle
             id = "Unconcious";
 
         }
+
+        public override void Update(Microsoft.Xna.Framework.GameTime t, Dictionary<string, Actor>.ValueCollection targets)
+        {
+            Actor.AddProperty("Unconcious");
+        }
+
 
 
 

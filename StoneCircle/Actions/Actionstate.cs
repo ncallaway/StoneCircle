@@ -49,8 +49,11 @@ namespace StoneCircle
     maxFrame = 3;
     AvailableLow = new ActionList();
     AvailableHigh = new ActionList();
-    fatigue =  0f;
-    AvailableLow.YButton = "Bandage Self";
+    fatigue = 0f;
+    AvailableLow.LStickAction = "Walking";
+    AvailableHigh.LStickAction = "Running";
+    AvailableLow.YButton = "Resting";
+    AvailableHigh.YButton = "Bandage Self";
 }
 
     public Actionstate(string newId)

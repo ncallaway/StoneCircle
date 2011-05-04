@@ -16,7 +16,7 @@ namespace StoneCircle
 {
     class UseItem: Actionstate
     {
-        InventoryItem currentItem;
+        Item currentItem;
        
 
 
@@ -53,7 +53,6 @@ namespace StoneCircle
                             }
                         }
 
-                        Actor.CurrentItem.RemoveQuantity();
                     }
                     break;
                 case 2:
@@ -69,9 +68,6 @@ namespace StoneCircle
             }
             
         } // End of Class
-
-
-
 
 
     class BandageSelf : Actionstate

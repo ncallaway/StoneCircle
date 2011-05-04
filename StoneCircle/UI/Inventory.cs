@@ -20,11 +20,16 @@ namespace UserMenus{
 
    class Inventory : RingMenu
     {
+       new InventoryItem current;
+       InventoryItem empty;
+
         public Inventory(Player Owner, GameManager gameManager) : base(gameManager)
         {
             player = Owner;
             title = player.Name + " Inventory";
             current_index = 0;
+            empty = new InventoryItem(null);
+            menuitems.Add(empty);
 
         }
 
@@ -37,17 +42,15 @@ namespace UserMenus{
                 
                     degree = 450 + 180 / menuitems.Count + (int)MathHelper.ToDegrees((float)Math.Atan2(player.Input.RStickPosition().Y, player.Input.RStickPosition().X) + .001f);
                     current_index = (int)Math.Floor((double)((degree % 360) / (360 / menuitems.Count + 1)));
-                    current = menuitems.ElementAt(current_index);
+                    current = (InventoryItem)menuitems.ElementAt(current_index);
 
-                   // if (last != current) AM.PlayEffect("menuBeep");
-                    player.CurrentItem = (InventoryItem)menuitems.ElementAt(current_index);
+                    if (last != current) player.parent.AM.PlayEffect("menuBeep");
+                    player.CurrentItem = current.item;
                    
               
             }
             List<InventoryItem> remove = new List<InventoryItem>();
-            foreach (InventoryItem Item in menuitems) if (Item.Quantity <= 0) remove.Add(Item);
-            foreach (InventoryItem Item in remove) RemoveItem(Item);
-            if (!player.Input.IsRightBumperPressed()) { gameManager.UIManager.CloseMenu(); }
+            if (!player.Input.IsRightBumperPressed()) { gameManager.UIManager.CloseMenu(); if(current!= null && current.item!=null)current.item.OnEquipItem(); }
        
 
         }
@@ -55,14 +58,9 @@ namespace UserMenus{
         public override void Draw(SpriteBatch batch)
         {
             batch.Draw(image, new Rectangle((int)player.Position.X - (int)player.parent.camera.Location.X + 683 - 75, (int)player.Position.Y - (int)player.parent.camera.Location.Y - 90 + 384, 150, 60), new Rectangle(0, 0, 80, 80), Color.White, 0f, Vector2.Zero, SpriteEffects.None, .1f);
-            if (current != null)
-            {
+            if (current != null)              
+               batch.DrawString(font, current.Id, new Vector2((int)player.Position.X - 50 - (int)player.parent.camera.Location.X + 683, (int)player.Position.Y - (int)player.parent.camera.Location.Y - 80 + 384), Color.Black);
 
-                if (player.CurrentItem.Quantity > 1) batch.DrawString(font, current.Id + " x" + player.CurrentItem.Quantity, new Vector2((int)player.Position.X - 50 - (int)player.parent.camera.Location.X + 683, (int)player.Position.Y - (int)player.parent.camera.Location.Y - 80 + 384), Color.Black);
-
-                else batch.DrawString(font, current.Id, new Vector2((int)player.Position.X - 50 - (int)player.parent.camera.Location.X + 683, (int)player.Position.Y - (int)player.parent.camera.Location.Y - 80 + 384), Color.Black);
-
-            }
 
             else batch.DrawString(font, "Empty", new Vector2((int)player.Position.X - 50 - (int)player.parent.camera.Location.X + 683, (int)player.Position.Y - (int)player.parent.camera.Location.Y - 80 + 384), Color.Black);
             
@@ -79,13 +77,7 @@ namespace UserMenus{
 
         }
 
-        public void RemoveItem(InventoryItem remove) { menuitems.Remove(remove); }
-        public void AddItem(InventoryItem add)
-        {
-            bool notadded = true;
-            foreach (InventoryItem II in menuitems) { if (II.Id == add.Id) { II.AddQuantity(add.Quantity); notadded = false; } }
-            if (notadded) menuitems.Add(add);
-        }
+       
 
     }
 }

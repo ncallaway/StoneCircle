@@ -7,5 +7,6 @@ namespace StoneCircle.UI
 {
     class LevelMap
     {
+
     }
 }

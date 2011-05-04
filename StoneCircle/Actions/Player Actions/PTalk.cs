@@ -12,43 +12,48 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace StoneCircle
 {
-    class PTalk: PAction
+   
+    class Interact : Actionstate
     {
-        public PTalk(InputController Input)
-        {
-            id = "Talking";
-            input = Input;
-            EffectBox = new BoundingBox(new Vector3(0, 0, 0), new Vector3(60, 60, 80));
-           
-        }
-
-        public override void Update(Microsoft.Xna.Framework.GameTime t, Dictionary<String, Actor>.ValueCollection targets)
-        {
-            
-        }
-    }
-
-    class PInteract : PAction
-    {
-        public PInteract(InputController Input)
+        public Interact()
         {
             id = "Interact";
-            input = Input;
-            EffectBox = new BoundingBox(new Vector3(0, 0, 0), new Vector3(60, 60, 80));
             
+            EffectBox = new BoundingBox(new Vector3(0, 0, 0), new Vector3(60, 60, 80));
+            maxFrame = 10;
         }
 
         public override void Update(Microsoft.Xna.Framework.GameTime t, Dictionary<String, Actor>.ValueCollection targets)
         {
 
-            Vector3 update = new Vector3(20 * Actor.Facing, 0);
+            UpdateFrame(t);
+            switch (frame)
+            {
+                case 0:
+                    AvailableLow.LStickAction = null;
+                    AvailableLow.NoButton = null;
+                    AvailableHigh.LStickAction = null;
+                    break;
+
+                case 9:
+
+
+                    AvailableLow.LStickAction = "Walking";
+                    AvailableLow.NoButton = "Standing";
+                    AvailableHigh.LStickAction = "Running";
+                    AvailableHigh.NoButton = "Standing";
+                    break;
+            }
+
+
+            Vector3 update = new Vector3(30 * Actor.Facing, 0);
             BoundingBox CheckBox = Actor.GetBounds(update);
 
                 foreach (Actor y in targets)
                 {
                     if ((CheckBox.Intersects(y.GetBounds()) && !Actor.Equals(y))) //Collision Detection. Ideally reduces movement to outside collision bounds.
                     {
-                        y.ApplyAction(this, Actor);
+                        y.CheckTriggers();
                        
                     }
 

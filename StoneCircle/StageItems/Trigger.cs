@@ -50,16 +50,62 @@ namespace StoneCircle
 
     }
 
-    class ActorHasProperty : TriggerCondition
+    class TriggerActorHasProperty : TriggerCondition
     {
         Actor actor;
         String property;
+
+        public TriggerActorHasProperty(Actor Actor, String Property)
+        {
+            actor = Actor;
+            property = Property;
+        }
+
 
         public override bool CheckCondition()
         {
             return actor.HasProperty(property);
         }
 
+
+    }
+
+    class TriggerActorHasNotProperty : TriggerCondition
+    {
+        Actor actor;
+        String property;
+
+        public TriggerActorHasNotProperty(Actor Actor, String Property)
+        {
+            actor = Actor; 
+            property = Property;
+        }
+        
+
+        public override bool CheckCondition()
+        {
+            return actor.DoesNotHaveProperty(property);
+        }
+
+
+    }
+
+    class TriggerActorEquippedItemHasProperty : TriggerCondition
+    {
+        Actor actor;
+        String property;
+
+
+        public TriggerActorEquippedItemHasProperty(Actor Actor, String Property)
+        {
+            actor = Actor; property = Property;
+
+        }
+
+        public override bool CheckCondition()
+        {
+            return actor.CurrentItem.HasProperty(property);
+        }
 
     }
 
@@ -100,12 +146,12 @@ namespace StoneCircle
 
     }
 
-    class TriggerANDCondtion : TriggerCondition
+    class TriggerANDCondition : TriggerCondition
     {
         TriggerCondition TC1;
         TriggerCondition TC2;
 
-        public TriggerANDCondtion(TriggerCondition tc1, TriggerCondition tc2)
+        public TriggerANDCondition(TriggerCondition tc1, TriggerCondition tc2)
         {
             TC1 = tc1;
             TC2 = tc2;
@@ -117,6 +163,25 @@ namespace StoneCircle
         }
 
     }
+
+    class TriggerNOTCondition : TriggerCondition
+    {
+        TriggerCondition Condition;
+
+        public TriggerNOTCondition(TriggerCondition TC)
+        {
+            Condition = TC;
+        }
+
+        public override bool CheckCondition()
+        {
+            return !Condition.CheckCondition();
+        }
+
+
+    }
+
+
 
 }
 

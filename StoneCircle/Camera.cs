@@ -39,6 +39,7 @@ namespace StoneCircle
             currentStage = Parent;
             maxX = currentStage.max_X;
             maxY = currentStage.max_Y;
+            Active = true;
         }
 
 

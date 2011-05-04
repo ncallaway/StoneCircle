@@ -292,7 +292,7 @@ namespace StoneCircle
             AvailableHigh.AButton = "Jump";
             AvailableHigh.LStickAction = "Running";
             AvailableHigh.NoButton = "Standing";
-            fatigue = -.25f;
+            fatigue = -.1f;
         }
 
 
@@ -366,8 +366,7 @@ namespace StoneCircle
         }
 
     }
-
-
+    
     class StandUp : Actionstate
     {
         public StandUp()
@@ -531,7 +530,6 @@ namespace StoneCircle
         }
 
     }
-
 
     class FightStance : Actionstate
     {

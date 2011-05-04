@@ -32,6 +32,13 @@ namespace StoneCircle
 
         }
 
+        public override void UnInitialize()
+        {
+            parent.removeLight(lit);
+           
+        }
+ 
+
         public override void ApplyAction(Actionstate affected, Actor affector)
         {
             switch (affected.ID)

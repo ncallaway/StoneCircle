@@ -59,7 +59,7 @@ namespace  UserMenus
                          degree =450 + 180/menuitems.Count + (int)MathHelper.ToDegrees((float)Math.Atan2(player.Input.LStickPosition().Y , player.Input.LStickPosition().X));
                         current_index = (int) Math.Floor( (double)((degree % 360) / (360 / menuitems.Count + 1)));
                         current = menuitems.ElementAt(current_index);
-                       // if (last != current) AM.PlayEffect("menuBeep");
+                        if (last != current) audioManager.PlayEffect("menuBeep");
                     }
                     else current = null;
                         

@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
+using StoneCircle;
+
 namespace UserMenus
 {
     class MenuItem
@@ -67,4 +69,49 @@ namespace UserMenus
 
 
     }
+
+    class InventoryItem : MenuItem
+    {
+        public Item item;
+
+        public InventoryItem(Item Item)
+        {
+            item = Item;
+            if (item != null) { id = item.Name; iconName = item.IconName; }
+            else
+            {
+                id = "Empty";
+                iconName = "BlankIcon";
+            }
+        }
+
+
+
+
+
+    }
+
+    class CloseMenuButton : MenuItem
+    {
+        UIManager manager;
+
+        public CloseMenuButton(UIManager Manager)
+        {
+            manager = Manager;
+
+            id = "Close Menu";
+        }
+
+
+
+        public override void execute()
+        {
+            manager.CloseMenu();
+        }
+
+
+
+
+    }
+
 }

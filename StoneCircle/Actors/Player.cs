@@ -15,8 +15,7 @@ namespace StoneCircle
    class Player : Actor
     {
         public InputController Input;
-        public Actionstate interact;
-        public Actionstate useItem;
+       
         
        // These variables represent the location and position of the actor. 
 
@@ -26,15 +25,13 @@ namespace StoneCircle
             asset_Name = "PlayerSheet";
             speed = 150;
             this.Input = Input;
-            interact = new PInteract(Input);
+            learnAction(new Interact());
             Location = new Vector3( starting.X, starting.Y, 0);
             name = Id;
             parent = Parent;
-            inventory = new Inventory(this, gameManager);
+            inventoryMenu = new Inventory(this, gameManager);
             inventoryOpen = false;
             
-            inventory.addMenuItem(new InventoryItem("Lantern", "Fire"));
-            inventory.addMenuItem(new InventoryItem("Canteen", "Water", 5));
            
             ImageHeight = 75;
             ImageWidth = 40;
@@ -48,10 +45,10 @@ namespace StoneCircle
             asset_Name = "PlayerSheet";
             speed = 125;
             this.Input = Input;
-            interact = new PInteract(Input);
+            learnAction(new Interact());
             Location = new Vector3(starting.X, starting.Y, 0);
             name = Id;
-            inventory = new Inventory(this, gameManager);
+            inventoryMenu = new Inventory(this, gameManager);
             ImageHeight = 75;
             ImageWidth = 40;
             
@@ -60,16 +57,18 @@ namespace StoneCircle
             learnAction(new Dash());
             learnAction(new DashJump());
             learnAction(new BandageSelf(this));
-            inventory.addMenuItem(new InventoryItem("Lantern", "Fire"));
-            inventory.addMenuItem(new InventoryItem("Canteen", "Water", 5));
-            currentFatigue = 50;
-            //properties.Add("LegInjury");
+            
+        
+          
+            currentFatigue = 100;
         }
+
+     
 
         public override void loadImage(ContentManager theContentManager)
         {
             base.loadImage(theContentManager);
-            inventory.Load(theContentManager);
+            inventoryMenu.Load(theContentManager);
         }
 
         protected override void heartBeat()
@@ -124,7 +123,7 @@ namespace StoneCircle
             if (currentFatigue > totalFatigue) currentFatigue = totalFatigue;
             currentFatigue += current_Action.Fatigue;
 
-            if (Input.IsRightBumperNewlyPressed()){gameManager.UIManager.OpenMenu(inventory);}
+            if (Input.IsRightBumperNewlyPressed()) { gameManager.UIManager.OpenMenu(inventoryMenu); if(currentItem!=null) currentItem.OnUnequipItem(); }
 
             current_Action.Update(t, targets);
             SetAction(ChooseAction(t, targets));
@@ -132,21 +131,22 @@ namespace StoneCircle
 
         public override void Draw(SpriteBatch theSpriteBatch, Vector2 camera_pos, float camera_scale, float intensity, SpriteFont font)
         {
-            if(inventoryOpen) inventory.Draw(theSpriteBatch);
-            theSpriteBatch.DrawString(font, currentFatigue.ToString(), screenadjust + (Position - camera_pos) * camera_scale - 50 * Vector2.UnitY, Color.White);
-            theSpriteBatch.DrawString(font, currentLife.ToString(), screenadjust + (Position - camera_pos) * camera_scale - 25 * Vector2.UnitY, Color.White);
-            base.Draw(theSpriteBatch, camera_pos, camera_scale, intensity, font);
+            if(inventoryOpen) inventoryMenu.Draw(theSpriteBatch);
+           base.Draw(theSpriteBatch, camera_pos, camera_scale, intensity, font);
         }
 
         public void CloseInventory()
-        {
+        {   
             gameManager.UIManager.CloseMenu();
+            currentItem.OnEquipItem();
         }
 
+        public virtual void EmptyHands() { if(currentItem!=null) currentItem.OnUnequipItem(); currentItem = null; }
 
 
-        public void AddInventoryItem(InventoryItem item) { inventory.AddItem(item); }
+        public void AddInventoryItem(Item item) { inventoryMenu.AddMenuItem(new InventoryItem(item)); }
 
+              
     }
     }
 
