@@ -226,9 +226,9 @@ namespace StoneCircle
         public void Draw(GraphicsDevice device, SpriteBatch theSpriteBatch, RenderTarget2D shadeTemp)
         {
 
-            device.SetRenderTarget(0, shadeTemp);
-
-            theSpriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.BackToFront, SaveStateMode.None);
+            //device.SetRenderTarget(0, shadeTemp);
+            theSpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullClockwise, null);
+           
             device.Clear(Color.Ivory);
             for (int i = 0; i < 40; i++) {
                 for (int j = 0; j < 40; j++)
@@ -251,21 +251,22 @@ namespace StoneCircle
             }
 
             theSpriteBatch.End();
-            device.SetRenderTarget(0, null);
-            Texture2D ShaderTexture = shadeTemp.GetTexture();
+           // device.SetRenderTarget(0, null);
+           // Texture2D ShaderTexture = shadeTemp.GetTexture();
             //device.SetRenderTarget(0, shadeTemp);
-            theSpriteBatch.Begin(SpriteBlendMode.None, SpriteSortMode.Immediate, SaveStateMode.None);
-            lightSourceShader.Begin();
+           // theSpriteBatch.Begin(SpriteBlendMode.None, SpriteSortMode.Immediate, SaveStateMode.None);
+           // lightSourceShader.Begin();
 
-            lightSourceShader.CurrentTechnique.Passes[0].Begin();
-            theSpriteBatch.Draw(ShaderTexture, Vector2.Zero, Color.White);
-            theSpriteBatch.End();
+           // lightSourceShader.CurrentTechnique.Passes[0].Begin();
+          //  theSpriteBatch.Draw(ShaderTexture, Vector2.Zero, Color.White);
+           // theSpriteBatch.End();
 
 
-            lightSourceShader.CurrentTechnique.Passes[0].End();
-            lightSourceShader.End();
+          //  lightSourceShader.CurrentTechnique.Passes[0].End();
+           // lightSourceShader.End();
 
-            theSpriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.BackToFront, SaveStateMode.None);
+            theSpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullClockwise, null);
+           
             foreach (Lines D in openConversations) D.Draw(theSpriteBatch, camera.Location, camera.Scale);
             theSpriteBatch.End();
 

@@ -64,7 +64,8 @@ namespace StoneCircle
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            shadeTemp = new RenderTarget2D(GraphicsDevice, 1366, 768, 1, GraphicsDevice.DisplayMode.Format);
+            //shadeTemp = new RenderTarget2D(GraphicsDevice, 1366, 768, 1, GraphicsDevice.DisplayMode.Format);
+            shadeTemp = new RenderTarget2D(GraphicsDevice, 1366, 768);
             Manager.LoadContent();
            
 

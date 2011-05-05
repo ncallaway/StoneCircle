@@ -83,7 +83,8 @@ namespace StoneCircle
         public void Draw(GraphicsDevice device, SpriteBatch batch, RenderTarget2D shadeTemp)
         {
             StageManager.Draw(device, batch, shadeTemp);
-            batch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.BackToFront, SaveStateMode.None);
+            batch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullClockwise, null);
+            //batch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.BackToFront, SaveStateMode.None);
             UIManager.Draw(batch);
             batch.End();
 

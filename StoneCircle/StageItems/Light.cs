@@ -70,16 +70,16 @@ namespace StoneCircle
 
         public void LightStart()
         {
-            light.Begin();
-            light.CurrentTechnique.Passes[0].Begin();
+           // light.Begin();
+           // light.CurrentTechnique.Passes[0].Begin();
 
         }
 
         public void LightStop()
         {
-            light.End();
+           // light.End();
 
-            light.CurrentTechnique.Passes[0].End();
+           // light.CurrentTechnique.Passes[0].End();
         }
 
 
