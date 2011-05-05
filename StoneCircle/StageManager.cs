@@ -1,4 +1,4 @@
-﻿using System;                                                                          
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,10 +30,48 @@ namespace StoneCircle
         internal Dictionary<String, Stage> Stages = new Dictionary<String, Stage>();
         internal Stage openStage;
 
-        internal List<String>StateConditions = new List<String>();
+        private HashSet<String> stateConditions = new HashSet<String>();
 
-        [NonSerialized] internal ContentManager contentManager;
-        [NonSerialized] private GameManager gameManager;
+        /// <summary>
+        /// Set a condition, so future calls to CheckCondition with the same name will
+        /// return true.
+        /// </summary>
+        /// <param name="condition">Name of the condition to set</param>
+        internal void SetCondition(String condition)
+        {
+            stateConditions.Add(condition);
+
+            /* TODO: notifyTriggers */
+        }
+
+        /// <summary>
+        /// Unsets a condition, so future calls to CheckCondition with the same name will
+        /// return false.
+        /// </summary>
+        /// <param name="condition">Name of the condition to unset</param>
+        internal void UnsetCondition(String condition)
+        {
+            stateConditions.Remove(condition);
+
+            /* TODO: notifyTriggers */
+        }
+
+        /// <summary>
+        /// Checks whether a given condition is currently set.
+        /// </summary>
+        /// <param name="condition">Name of the condition to check</param>
+        /// <returns>True if the condition is set; False otherwise</returns>
+        /// <see cref="SetCondition"/>
+        /// <see cref="UnsetCondition"/>
+        internal bool CheckCondition(String condition)
+        {
+            return stateConditions.Contains(condition);
+        }
+
+        [NonSerialized]
+        internal ContentManager contentManager;
+        [NonSerialized]
+        private GameManager gameManager;
 
         public StageManager(GameManager gameManager)
         {
@@ -85,31 +123,31 @@ namespace StoneCircle
 
             //ItemActor Lantern = new ItemActor("fireIMG", "Lantern", gameManager);
             //Lantern.AddItem(new Lantern(Lantern));
-           // Stages["region1"].AddActor(Lantern, new Vector2( 600, 650));
-           
+            // Stages["region1"].AddActor(Lantern, new Vector2( 600, 650));
 
-            Stages["region1"].AddTrigger( new Trigger("Bandage",new TriggerANDCondition(new TriggerPlayerBoxCondition(new BoundingBox( new Vector3(600, 400, 0), new Vector3(601, 1200, 1)), gameManager.Player),new TriggerActorHasProperty(gameManager.Player, "Bleeding")), true, true));
+
+            Stages["region1"].AddTrigger(new Trigger("Bandage", new TriggerANDCondition(new TriggerPlayerBoxCondition(new BoundingBox(new Vector3(600, 400, 0), new Vector3(601, 1200, 1)), gameManager.Player), new TriggerActorHasProperty(gameManager.Player, "Bleeding")), true, true));
             ParallelEVENTGroup Bandage = new ParallelEVENTGroup("Bandage");
             Bandage.AddEVENT(new EVENTDialogue("Bandage", Stages["region1"]));
             Bandage.AddEVENT(new EVENTActorAddItem(gameManager.Player, new Lantern(gameManager.Player)));
             Stages["region1"].AddEVENT("Bandage", Bandage);
-            Stages["region1"].AddTrigger( new Trigger("region2trans", new TriggerPlayerBoxCondition(new BoundingBox(new Vector3(300,1200,0), new Vector3(2000,1201,0)), gameManager.Player), true, false));
+            Stages["region1"].AddTrigger(new Trigger("region2trans", new TriggerPlayerBoxCondition(new BoundingBox(new Vector3(300, 1200, 0), new Vector3(2000, 1201, 0)), gameManager.Player), true, false));
             Stages["region1"].AddEVENT("region2trans", new EVENTStageChange(this, "region2"));
-     
+
             Stages["region1"].AddLines(new Lines("Forest1", "", "Player", "I've got to get out of here... Must... warn... the village", Stages["region1"], Lines.LineType.Player));
             Stages["region1"].AddLines(new Lines("Bandage", "Instructions", "Player", "I'm losing a lot of blood... I'll need to bandage myself if I don't want to bleed to death", Stages["region1"], Lines.LineType.Player));
             Stages["region1"].AddLines(new Lines("Instructions", "", "Player", "Hold RT and press Y. Don't move until you've finished bandaging.", Stages["region1"], Lines.LineType.Player));
             Stages["region1"].AddLines(new Lines("Village", "", "Player", "If I follow this stream to the South I should come across the village of SouthStreamVillage", Stages["region1"], Lines.LineType.Player));
 
-           // Stages["region1"].addActor("Fire1", new Fire(new Vector2(-100, 900), Stages["region1"], gameManager));
+            // Stages["region1"].addActor("Fire1", new Fire(new Vector2(-100, 900), Stages["region1"], gameManager));
             Stages["region1"].addLight("Light", new Vector2(-100, 600), 1200);
 
-            
+
             SerialEVENTGroup testIntroduction = new SerialEVENTGroup("Introduction");
             ParallelEVENTGroup testPar1 = new ParallelEVENTGroup();
             testPar1.AddEVENT(new EVENTMoveActor(gameManager.Player, new Vector2(150, 600), Stages["region1"]));
             testPar1.AddEVENT(new EVENTSetCameraLocation(Stages["region1"].camera, new Vector2(684, 600)));
-            testPar1.AddEVENT( new EVENTPlayerDeactivate(gameManager.Player));
+            testPar1.AddEVENT(new EVENTPlayerDeactivate(gameManager.Player));
             testIntroduction.AddEVENT(testPar1);
             testIntroduction.AddEVENT(new EVENTDialogue("Forest1", Stages["region1"]));
             ParallelEVENTGroup testPar2 = new ParallelEVENTGroup();
@@ -119,29 +157,29 @@ namespace StoneCircle
             testIntroduction.AddEVENT(testPar2);
             testIntroduction.AddEVENT(new EVENTAcknowledgePause(Stages["region1"]));
             testIntroduction.AddEVENT(new EVENTPlayerReactivate(gameManager.Player));
-           // testPar2.AddEVENT(new PerformActionEVENT(gameManager.Player, "Resting"));
+            // testPar2.AddEVENT(new PerformActionEVENT(gameManager.Player, "Resting"));
             testIntroduction.AddEVENT(new EVENTCameraReactivate(Stages["region1"].camera));
             gameManager.Camera.setSubject(gameManager.Player);
 
             Stages["region1"].AddEVENT(testIntroduction);
-           // Stages["region1"].AddEVENT(new ParallelEVENTGroup("Intro2", ""));
+            // Stages["region1"].AddEVENT(new ParallelEVENTGroup("Intro2", ""));
 
-            
-           Stages.Add("region2", new Stage("Region2", this));
-          // Stages["region2"].addLight(new ActorLightSource(gameManager.Player, 1200f));
+
+            Stages.Add("region2", new Stage("Region2", this));
+            // Stages["region2"].addLight(new ActorLightSource(gameManager.Player, 1200f));
             Stages["region2"].AddEVENT("Introduction", new EVENT());
             Stages["region2"].AddTrigger(new Trigger("VillageTrans", new TriggerPlayerBoxCondition(new BoundingBox(new Vector3(300, 300, 0), new Vector3(2000, 1201, 0)), gameManager.Player), true, false));
             Stages["region2"].AddEVENT("VillageTrans", new EVENTStageChange(this, "Village"));
 
             Stages.Add("Village", new Stage("Village", this));
             Stages.Add("Cairn", new Stage("Cairn", this));
-            
+
             Stages["Village"].AMBStrength = 0f;
             Actor CenterStone = new Actor("CenterStone", "SarcenStone2", new Vector2(2000, 2000), Stages["Village"]);
-           // CenterStone.AddTrigger(new TriggerActorHasNotProperty(gameManager.Player, "Dead"));
+            // CenterStone.AddTrigger(new TriggerActorHasNotProperty(gameManager.Player, "Dead"));
 
             Stages["Village"].addActor("CenterStone", new Actor("CenterStone", "SarcenStone2", new Vector2(2000, 2000), Stages["Village"]));
-            
+
             Stages["Village"].addLight(new LightSource("SarcenGlow", new Vector2(950, 600), 500f, Stages["Village"], null));
             Stages["Village"].AMBColor = new Vector3(.5f, .5f, 1f);
             Follower annyoingGuy = new Follower("Follower", new Vector2(1400, 600), Stages["Village"], gameManager);
@@ -164,10 +202,10 @@ namespace StoneCircle
             Stages["Village"].AddEVENT(LootBody);
             Stages["Village"].AddEVENT(AnnoyingGuyDialogue);
             Stages["Village"].AddLines(new Lines("BoringConversation", "", "Player", "Why are you following me?", Stages["Village"], Lines.LineType.Player));
-            
-          //  Stages["Village"].addActor("Follower", new Follower("Follower", new Vector2(1400, 600), Stages["Village"], gameManager));
-            
-            for (int i = 0; i < 72; i++){Stages["Village"].addActor("SarcenStone" + i, new Actor("Sarcen" + i, "SarcenStoneSmall", 2000 * Vector2.One + 2000 * new Vector2((float)Math.Cos(10 * i), (float)Math.Sin(10 * i)), Stages["Village"]));}
+
+            //  Stages["Village"].addActor("Follower", new Follower("Follower", new Vector2(1400, 600), Stages["Village"], gameManager));
+
+            for (int i = 0; i < 72; i++) { Stages["Village"].addActor("SarcenStone" + i, new Actor("Sarcen" + i, "SarcenStoneSmall", 2000 * Vector2.One + 2000 * new Vector2((float)Math.Cos(10 * i), (float)Math.Sin(10 * i)), Stages["Village"])); }
 
             Stages["Village"].addActor("Shack1", new Actor("Shack1", "Shack", new Vector2(600, 2000)));
             Stages["Village"].addActor("Shack2", new Actor("Shack2", "Shack", new Vector2(900, 2000)));
@@ -218,7 +256,7 @@ namespace StoneCircle
             ParallelEVENTGroup VillageIntro = new ParallelEVENTGroup("Introduction");
             SerialEVENTGroup zoomOut = new SerialEVENTGroup("NotIntroduction");
             zoomOut.AddEVENT(new EVENTSetCameraLocation(Stages["Village"].camera, new Vector2(2000, 2000)));
-            zoomOut.AddEVENT( new EVENTPlayerDeactivate(gameManager.Player));
+            zoomOut.AddEVENT(new EVENTPlayerDeactivate(gameManager.Player));
             zoomOut.AddEVENT(new EVENTScaleCamera(Stages["Village"].camera, .25f, 5000f));
             zoomOut.AddEVENT(new EVENTAcknowledgePause(Stages["Village"]));
             zoomOut.AddEVENT(new EVENTPlayerReactivate(gameManager.Player));
@@ -242,14 +280,14 @@ namespace StoneCircle
         }
 
         public void Draw(GraphicsDevice device, SpriteBatch batch, RenderTarget2D shadeTemp)
-        {   
+        {
             openStage.Draw(device, batch, shadeTemp);
         }
 
         public void Initialize()
         {
-            
-         
+
+
 
         }
 
@@ -264,8 +302,8 @@ namespace StoneCircle
 
             Stage nextStage = Stages[Next];
             nextStage.addPlayer(gameManager.Player, startingPosition);
-            
-            nextStage.setCamera(); 
+
+            nextStage.setCamera();
             nextStage.Load(contentManager);
             nextStage.Initialize();
             nextStage.RunEvent("Introduction");
@@ -274,7 +312,7 @@ namespace StoneCircle
 
         public void SetStage(String nextStage)
         {
-            SetStage(nextStage, new Vector2(-150,600));
+            SetStage(nextStage, new Vector2(-150, 600));
 
         }
 
