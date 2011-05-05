@@ -227,7 +227,7 @@ namespace StoneCircle
         {
 
             //device.SetRenderTarget(0, shadeTemp);
-            theSpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullClockwise, null);
+            theSpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null);
            
             device.Clear(Color.Ivory);
             for (int i = 0; i < 40; i++) {
@@ -265,7 +265,7 @@ namespace StoneCircle
           //  lightSourceShader.CurrentTechnique.Passes[0].End();
            // lightSourceShader.End();
 
-            theSpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullClockwise, null);
+            theSpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null);
            
             foreach (Lines D in openConversations) D.Draw(theSpriteBatch, camera.Location, camera.Scale);
             theSpriteBatch.End();
