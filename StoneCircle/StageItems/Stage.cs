@@ -226,7 +226,7 @@ namespace StoneCircle
         public void Draw(GraphicsDevice device, SpriteBatch theSpriteBatch, RenderTarget2D shadeTemp)
         {
 
-            //device.SetRenderTarget(0, shadeTemp);
+            device.SetRenderTarget(shadeTemp);
             theSpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null);
            
             device.Clear(Color.Ivory);
@@ -251,19 +251,12 @@ namespace StoneCircle
             }
 
             theSpriteBatch.End();
-           // device.SetRenderTarget(0, null);
-           // Texture2D ShaderTexture = shadeTemp.GetTexture();
-            //device.SetRenderTarget(0, shadeTemp);
-           // theSpriteBatch.Begin(SpriteBlendMode.None, SpriteSortMode.Immediate, SaveStateMode.None);
-           // lightSourceShader.Begin();
-
-           // lightSourceShader.CurrentTechnique.Passes[0].Begin();
-          //  theSpriteBatch.Draw(ShaderTexture, Vector2.Zero, Color.White);
-           // theSpriteBatch.End();
+            device.SetRenderTarget(null);
+            theSpriteBatch.Begin(0, BlendState.Opaque, null, null, null, lightSourceShader);
+            theSpriteBatch.Draw(shadeTemp, Vector2.Zero, Color.White);
+            theSpriteBatch.End();
 
 
-          //  lightSourceShader.CurrentTechnique.Passes[0].End();
-           // lightSourceShader.End();
 
             theSpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null);
            
