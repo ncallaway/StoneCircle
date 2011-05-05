@@ -166,12 +166,12 @@ namespace StoneCircle
 
     }
 
-    class EVENTStageReactivate : EVENT
+    public class EVENTStageReactivate : EVENT
     {
         
         Stage stage;
-        
-        public EVENTStageReactivate(Stage stage)
+
+        internal EVENTStageReactivate(Stage stage)
         { this.stage = stage; }
 
 
@@ -183,12 +183,12 @@ namespace StoneCircle
 
     }
     
-    class EVENTCameraDeactivate : EVENT
+    public class EVENTCameraDeactivate : EVENT
      {
 
          Camera camera;
 
-         public EVENTCameraDeactivate(Camera camera)
+         internal EVENTCameraDeactivate(Camera camera)
          { this.camera = camera; }
 
 
@@ -200,12 +200,12 @@ namespace StoneCircle
 
      }
 
-    class EVENTCameraReactivate : EVENT
+    public class EVENTCameraReactivate : EVENT
      {
 
          Camera camera;
 
-         public EVENTCameraReactivate(Camera camera)
+         internal EVENTCameraReactivate(Camera camera)
          { this.camera = camera; }
 
 
@@ -217,7 +217,7 @@ namespace StoneCircle
 
      }
 
-    class EVENTDialogue : EVENT
+    public class EVENTDialogue : EVENT
     {
 
         private String dialogueID;
@@ -244,12 +244,12 @@ namespace StoneCircle
 
     }
 
-    class EVENTDramaticPause : PauseEVENT
+    public class EVENTDramaticPause : PauseEVENT
     {
         float time;
         float etime;
 
-        public EVENTDramaticPause(float Time) { time = Time; }
+        internal EVENTDramaticPause(float Time) { time = Time; }
 
         public override void Start()
         {
@@ -265,11 +265,11 @@ namespace StoneCircle
 
     }
 
-    class PauseEVENT : EVENT
+    public class PauseEVENT : EVENT
     {
     }
 
-    class EVENTAcknowledgePause : PauseEVENT
+    public class EVENTAcknowledgePause : PauseEVENT
     {
 
         private Stage Stage;

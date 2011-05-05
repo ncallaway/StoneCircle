@@ -6,7 +6,7 @@ namespace SCEd
 {
     partial class EventsList
     {
-        private static readonly String EVENT_TYPE = "StoneCircle.Event";
+        private static readonly String EVENT_TYPE = "StoneCircle.EVENT";
 
         protected override void OnShown(System.EventArgs e)
         {
