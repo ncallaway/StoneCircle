@@ -47,7 +47,7 @@ namespace StoneCircle
                         EffectBox = new BoundingBox(currentItem.EffectBox.Min + update + Actor.Location, currentItem.EffectBox.Max + update + Actor.Location);
                         foreach (Actor y in targets)
                         {
-                            if ((EffectBox.Intersects(y.GetBounds()) && !Actor.Equals(y))) //Collision Detection. Ideally reduces movement to outside collision bounds.
+                            if ((EffectBox.Intersects(y.Bounds) && !Actor.Equals(y))) //Collision Detection. Ideally reduces movement to outside collision bounds.
                             {
                                 y.ApplyAction(this, Actor);
                             }
@@ -122,7 +122,7 @@ namespace StoneCircle
         public Rest()
         {
             id = "Resting";
-            maxFrame = 10;
+            maxFrame = 2;
             fatigue = .75f;
             AvailableHigh.YButton = "Bandage Self";
             AvailableLow.YButton = "Standing";
@@ -133,7 +133,7 @@ namespace StoneCircle
         public override void Update(GameTime t, Dictionary<string, Actor>.ValueCollection targets)
         {
             UpdateFrame(t);
-
+            Actor.ImageXindex = 2;
         }
 
 

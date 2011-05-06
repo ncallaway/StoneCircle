@@ -1,18 +1,17 @@
-uniform extern texture ScreenTexture;	
-
-sampler ScreenS = sampler_state
-{
-	Texture = <ScreenTexture>;	
-};
-
+float health;
 
 
 float4 PixelShaderFunction(float2 texCoord: TEXCOORD0) : COLOR0
 {
-	float4 color = tex2D(ScreenS, texCoord);
+	float dist = distance(float2(.5,.5), texCoord);	
+	float4 color = float4(0,0,0,0);
+	if(dist>health){ color.r = 2*( dist-health); color.a= 2*( dist-health);}
 	
 	
-	color.rgb -= .75f * float3(1.0f, 1.0f, .9f);
+		
+
+	
+	
 	return color;
 }
 

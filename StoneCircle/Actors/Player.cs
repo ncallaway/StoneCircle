@@ -20,37 +20,19 @@ namespace StoneCircle
        // These variables represent the location and position of the actor. 
 
 
-        public Player(String Id, String asset_name, Vector2 starting, Stage Parent, InputController Input, GameManager gameManager) : base(gameManager)
-        {
-            asset_Name = "PlayerSheet";
-            speed = 150;
-            this.Input = Input;
-            learnAction(new Interact());
-            Location = new Vector3( starting.X, starting.Y, 0);
-            name = Id;
-            parent = Parent;
-            inventoryMenu = new Inventory(this, gameManager);
-            inventoryOpen = false;
-            
-           
-            ImageHeight = 75;
-            ImageWidth = 40;
-            // properties.Add("LegInjury");
-            
-        }
 
         public Player(String Id, String asset_name, Vector2 starting, GameManager gameManager, InputController Input)
             : base(gameManager)
         {
-            asset_Name = "PlayerSheet";
+            asset_Name = "Eimar Character Sheet - Full";
             speed = 125;
             this.Input = Input;
             learnAction(new Interact());
             Location = new Vector3(starting.X, starting.Y, 0);
             name = Id;
             inventoryMenu = new Inventory(this, gameManager);
-            ImageHeight = 75;
-            ImageWidth = 40;
+            ImageHeight = 128;
+            ImageWidth = 128;
             
             inventoryOpen = false;
             learnAction(new FightStance());
@@ -81,15 +63,15 @@ namespace StoneCircle
         {
             Input.Update();
 
-           Location.Z = Math.Max(Location.Z - 2, 0);
-            if( Input.LStickPosition().LengthSquared() >.25f)Facing = Input.LStickPosition();
+            Location.Z = Math.Max(Location.Z - 2, 0);
+            if( Input.LStickPosition().LengthSquared() >.2f)Facing = Input.LStickPosition();
             if (Input.IsRightTriggerHeld())
             {
                 if (Input.IsAButtonNewlyPressed() && current_Action.AvailableHigh.AButton != null) return current_Action.AvailableHigh.AButton;
                 if (Input.IsBButtonNewlyPressed() && current_Action.AvailableHigh.BButton != null) return (current_Action.AvailableHigh.BButton);
                 if (Input.IsXButtonNewlyPressed() && current_Action.AvailableHigh.XButton != null) return (current_Action.AvailableHigh.XButton);
                 if (Input.IsYButtonNewlyPressed() && current_Action.AvailableHigh.YButton != null) return (current_Action.AvailableHigh.YButton);
-                if (Input.LStickPosition().Length() > .2f && current_Action.AvailableHigh.LStickAction != null) return current_Action.AvailableHigh.LStickAction;
+                if (Input.LStickPosition().LengthSquared() > .25f && current_Action.AvailableHigh.LStickAction != null) return current_Action.AvailableHigh.LStickAction;
                 if (current_Action.AvailableHigh.NoButton != null) return current_Action.AvailableHigh.NoButton;
             
             }
@@ -98,7 +80,7 @@ namespace StoneCircle
                 if (Input.IsBButtonNewlyPressed() && current_Action.AvailableLow.BButton != null) return (current_Action.AvailableLow.BButton);
                 if (Input.IsXButtonNewlyPressed() && current_Action.AvailableLow.XButton != null) return (current_Action.AvailableLow.XButton);
                 if (Input.IsYButtonNewlyPressed() && current_Action.AvailableLow.YButton != null) return (current_Action.AvailableLow.YButton);
-                if (Input.LStickPosition().Length() > .2f && current_Action.AvailableLow.LStickAction != null) return current_Action.AvailableLow.LStickAction;
+                if (Input.LStickPosition().LengthSquared() > .25f && current_Action.AvailableLow.LStickAction != null) return current_Action.AvailableLow.LStickAction;
                 if (current_Action.AvailableLow.NoButton != null) return current_Action.AvailableLow.NoButton;
             }
             return "";

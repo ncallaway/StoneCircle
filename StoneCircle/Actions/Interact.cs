@@ -51,9 +51,9 @@ namespace StoneCircle
 
                 foreach (Actor y in targets)
                 {
-                    if ((CheckBox.Intersects(y.GetBounds()) && !Actor.Equals(y))) //Collision Detection. Ideally reduces movement to outside collision bounds.
+                    if ((CheckBox.Intersects(y.Bounds) && !Actor.Equals(y))) //Collision Detection. Ideally reduces movement to outside collision bounds.
                     {
-                        y.CheckTriggers();
+                        y.Interacting = true;
                        
                     }
 

@@ -35,6 +35,8 @@ namespace StoneCircle
         public int ImageYindex;
 
         public bool Active;
+        public bool Interacting;
+
 
         //Here is the inventory
         protected Inventory inventoryMenu;
@@ -82,6 +84,11 @@ namespace StoneCircle
 
         public List<AIOption> AIStance = new List<AIOption>();
 
+        protected Vector3 boundsMin;
+        protected Vector3 boundsMax;
+
+        public BoundingBox Bounds { get { return new BoundingBox(Location + boundsMin, Location + boundsMax);}}
+
 
         public Stage parent;
 
@@ -95,7 +102,7 @@ namespace StoneCircle
             Location = Vector3.Zero;
             ImageXindex = 0; ImageYindex = 0;
             learnAction(new Actionstate("Talking"));
-            learnAction(new Actionstate("Standing"));
+            learnAction(new Stand());
             learnAction(new Walk());
             learnAction(new Limp());
             learnAction(new Jump());
@@ -115,6 +122,8 @@ namespace StoneCircle
             currentFatigue = totalFatigue;
             currentBeatTimer = defaultBeatTimer;
             currentBeatTime = 0;
+            boundsMin = new Vector3(-20, -20, 0);
+            boundsMax = new Vector3(20, 20, 72);
 
             this.gameManager = gameManager;
             Active = true;
@@ -194,8 +203,10 @@ namespace StoneCircle
 
         public virtual void Draw(SpriteBatch theSpriteBatch, Vector2 camera_pos, float camera_scale, float intensity, SpriteFont font) // Draws the sprite and shadow of actor in relation to camera.
         {
+            if (Math.Abs(facing.X) > Math.Abs(facing.Y)) { if (facing.X > 0) ImageYindex = 0; else ImageYindex = 1; }
+          //  else { if (facing.Y > 0) ImageYindex = 2; else ImageYindex = 3; }
             theSpriteBatch.Draw(image_map, screenadjust + (camera_scale * (Position - camera_pos)), new Rectangle(ImageXindex * ImageWidth, ImageYindex * ImageHeight, ImageWidth, ImageHeight), new Color(intensity, intensity, intensity, 1f), 0f, origin, camera_scale, SpriteEffects.None, .2f - Location.Y / 100000f);
-            theSpriteBatch.DrawString(font, current_Action.ID + "  " + current_Action.Frame, screenadjust + (camera_scale * (Position - camera_pos) - new Vector2(ImageWidth / 2, ImageHeight + 15)), Color.White);
+          //  theSpriteBatch.DrawString(font, current_Action.ID + "  " + current_Action.Frame, screenadjust + (camera_scale * (Position - camera_pos) - new Vector2(ImageWidth / 2, ImageHeight + 15)), Color.White);
         }
 
 
@@ -206,18 +217,10 @@ namespace StoneCircle
             else theSpriteBatch.Draw(image_map, new Rectangle((int)renderTarget.X, (int)renderTarget.Y, (int)(ImageWidth * camera_scale), (int)(ImageHeight * (intensity + 1) * camera_scale)), new Rectangle(ImageXindex * ImageWidth, ImageYindex * ImageHeight, ImageWidth, ImageHeight), new Color(0f, 0f, 0f, intensity), rotation, origin, SpriteEffects.None, .2f - (Location.Y - 2) / 100000f);
         }
 
-        public virtual BoundingBox GetBounds()   // Returns the bounding box of a non-moving actor for collision detection.
-        {
-            Vector3 min = new Vector3(Location.X - ImageWidth / 3, Location.Y - ImageHeight / 4, Location.Z);
-            Vector3 max = new Vector3(Location.X + ImageWidth / 3, Location.Y + ImageHeight / 4, Location.Z + ImageHeight);
-            return new BoundingBox(min, max);
-        }
-
+       
         public virtual BoundingBox GetBounds(Vector3 update)// Returns the bounding box of a moving actor for collision detection.
         {
-            Vector3 min = new Vector3(Location.X + update.X - ImageWidth / 2, Location.Y + update.Y - ImageWidth / 2, Location.Z + update.Z);
-            Vector3 max = new Vector3(Location.X + update.X + ImageWidth / 2, Location.Y + update.Y + ImageWidth / 2, Location.Z + update.Z + ImageHeight);
-            return new BoundingBox(min, max);
+            return new BoundingBox(Location + update + boundsMin, Location + update + boundsMax);
         }
 
         public virtual void ApplyAction(Actionstate affected, Actor affector)
@@ -241,6 +244,8 @@ namespace StoneCircle
 
         public virtual void Update(GameTime t, Dictionary<String, Actor>.ValueCollection targets) // Updates position, vestigial remnants of player update. 
         {
+            Interacting = false;
+
             if (Bleeding && currentLife > 0) {
                 currentBeatTime -= t.ElapsedGameTime.Milliseconds;
                 if (currentBeatTime < 0) {
@@ -322,19 +327,6 @@ namespace StoneCircle
            
         }
 
-
-        public void CheckTriggers()
-        {
-            foreach (Trigger T in personalTriggers)
-            {
-                if (T.CheckCondition()) parent.RunEvent(T.Target);
-                
-
-            }
-
-
-        }
-        public void AddTrigger(Trigger T) { personalTriggers.Add(T); }
 
 
     }

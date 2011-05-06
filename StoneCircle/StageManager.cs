@@ -30,8 +30,8 @@ namespace StoneCircle
         private Dictionary<String, Stage> stages = new Dictionary<String, Stage>();
         private Stage openStage;
 
-        private HashSet<String> stateConditions = new HashSet<String>();
-
+        private List<String> stateConditions = new List<String>();
+        public List<String> StateConditions { get { return stateConditions; } }
         [NonSerialized]
         internal ContentManager contentManager;
         [NonSerialized]
@@ -140,17 +140,15 @@ namespace StoneCircle
 
             stages["Village"].AMBStrength = 0f;
             Actor CenterStone = new Actor("CenterStone", "SarcenStone2", new Vector2(2000, 2000), stages["Village"]);
-            // CenterStone.AddTrigger(new TriggerActorHasNotProperty(gameManager.Player, "Dead"));
-
             stages["Village"].addActor("CenterStone", new Actor("CenterStone", "SarcenStone2", new Vector2(2000, 2000), stages["Village"]));
 
             stages["Village"].addLight(new LightSource("SarcenGlow", new Vector2(950, 600), 500f, stages["Village"], null));
             stages["Village"].AMBColor = new Vector3(.5f, .5f, 1f);
             Follower annyoingGuy = new Follower("Follower", new Vector2(1400, 600), stages["Village"], gameManager);
-            annyoingGuy.AddTrigger(new Trigger("DeadGuyItem", new TriggerActorHasProperty(annyoingGuy, "Dead"), true, true));
-            annyoingGuy.AddTrigger(new Trigger("NotDeadGuyItem", new TriggerActorHasNotProperty(annyoingGuy, "Dead"), true, false));
-
-
+            stages["Village"].AddTrigger(new Trigger("DeadGuyItem",new TriggerANDCondition(new TriggerPlayerInteracting(annyoingGuy), new TriggerActorHasProperty(annyoingGuy, "Dead")), true, true));
+            stages["Village"].AddTrigger(new Trigger("NotDeadGuyItem",new TriggerANDCondition(new TriggerPlayerInteracting(annyoingGuy), new TriggerActorHasNotProperty(annyoingGuy, "Dead")), true, false));
+            
+            
             ParallelEVENTGroup LootBody = new ParallelEVENTGroup("DeadGuyItem");
             LootBody.AddEVENT(new EVENTActorAddItem(gameManager.Player, new Item("SeveredHand", "ThumbsUpIcon")));
             LootBody.AddEVENT(new EVENTDialogue("BodyLooting", stages["Village"]));
@@ -166,8 +164,6 @@ namespace StoneCircle
             stages["Village"].AddEVENT(LootBody);
             stages["Village"].AddEVENT(AnnoyingGuyDialogue);
             stages["Village"].AddLines(new Lines("BoringConversation", "", "Player", "Why are you following me?", stages["Village"], Lines.LineType.Player));
-
-            //  Stages["Village"].addActor("Follower", new Follower("Follower", new Vector2(1400, 600), Stages["Village"], gameManager));
 
             for (int i = 0; i < 72; i++) { stages["Village"].addActor("SarcenStone" + i, new Actor("Sarcen" + i, "SarcenStoneSmall", 2000 * Vector2.One + 2000 * new Vector2((float)Math.Cos(10 * i), (float)Math.Sin(10 * i)), stages["Village"])); }
 

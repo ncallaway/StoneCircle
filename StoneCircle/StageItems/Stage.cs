@@ -64,6 +64,11 @@ namespace StoneCircle
         [NonSerialized] Effect ambientLightShader;
         [XmlIgnoreAttribute]
         [NonSerialized] Effect lightSourceShader;
+        [XmlIgnoreAttribute]
+        [NonSerialized]
+        Effect statusShader;
+
+        Texture2D DeathScreen;
 
 
         public Stage()
@@ -72,7 +77,7 @@ namespace StoneCircle
             max_X = 4000;
             max_Y = 4000;
             camera = new Camera(this, input);
-            BGMTitle = "LXD";
+            BGMTitle = "FlowerWaltz";
             AMBColor = new Vector3(1f, 1f, .4f);
             AMBStrength = .8f;
             AM = new AudioManager();
@@ -87,7 +92,7 @@ namespace StoneCircle
             max_Y = 4000;
             camera = new Camera(this, input);
             this.SM = SM;
-            BGMTitle = "LXD";
+            BGMTitle = "FlowerWaltz";
             AMBColor = new Vector3(1f, 1f, .4f);
             AMBStrength = .8f;
             AM = new AudioManager();
@@ -104,7 +109,7 @@ namespace StoneCircle
             max_Y = 4000;
             camera = new Camera(this, input);
             
-            BGMTitle = "LXD";
+            BGMTitle = "FlowerWaltz";
             AMBColor = new Vector3(1f, 1f, .4f);
             AMBStrength = .8f;
             loaded = false;
@@ -128,10 +133,12 @@ namespace StoneCircle
                 player.loadImage(CM);
                 ambientLightShader = CM.Load<Effect>("AmbientLight");
                 lightSourceShader = CM.Load<Effect>("Effect1");
+                statusShader = CM.Load<Effect>("AmbientLight");
                 AM.Load(CM);
                 foreach (Actor x in exists.Values) x.loadImage(CM);
                 loaded = true;
                 foreach (Lines D in conversations.Values) D.Load(CM);
+                DeathScreen = CM.Load<Texture2D>("RedScreenOfDeath");
 
             }
         }
@@ -237,9 +244,7 @@ namespace StoneCircle
 
             foreach (Actor y in exists.Values) {
                 y.Draw(theSpriteBatch, camera.Location, camera.Scale, 1f, font);
-                // float rotation = sun.calcRotate(y);
-                // float intensity = sun.calcIntensity(y);
-                // y.DrawShadow(theSpriteBatch, camera.Location, camera.Scale, rotation, intensity);
+         
 
                 foreach (LightSource x in lights) {
                     float rotation = x.calcRotate(y);
@@ -254,6 +259,9 @@ namespace StoneCircle
             device.SetRenderTarget(null);
             theSpriteBatch.Begin(0, BlendState.Opaque, null, null, null, lightSourceShader);
             theSpriteBatch.Draw(shadeTemp, Vector2.Zero, Color.White);
+            theSpriteBatch.End();
+            theSpriteBatch.Begin(0, BlendState.AlphaBlend, null, null, null, statusShader);
+            theSpriteBatch.Draw(DeathScreen, Vector2.Zero, Color.White);
             theSpriteBatch.End();
 
 
@@ -279,7 +287,7 @@ namespace StoneCircle
             }
             Vector2 tempPlayer = (player.Position - camera.Location) * camera.Scale + camera.screenadjust;
             tempPlayer.X /= 1366; tempPlayer.Y /= 768;
-            lightSourceShader.Parameters["health"].SetValue(player.CurrentLife / player.TotalLife * .707f);
+            statusShader.Parameters["health"].SetValue(player.CurrentLife / player.TotalLife * .707f);
             lightSourceShader.Parameters["Position"].SetValue(LPosition);
             lightSourceShader.Parameters["index"].SetValue(lights.Count);
             lightSourceShader.Parameters["player"].SetValue(tempPlayer);

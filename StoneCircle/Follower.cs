@@ -27,7 +27,6 @@ namespace StoneCircle
 
             AIStance.Add(follow);
             AIStance.Add(runaway);
-            Facing = new Vector2(1, 0);
 
         }
 

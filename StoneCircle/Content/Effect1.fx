@@ -19,15 +19,17 @@ float4 LightSource(float2 texCoord: TEXCOORD0) : COLOR0
 {	
 
 	float4 color = tex2D(ScreenS, texCoord);
-	float blur = distance(player, texCoord);
-	blur *= blur*blur/250;
+	//float blur = distance(player, texCoord);
+	//blur *= blur*blur/250;
 	
+	//float blur =5/1366;
+
 	//color = tex2D(ScreenS, float2(texCoord.x+blur, texCoord.y+blur));
 	//color += tex2D(ScreenS, float2(texCoord.x-blur, texCoord.y-blur));
 	//color += tex2D(ScreenS, float2(texCoord.x-blur, texCoord.y+blur));
 	//color += tex2D(ScreenS, float2(texCoord.x+blur, texCoord.y-blur));	
 	//color += tex2D(ScreenS, float2(texCoord.x+blur, texCoord.y));
-	//color += tex2D(ScreenS, float2(texCoord.x-blur, texCoord.y));
+	////color += tex2D(ScreenS, float2(texCoord.x-blur, texCoord.y));
 	//color += tex2D(ScreenS, float2(texCoord.x, texCoord.y+blur));
 	//color += tex2D(ScreenS, float2(texCoord.x, texCoord.y-blur));
 	
@@ -42,8 +44,40 @@ float4 LightSource(float2 texCoord: TEXCOORD0) : COLOR0
 	}
 	
 	float dist2 = distance(float2(.5, .5), texCoord);
-	if(dist2>health) color.rgb += (dist2-health) * (9 -((dist2 > (1-health/2))*3)) *float3(.3f,-.2f,-.2f);
-	if(dist2>fatigue) color.rgb -= ((dist2-fatigue))*2*float3(1.0f, 1.0f, 1.0f);
+	//if(dist2>health) color.rgb += (dist2-health) * (9 -((dist2 > (1-health/2))*3)) *float3(.3f,-.2f,-.2f);
+	//if(dist2>fatigue) color.rgb -= ((dist2-fatigue))*2*float3(1.0f, 1.0f, 1.0f);
+	
+	//float distF = distance(float2(.5, .5), texCoord) - fatigue;
+	//if(distF>0)
+	//{
+
+	//float g = (color.r*.3 + color.g*.59 + color.b*.11);
+	
+	//float blur =.1;
+
+	//color = tex2D(ScreenS, float2(texCoord.x+blur, texCoord.y+blur));
+	//color += tex2D(ScreenS, float2(texCoord.x-blur, texCoord.y-blur));
+	//color += tex2D(ScreenS, float2(texCoord.x-blur, texCoord.y+blur));
+	//color += tex2D(ScreenS, float2(texCoord.x+blur, texCoord.y-blur));	
+	//color += tex2D(ScreenS, float2(texCoord.x+blur, texCoord.y));
+	//color += tex2D(ScreenS, float2(texCoord.x-blur, texCoord.y));
+	//color += tex2D(ScreenS, float2(texCoord.x, texCoord.y+blur));
+	//color += tex2D(ScreenS, float2(texCoord.x, texCoord.y-blur));
+	
+	//color/=8;
+
+	//if (g>.5){ g -=.1;}	else g+=.1;
+	//color.rgb = float3(g,g,g);
+
+
+	//}
+
+
+	//if(color.r > .5) {color.r +=.2;} else color.r -=.2;
+	//if(color.g > .5) {color.g +=.2;} else color.g -=.2;
+	//if(color.b > .5) {color.b +=.2;} else color.b -=.2;
+	
+
 
 	return color;
 }

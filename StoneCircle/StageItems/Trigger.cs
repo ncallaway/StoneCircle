@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -123,7 +124,7 @@ namespace StoneCircle
 
         public override bool CheckCondition()
         {
-            return area.Intersects(player.GetBounds());
+            return area.Intersects(player.Bounds);
         }
 
     }
@@ -181,6 +182,23 @@ namespace StoneCircle
 
     }
 
+    class TriggerPlayerInteracting : TriggerCondition
+    {
+        Actor actor;
+
+        public TriggerPlayerInteracting(Actor Actor)
+        {
+            actor = Actor;
+
+        }
+
+        public override bool CheckCondition()
+        {
+            return actor.Interacting;
+        }
+
+
+    }
 
 
 }

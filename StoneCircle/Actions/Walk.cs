@@ -14,6 +14,44 @@ using Microsoft.Xna.Framework.GamerServices;
 
 namespace StoneCircle
 {
+    class Stand : Actionstate
+    {
+        public Stand()
+        {
+            id = "Standing";
+            maxFrame = 123;
+
+        }
+
+        public override void Update(GameTime t, Dictionary<string, Actor>.ValueCollection targets)
+        {
+            UpdateFrame(t);
+            switch (frame)
+            {
+                case 0: Actor.ImageXindex = 0; break;
+
+                case 114: Actor.ImageXindex = 1;
+                    break;
+                case 115: Actor.ImageXindex = 2;
+                    break;
+                case 117: Actor.ImageXindex = 1;
+                    break;
+
+                case 118: Actor.ImageXindex = 0;
+                    break;
+
+                case 119: Actor.ImageXindex = 1;break;
+                case 120: Actor.ImageXindex = 2; break;
+                case 122: Actor.ImageXindex = 1; break;
+            }
+
+
+
+
+        }
+
+    }
+
     class Walk : Actionstate
     {
 
@@ -30,6 +68,8 @@ namespace StoneCircle
             AvailableHigh.LStickAction = "Running";
             AvailableLow.BButton = "Fall Down";
             fatigue = +.1f;
+            maxFrame = 18;
+
         }
 
 
@@ -39,23 +79,13 @@ namespace StoneCircle
             switch (frame)
             {
                 case 0:
-                    Actor.ImageXindex = 0; Actor.ImageYindex = 0;
-
-
-                    break;
-                case 1: Actor.ImageXindex = 0; Actor.ImageYindex = 0;
-
-
-                    break;
-                case 2: Actor.ImageXindex = 0; Actor.ImageYindex = 0;
-
-
-                    break;
-                default: Actor.ImageYindex = 0;
-
-
-
-                    break;
+                    Actor.ImageXindex = 3;  break;
+                case 3: Actor.ImageXindex = 4;  break;
+                case 6: Actor.ImageXindex = 5; break;
+                case 9: Actor.ImageXindex = 6; break;
+                case 12: Actor.ImageXindex = 7; break;
+                case 15: Actor.ImageXindex = 8; break;
+      
             }
 
 
@@ -65,7 +95,7 @@ namespace StoneCircle
 
             foreach (Actor y in targets)
             {
-                if ((CheckBox.Intersects(y.GetBounds()) && !Actor.Equals(y))) //Collision Detection. Ideally reduces movement to outside collision bounds.
+                if ((CheckBox.Intersects(y.Bounds) && !Actor.Equals(y))) //Collision Detection. Ideally reduces movement to outside collision bounds.
                 { legal = false; }
             }
 
@@ -164,7 +194,7 @@ namespace StoneCircle
 
             foreach (Actor y in targets)
             {
-                if ((CheckBox.Intersects(y.GetBounds()) && !Actor.Equals(y))) //Collision Detection. Ideally reduces movement to outside collision bounds.
+                if ((CheckBox.Intersects(y.Bounds) && !Actor.Equals(y))) //Collision Detection. Ideally reduces movement to outside collision bounds.
                 { legal = false; }
             }
 
@@ -260,7 +290,7 @@ namespace StoneCircle
 
             foreach (Actor y in targets)
             {
-                if ((CheckBox.Intersects(y.GetBounds()) && !Actor.Equals(y))) //Collision Detection. Ideally reduces movement to outside collision bounds.
+                if ((CheckBox.Intersects(y.Bounds) && !Actor.Equals(y))) //Collision Detection. Ideally reduces movement to outside collision bounds.
                 { legal = false; }
             }
 
@@ -293,6 +323,7 @@ namespace StoneCircle
             AvailableHigh.LStickAction = "Running";
             AvailableHigh.NoButton = "Standing";
             fatigue = -.1f;
+            maxFrame = 22;
         }
 
 
@@ -305,24 +336,14 @@ namespace StoneCircle
             UpdateFrame(t);
             switch (frame)
             {
-                case 0:
-                    Actor.ImageXindex = 0; Actor.ImageYindex = 0;
+                case 0: Actor.ImageXindex = 3; break;
+                case 1: Actor.ImageXindex = 4; break;
+                case 2: Actor.ImageXindex = 5; break;
+                case 11: Actor.ImageXindex = 6; break;
+                case 12: Actor.ImageXindex = 7; break;
+                case 13: Actor.ImageXindex = 8; break;
+                
 
-
-                    break;
-                case 1: Actor.ImageXindex = 0; Actor.ImageYindex = 0;
-
-
-                    break;
-                case 2: Actor.ImageXindex = 0; Actor.ImageYindex = 0;
-
-
-                    break;
-                default: Actor.ImageYindex = 0;
-
-
-
-                    break;
             }
 
 
@@ -332,7 +353,7 @@ namespace StoneCircle
 
             foreach (Actor y in targets)
             {
-                if ((CheckBox.Intersects(y.GetBounds()) && !Actor.Equals(y))) //Collision Detection. Ideally reduces movement to outside collision bounds.
+                if ((CheckBox.Intersects(y.Bounds) && !Actor.Equals(y))) //Collision Detection. Ideally reduces movement to outside collision bounds.
                 { legal = false; }
             }
 
@@ -349,8 +370,7 @@ namespace StoneCircle
 
 
     }
-
-
+    
     class Prone : Actionstate
     {
         public Prone()
@@ -466,6 +486,16 @@ namespace StoneCircle
 
     }
 
+
+
+
+
+
+
+
+
+
+
     class Dash : Actionstate
     {
         float updateAmount;
@@ -520,7 +550,7 @@ namespace StoneCircle
 
             foreach (Actor y in targets)
             {
-                if ((CheckBox.Intersects(y.GetBounds()) && !Actor.Equals(y))) //Collision Detection. Ideally reduces movement to outside collision bounds.
+                if ((CheckBox.Intersects(y.Bounds) && !Actor.Equals(y))) //Collision Detection. Ideally reduces movement to outside collision bounds.
                 { legal = false; }
             }
 
@@ -549,7 +579,6 @@ namespace StoneCircle
 
   
     }
-
 
     class DashJump : Actionstate
     {  float updateAmount;
@@ -610,7 +639,7 @@ namespace StoneCircle
 
             foreach (Actor y in targets)
             {
-                if ((CheckBox.Intersects(y.GetBounds()) && !Actor.Equals(y))) //Collision Detection. Ideally reduces movement to outside collision bounds.
+                if ((CheckBox.Intersects(y.Bounds) && !Actor.Equals(y))) //Collision Detection. Ideally reduces movement to outside collision bounds.
                 { legal = false; }
             }
 
