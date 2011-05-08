@@ -78,8 +78,7 @@ namespace StoneCircle
             UpdateFrame(t);
             switch (frame)
             {
-                case 0:
-                    Actor.ImageXindex = 3;  break;
+                case 0: Actor.ImageXindex = 3;  break;
                 case 3: Actor.ImageXindex = 4;  break;
                 case 6: Actor.ImageXindex = 5; break;
                 case 9: Actor.ImageXindex = 6; break;

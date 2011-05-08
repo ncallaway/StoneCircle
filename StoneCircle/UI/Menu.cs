@@ -35,6 +35,8 @@ namespace UserMenus
         protected int x_spacing;
         protected int y_spacing;
         protected String title;
+        protected bool loaded;
+        public bool Loaded { get { return loaded; } }
 
         public Menu() { }
 
@@ -54,6 +56,7 @@ namespace UserMenus
             y_spacing = 20;
             x_spacing = 0;
             title = "";
+            loaded = false;
         }
 
         /// <summary>
@@ -75,7 +78,7 @@ namespace UserMenus
             font = contentManager.Load<SpriteFont>("Text");
             image = contentManager.Load<Texture2D>("BlankIcon");
             foreach (MenuItem mi in menuitems) mi.Load(contentManager);
-
+            loaded = true;
         }
 
         /// <summary>
@@ -99,7 +102,7 @@ namespace UserMenus
             if (current_index >= menuitems.Count) current_index = 0;
             if (current_index < 0) current_index = menuitems.Count - 1;
             current = menuitems.ElementAt(current_index);
-            if (player.Input.IsAButtonNewlyPressed()) {
+            if (player.Input.IsAButtonNewlyPressed() && current!=null) {
                 player.Input.Update();
                 current.execute();
             }

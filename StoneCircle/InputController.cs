@@ -26,7 +26,12 @@ namespace StoneCircle
         private GamePadState[] m_oldControllerState;
         private GamePadState[] m_newControllerState;
 
+        internal int WookieBoolCaster(bool value)
+        {
+            if (value) return 1;
+            else return 0;
 
+        }
 
         public InputController(InputMode mode)
         {
@@ -173,12 +178,13 @@ namespace StoneCircle
 
         }
         public Vector2 LStickPosition()
-        {
+        {   
+
 
             switch (m_Mode)
             {
                 case InputMode.Player1:
-                  //  return new Vector2(IsMoveRightPressed() - IsMoveLeftPressed(), IsMoveDownPressed() - (int)IsMoveUpPressed());
+                   // return new Vector2(WookieBoolCaster(IsMoveRightPressed()) - WookieBoolCaster(IsMoveLeftPressed()), WookieBoolCaster(IsMoveDownPressed()) - WookieBoolCaster(IsMoveUpPressed()));
                     return new Vector2(m_newControllerState[0].ThumbSticks.Left.X, -m_newControllerState[0].ThumbSticks.Left.Y);
                 case InputMode.Player2:
                     return new Vector2(m_newControllerState[1].ThumbSticks.Left.X, -m_newControllerState[1].ThumbSticks.Left.Y);

@@ -64,7 +64,7 @@ namespace StoneCircle
         public void LoadContent()
         {
             UIManager.Load(ContentManager);
-            StageManager.SetStage("region1");
+            StageManager.SetStage("Court");
         }
 
         public void Initialize()

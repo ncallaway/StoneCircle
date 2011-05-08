@@ -99,12 +99,6 @@ namespace StoneCircle
             stages["region1"].AddTrigger(new Trigger("region2trans", new TriggerPlayerBoxCondition(new BoundingBox(new Vector3(300, 1200, 0), new Vector3(2000, 1201, 0)), gameManager.Player), true, false));
             stages["region1"].AddEVENT("region2trans", new EVENTStageChange(this, "region2"));
 
-            //stages["region1"].AddEVENT(new EVENTDialogueTimed("Forest1", "", "Player", "I've got to get out of here... Must... warn... the village", stages["region1"], Lines.LineType.Player));
-            //stages["region1"].AddLines(new Lines("Bandage", "Instructions", "Player", "I'm losing a lot of blood... I'll need to bandage myself if I don't want to bleed to death", stages["region1"], Lines.LineType.Player));
-            // stages["region1"].AddLines(new Lines("Instructions", "", "Player", "Hold RT and press Y. Don't move until you've finished bandaging.", stages["region1"], Lines.LineType.Player));
-            // stages["region1"].AddLines(new Lines("Village", "", "Player", "If I follow this stream to the South I should come across the village of SouthStreamVillage", stages["region1"], Lines.LineType.Player));
-
-            // Stages["region1"].addActor("Fire1", new Fire(new Vector2(-100, 900), Stages["region1"], gameManager));
             stages["region1"].addLight("Light", new Vector2(-100, 600), 1200);
 
 
@@ -127,11 +121,9 @@ namespace StoneCircle
             gameManager.Camera.setSubject(gameManager.Player);
 
             stages["region1"].AddEVENT(testIntroduction);
-            // Stages["region1"].AddEVENT(new ParallelEVENTGroup("Intro2", ""));
 
 
             stages.Add("region2", new Stage("Region2", this));
-            // Stages["region2"].addLight(new ActorLightSource(gameManager.Player, 1200f));
             stages["region2"].AddEVENT("Introduction", new EVENT());
             stages["region2"].AddTrigger(new Trigger("VillageTrans", new TriggerPlayerBoxCondition(new BoundingBox(new Vector3(300, 300, 0), new Vector3(2000, 1201, 0)), gameManager.Player), true, false));
             stages["region2"].AddEVENT("VillageTrans", new EVENTStageChange(this, "Village"));
@@ -155,16 +147,13 @@ namespace StoneCircle
             LootBody.AddEVENT(new EVENTDialogueTimed("Sweet! A Severed hand!", gameManager.Player, stages["Village"]));
             SerialEVENTGroup AnnoyingGuyDialogue = new SerialEVENTGroup("NotDeadGuyItem");
 
-            //   AnnoyingGuyDialogue.AddEVENT(new EVENTDialogue("Why are you following me?", gameManager.Player));
-            //  AnnoyingGuyDialogue.AddEVENT(new EVENTDialogue("BoringConversation2", stages["Village"]));
             AnnoyingGuyDialogue.AddEVENT(new EVENTActorAddProperty(annyoingGuy, "Dead"));
 
             stages["Village"].AddActor(annyoingGuy, new Vector2(1400, 600));
 
             stages["Village"].AddEVENT(LootBody);
             stages["Village"].AddEVENT(AnnoyingGuyDialogue);
-            //  stages["Village"].AddLines(new Lines("BoringConversation", "", "Player", "Why are you following me?", stages["Village"], Lines.LineType.Player));
-
+            
             for (int i = 0; i < 72; i++) { stages["Village"].addActor("SarcenStone" + i, new Actor("Sarcen" + i, "SarcenStoneSmall", 2000 * Vector2.One + 2000 * new Vector2((float)Math.Cos(10 * i), (float)Math.Sin(10 * i)), stages["Village"])); }
 
             stages["Village"].addActor("Shack1", new Actor("Shack1", "Shack", new Vector2(600, 2000)));
@@ -225,9 +214,32 @@ namespace StoneCircle
             VillageIntro.AddEVENT(new EVENTChangeAmbient(stages["Village"], new Vector3(1f, 1f, .5f), .5f, 15000f));
             VillageIntro.AddEVENT(new EVENTActorAddItem(gameManager.Player, new Sword(gameManager.Player)));
             stages["Village"].AddEVENT(VillageIntro);
-            //Stages["Village"].RunEVENT("Zoom");
-            //GM.player.SetAction("FightStance");
             gameManager.Player.StartBleeding();
+
+            Stage Court = new Stage("Court", this);
+            SerialEVENTGroup Intro = new SerialEVENTGroup("Introduction");
+            Intro.AddEVENT(new EVENTDialogueConfirmed("Bleh", "Do you like RPG style question loops?", gameManager.Player, Court));
+            RingMenu DialogChoice = new RingMenu(gameManager);
+            DialogChoice.AddMenuItem(new EventItem(Court, "No", "ThumbsDownIcon", "...No", gameManager.UIManager));            
+            DialogChoice.AddMenuItem(new EventItem(Court, "Yes", "ThumbsUpIcon", "I LOVE it!", gameManager.UIManager));
+            DialogChoice.AddMenuItem(new EventItem(Court, "Introduction", "BlankIcon", "Does this work?!", gameManager.UIManager)); 
+            
+            SerialEVENTGroup AreYouSure = new SerialEVENTGroup("Yes");
+            AreYouSure.AddEVENT(new EVENTDialogueTimed("Are you sure?", gameManager.Player, Court));
+            AreYouSure.AddEVENT(new EVENTStateConditionON("PlayerIsAMoron", this));
+            AreYouSure.AddEVENT(new EVENTOpenEvent("Introduction", Court));
+            SerialEVENTGroup WiseDecision = new SerialEVENTGroup("No");
+            WiseDecision.AddEVENT(new EVENTDialogueConfirmed("Hurrah! This was a good choice, and dialog to mess with the bubble editor!", gameManager.Player, Court));
+            WiseDecision.AddEVENT(new EVENTStageChange(this, "region1"));
+            Intro.AddEVENT(new EVENTOpenMenu(DialogChoice, gameManager.UIManager));
+            Court.AddEVENT(Intro);
+            Court.AddEVENT(AreYouSure);
+            Court.AddEVENT(WiseDecision);
+
+            stages.Add("Court", Court);
+
+
+
         }
 
         /// <summary>

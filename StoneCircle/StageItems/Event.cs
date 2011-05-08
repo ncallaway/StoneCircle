@@ -15,6 +15,12 @@ namespace StoneCircle
 
         public void AddEVENT(EVENT add) { EVENTs.Add(add); }
 
+        public override void Reset()
+        {
+            ready = false;
+            foreach (EVENT E in EVENTs) E.Reset();
+        }
+        
     }
 
     class ParallelEVENTGroup : EVENTGroup
@@ -59,6 +65,7 @@ namespace StoneCircle
             index = 0;
             currentEVENT = EVENTs[index];
             currentEVENT.Start();
+            Reset();
         }
 
         public override bool Update(GameTime t)
@@ -75,6 +82,11 @@ namespace StoneCircle
             }
             return ready;
 
+        }
+
+        public override void End()
+        {
+            foreach (EVENT E in EVENTs) E.End();
         }
 
     }
@@ -97,6 +109,12 @@ namespace StoneCircle
             ready = true;
 
         }
+
+        public virtual void Reset()
+        {
+            ready = false;
+        }
+
     }
 
     class EVENTStateConditionON : EVENT
@@ -113,7 +131,8 @@ namespace StoneCircle
 
         public override void Start()
         {
-
+            SM.SetCondition(StateCondition);
+            ready = true;
         }
     }
 
@@ -244,6 +263,7 @@ namespace StoneCircle
             etime = 0;
             actor.parent.StartLine(line);
 
+            ready = false;
         }
 
         public override bool Update(GameTime t)
@@ -254,16 +274,17 @@ namespace StoneCircle
         }
     }
 
-        public class EVENTDialogueConfirmed : EVENT
+    public class EVENTDialogueConfirmed : EVENT
     {
         private Lines line;
         private Actor actor;
-        private Player player;
+        private Stage stage;
 
         internal EVENTDialogueConfirmed(String text, Actor actor, Stage stage)
         {
             line = new Lines(text, actor);
             this.actor = actor;
+            this.stage = stage;
             stage.StartLine(line);
         }
 
@@ -272,18 +293,20 @@ namespace StoneCircle
             id = callID;
             line = new Lines(text, actor);
             this.actor = actor;
-            actor.parent.StartLine(line);
+            stage.StartLine(line);
+            this.stage = stage;
         }
 
         public override void Start()
         {
-            actor.parent.StartLine(line);
 
+            stage.StartLine(line);
+            ready = false;
         }
 
         public override bool Update(GameTime t)
         {
-            if (player.Input.IsAButtonNewlyPressed()) { ready = true; actor.parent.StopLine(line); }
+            if (stage.player.Input.IsAButtonNewlyPressed()) { ready = true; stage.StopLine(line); }
             return ready;
         }
 
@@ -658,10 +681,46 @@ namespace StoneCircle
 
     class EVENTOpenMenu : EVENT
     {
+        UserMenus.Menu target;
+        UserMenus.UIManager UIM;
+
+        public EVENTOpenMenu(UserMenus.Menu target, UserMenus.UIManager UIM)
+        {
+            this.target = target;
+            this.UIM = UIM;
+            
+        }
+
+        public override void Start()
+        {
+            UIM.OpenMenu(target);
+            ready = true;
+        }
+
+    }
+
+    class EVENTOpenEvent : EVENT
+    {
+        String nextEvent;
+        Stage stage;
         
+        public EVENTOpenEvent(String Next, Stage Stage)
+        {
+            nextEvent= Next;
+            stage = Stage;
+        }
 
+        public override void Start()
+        {
+            ready = true;
+        }
 
+        public override void End()
+        {
 
+            stage.RunEvent(nextEvent);
+            ready = false;
+        }
 
     }
 
