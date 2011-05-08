@@ -48,9 +48,9 @@ namespace StoneCircle
         [XmlIgnoreAttribute]
         
         public SpriteFont font;
-        List<Lines> conversations = new List<Lines>();
         List<Lines> openConversations = new List<Lines>();
         List<EVENT> currentEvents = new List<EVENT>();
+        
 
         [XmlIgnoreAttribute]
         public Dictionary<String, EVENT> events = new Dictionary<String, EVENT>();
@@ -170,7 +170,7 @@ namespace StoneCircle
         }
         public void RunEvent(String next)
         {
-            if (events.ContainsKey(next)) { EVENT eventInstance = (events[next]); eventInstance.Start(); currentEvents.Add(eventInstance); }
+            if (events.ContainsKey(next)) { EVENT eventInstance = (events[next]); eventInstance.Reset(); eventInstance.Start();  currentEvents.Add(eventInstance); }
 
         }
 
@@ -267,7 +267,7 @@ namespace StoneCircle
 
 
         public void Update(GameTime t)
-        {
+        {   
             Vector2[] LPosition = new Vector2[6];
             float[] Radius = new float[6];
             foreach (LightSource l in lights)
@@ -295,7 +295,7 @@ namespace StoneCircle
 
             List<EVENT> finishedEvents = new List<EVENT>();
             foreach (EVENT E in currentEvents) { if (E.Update(t)) finishedEvents.Add(E); }
-            foreach (EVENT E in finishedEvents) currentEvents.Remove(E);
+            foreach (EVENT E in finishedEvents) { E.End(); currentEvents.Remove(E); }
 
             foreach (Actor x in exists.Values) // This will update all the actors, 
             //  it makes sure that nobody leaves or moves through anybody else.

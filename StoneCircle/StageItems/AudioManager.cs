@@ -67,17 +67,17 @@ namespace StoneCircle
         private void loadSong(ContentManager CM, String assetName, String callName)
         {
 
-            Song asset = CM.Load<Song>(assetName);
-            BGMList.Add(callName, asset);
+            //Song asset = CM.Load<Song>(assetName);
+            //BGMList.Add(callName, asset);
 
         }
 
         public void SetSong(String callName)
         {
-            currentBGM = BGMList[callName];
+          //  currentBGM = BGMList[callName];
             MediaPlayer.Volume = .2f;
             MediaPlayer.IsRepeating =true;
-            MediaPlayer.Play(currentBGM);
+          //  MediaPlayer.Play(currentBGM);
 
         }
 

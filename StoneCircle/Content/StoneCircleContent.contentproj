@@ -84,18 +84,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TchaikovskyWaltzoftheFlowersHoustonSymphonySergiuComissiona64k.mp3">
-      <Name>FlowerWaltz</Name>
-      <Importer>Mp3Importer</Importer>
-      <Processor>SongProcessor</Processor>
-    </Compile>
-    <Compile Include="The LXD Elliot%27s Shoes Episode 8 Last Song.mp3">
-      <Name>LXD</Name>
-      <Importer>Mp3Importer</Importer>
-      <Processor>SongProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="misc012.wav">
       <Name>fire</Name>
       <Importer>WavImporter</Importer>

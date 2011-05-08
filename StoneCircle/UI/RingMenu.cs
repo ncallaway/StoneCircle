@@ -31,7 +31,6 @@ namespace  UserMenus
             this.gameManager = gameManager;
             this.parent = gameManager.UIManager;
             player = gameManager.Player;
-            audioManager = gameManager.AudioManager;
         }
 
         public override void Initialize()
@@ -40,7 +39,7 @@ namespace  UserMenus
             font = parent.Font;
             current_index = 0;
             title = "";
-
+            audioManager = gameManager.AudioManager;
             
         }
 
@@ -57,9 +56,9 @@ namespace  UserMenus
                     if (player.Input.LStickPosition().LengthSquared() > .5f)
                     {
                          degree = 450 + 180/menuitems.Count + (int)MathHelper.ToDegrees((float)Math.Atan2(player.Input.LStickPosition().Y , player.Input.LStickPosition().X));
-                        current_index = (int) Math.Floor( (double)((degree % 360) / (360 / menuitems.Count + 1)));
-                        current = menuitems.ElementAt(current_index);
-                        if (last != current) audioManager.PlayEffect("menuBeep");
+                         current_index = (int) Math.Floor( (double)((degree % 360) / (360 / menuitems.Count + 1)));
+                         current = menuitems.ElementAt(current_index);
+                      //  if (last != current) audioManager.PlayEffect("menuBeep");
                     }
                     else current = null;
                         

@@ -14,7 +14,7 @@ namespace StoneCircle
 {
     class Actor
     {
-        protected String name; // Name of the actor.
+        protected String name;  // Name of the actor.
         public String Name { get { return name; } }
 
         protected List<String> properties = new List<String>();

@@ -75,7 +75,8 @@ namespace UserMenus
 
         public void OpenMenu(Menu menu)
         {
-            // Manager.AM.PauseSounds();
+            if (!menu.Loaded) { menu.Load(contentManager); menu.Initialize(); }
+            
             currentMenus.Push(menu);
         }
 
