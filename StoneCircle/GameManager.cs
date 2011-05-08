@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using System.IO;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -42,6 +44,7 @@ namespace StoneCircle
         private UIManager uiManager;
         private ContentManager contentManager;
         private StageManager stageManager;
+        private DeviceManager deviceManager;
 
         /// <summary>
         /// Creates a new game manager object (including the important sub-manager objects, like the UIManager). This
@@ -58,6 +61,7 @@ namespace StoneCircle
             uiManager = new UIManager(this);
             stageManager = new StageManager(this);
             audioManager = new AudioManager();
+            deviceManager = new DeviceManager();
 
         }
 
@@ -74,8 +78,72 @@ namespace StoneCircle
             UIManager.Initialize();
         }
 
+        private bool saveRequested;
+        private bool loadRequested;
+
+        private void saveGame(Stream outputStream)
+        {
+            BinaryWriter binary = new BinaryWriter(outputStream);
+            StageManager.FullSave(binary);
+            binary.Close();
+        }
+
+        private void loadGame(Stream inputStream)
+        {
+            BinaryReader reader = new BinaryReader(inputStream);
+
+            StageManager throwaway = new StageManager();
+            throwaway.Reset(reader, null);
+
+        }
+
         public void Update(GameTime T)
         {
+            deviceManager.Update();
+
+            if ((loadRequested || saveRequested)) {
+                if (deviceManager.HasStorageContainer(PlayerIndex.One)) {
+                    StorageContainer saveContainer = deviceManager.GetStorageContainer(PlayerIndex.One);
+
+                    if (loadRequested)
+                    {
+                        Stream s = saveContainer.OpenFile("Stages.bin", FileMode.Open);
+                        loadGame(s);
+                        loadRequested = false;
+                    }
+                    else
+                    {
+                        Stream s = saveContainer.OpenFile("Stages.bin", FileMode.Create);
+                        saveGame(s);
+                        saveRequested = false;
+                    }
+                }
+            }
+
+            if (Player.Input.IsLeftBumperNewlyPressed())
+            {
+#if XBOX
+                /* Request the container */
+                saveRequested = true;
+                deviceManager.RequestStorageContainer(PlayerIndex.One);
+#else
+                Stream stream = File.Open("Stages.bin", FileMode.Create);
+                saveGame(stream);
+#endif
+                
+            }
+
+            if (Player.Input.IsRightBumperNewlyPressed())
+            {
+#if XBOX
+                loadRequested = true;
+                deviceManager.RequestStorageContainer(PlayerIndex.One);
+#else
+                Stream stream = File.Open("Stages.bin", FileMode.Open);
+                loadGame(stream);
+#endif
+            }
+
             UIManager.Update(T);
             if (!UIManager.OpenMenus) StageManager.Update(T);
         }

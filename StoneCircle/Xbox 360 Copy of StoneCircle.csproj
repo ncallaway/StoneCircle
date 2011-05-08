@@ -83,6 +83,7 @@
     <Compile Include="Actors\Tree.cs" />
     <Compile Include="Actions\Burning.cs" />
     <Compile Include="AIManager.cs" />
+    <Compile Include="DeviceManager.cs" />
     <Compile Include="Follower.cs" />
     <Compile Include="ISaveable.cs" />
     <Compile Include="SerializationType.cs" />

@@ -38,6 +38,7 @@ namespace StoneCircle
             graphics.IsFullScreen = false;
             Content.RootDirectory = "Content";
             Components.Add(new GamerServicesComponent(this));
+
             Manager = new GameManager(this.Content);
         }
 
