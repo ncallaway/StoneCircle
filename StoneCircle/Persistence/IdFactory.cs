@@ -7,7 +7,7 @@ namespace StoneCircle.Persistence
 {
     static class IdFactory
     {
-        private static uint nextId = 0;
+        private static uint nextId = 1;
 
         public static uint GetNextId()
         {

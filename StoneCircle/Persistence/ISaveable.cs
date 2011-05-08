@@ -6,10 +6,12 @@ using System.IO;
 
 namespace StoneCircle.Persistence
 {
+    
     public interface ISaveable
     {
         void Save(BinaryWriter writer, SaveType type);
         void Load(BinaryReader reader, SaveType type);
+        void Inflate();
 
         List<ISaveable> GetSaveableRefs(SaveType type);
         uint GetId();

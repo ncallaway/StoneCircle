@@ -134,8 +134,10 @@
     <Compile Include="Follower.cs" />
     <Compile Include="Persistence\IdFactory.cs" />
     <Compile Include="Persistence\ISaveable.cs" />
+    <Compile Include="Persistence\SaveableList.cs" />
     <Compile Include="Persistence\Saver.cs" />
     <Compile Include="Persistence\SaveType.cs" />
+    <Compile Include="Persistence\TypeConverter.cs" />
     <Compile Include="StageItems\Event.cs" />
     <Compile Include="StageItems\AudioManager.cs" />
     <Compile Include="Camera.cs" />

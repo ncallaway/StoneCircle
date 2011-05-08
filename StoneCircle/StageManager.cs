@@ -365,7 +365,7 @@ namespace StoneCircle
 
         public void Save(BinaryWriter writer, SaveType type)
         {
-            // save nothing for now!
+            Saver.SaveStringList(stateConditions, writer);
         }
 
         public void Load(BinaryReader reader, SaveType type)
@@ -381,6 +381,12 @@ namespace StoneCircle
         public uint GetId()
         {
             return this.id;
+        }
+
+
+        public void Inflate()
+        {
+            throw new NotImplementedException();
         }
     }
 }
