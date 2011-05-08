@@ -22,109 +22,19 @@ namespace StoneCircle
     {
         Actor actor;
         String text;
-        protected String callID;
-        public String CallID { get { return callID; } }
-        String nextLine;
-        String actorID;
-        public String ActorID { get { return actorID; } }
-        public String NextLine { get { return nextLine; } }
         SpriteFont font;
-        LineType type;
-        int time;
-        Stage stage;
         bool talkThought;
         Texture2D image;
+        String[] lines = new String[5];
+        int[] lineSpace = new int[5];
 
-
-
-
-        public enum LineType
-        {
-            Timed,
-            Player
-        }
 
         public Lines() { }
 
-        public Lines(String call, String nextID, String Text)
+        public Lines(String text, Actor actor)
         {
-            text = Text;
-            callID = call;
-            nextLine = nextID;
-            type = LineType.Timed;
-            talkThought = true;
-
-        }
-
-        public Lines(String call, String nextID, String Text, Stage Stage)
-        {
-            text = Text;
-            callID = call;
-            nextLine = nextID;
-            stage = Stage;
-            type = LineType.Timed;
-            talkThought = true;
-        }
-
-        public Lines(String call, String nextID, String Text, Stage Stage, bool Player)
-        {
-            text = Text;
-            callID = call;
-            nextLine = nextID;
-            stage = Stage;
-            type = LineType.Player;
-            this.actor = stage.player;
-        }
-
-
-        public virtual void Start()
-        {
-            time = 0;
-
-            actor = stage.GetActor(actorID);
-            actor.Talking();
-        }
-
-        public Lines(String call, String nextID, String Text, Stage Stage, LineType Type)
-        {
-            text = Text;
-            callID = call;
-            nextLine = nextID;
-            stage = Stage;
-            type = Type;
-            talkThought = true;
-        }
-
-        public Lines(String call, String nextID, String ActorID, String Text, Stage Stage, LineType Type)
-        {
-            text = Text;
-            callID = call;
-            nextLine = nextID;
-            stage = Stage;
-            type = Type;
-            talkThought = true;
-            actorID = ActorID;
-        }
-        
-        public virtual bool Update(GameTime t)
-        {
-            switch (type)
-            {
-                case LineType.Timed:
-                    if (time == 0) time = t.TotalGameTime.Seconds;
-                    if (t.TotalGameTime.Seconds - time >= 3)
-                    {
-                        time = t.TotalGameTime.Seconds;
-                        actor.DefaultAction();
-                        return true;
-                    }
-                    break;
-                case LineType.Player:
-                    if (stage.player.Input.IsAButtonNewlyPressed()) { actor.DefaultAction(); return true; }
-                    break;
-
-            }
-            return false;
+            this.text = text;
+            this.actor = actor;
         }
 
 
@@ -133,60 +43,88 @@ namespace StoneCircle
             font = CM.Load<SpriteFont>("Text");
             if (talkThought) image = CM.Load<Texture2D>("DialogueBox");
             else image = CM.Load<Texture2D>("ThoughtBox");
-            text = ProcessText();
-
-
+            ProcessText();
         }
-        private string ProcessText()
+
+        private void ProcessText()
         {
+            Vector2 sizeLength = font.MeasureString(text);
+
+
+
             string[] words = text.Split(' ');
 
-            StringBuilder sb = new StringBuilder();
-            float maxLineWidth = 100;
+            String constructor = "";
             float lineWidth = 0f;
             int lineNum = 0;
+
+            switch ((int)sizeLength.X / 60)
+            {
+                case 0: lineSpace = new int[] { 0, 0, 120, 120, 1200 }; break;
+                case 1: lineSpace = new int[] { 0, 0, 120, 120, 1200 }; break;
+                case 2: lineSpace = new int[] { 0, 0, 180, 120, 1200 }; break;
+                case 3: lineSpace = new int[] { 0, 60, 180, 120, 1200 }; break;
+                case 4: lineSpace = new int[] { 0, 60, 180, 120, 1200 }; break;
+                case 5: lineSpace = new int[] { 0, 120, 180, 120, 1200 }; break;
+                case 6: lineSpace = new int[] { 0, 120, 180, 180, 1200 }; break;
+                case 7: lineSpace = new int[] { 0, 120, 220, 180, 1200 }; break;
+                case 8: lineSpace = new int[] { 0, 180, 220, 180, 1200 }; break;
+                case 9: lineSpace = new int[] { 120, 180, 220, 180, 1200 }; break;
+                case 10: lineSpace = new int[] { 120, 180, 220, 180, 1200 }; break;
+                case 11: lineSpace = new int[] { 120, 180, 220, 180, 1200 }; break;
+                case 12: lineSpace = new int[] { 120, 180, 220, 180, 1200 }; break;
+
+            }
+
 
             float spaceWidth = font.MeasureString(" ").X;
 
             foreach (string word in words)
             {
                 Vector2 size = font.MeasureString(word);
-                switch (lineNum)
+
+                if (lineWidth + size.X < lineSpace[lineNum])
                 {
-                    case 0: maxLineWidth = 90; break;
-                    case 1: maxLineWidth = 180; break;
-                    case 2: maxLineWidth = 230; break;
-                    case 3: maxLineWidth = 180; break;
-                    case 4: maxLineWidth = 90; break;
-                }
-                if (lineWidth + size.X < maxLineWidth)
-                {
-                    sb.Append(word + " ");
+                    constructor = constructor + " " + word;
                     lineWidth += size.X + spaceWidth;
                 }
+
                 else
                 {
+                    sizeLength = font.MeasureString(constructor);
+                    lineSpace[lineNum] = (int)((image.Width - 10) - lineWidth) / 2;
+                    if (constructor != null) lines[lineNum] = constructor; else lines[lineNum] = "  ";
+
                     lineNum++;
-                    sb.Append("\n" + word + " ");
+                    constructor = "" + word;
                     lineWidth = size.X + spaceWidth;
                 }
             }
-            return sb.ToString();
-        }
 
+            sizeLength = font.MeasureString(constructor);
+            lineSpace[lineNum] = (int)((image.Width - 10) - lineWidth) / 2;
+            lines[lineNum] = constructor;
+
+
+        }
+        
 
         public virtual void Draw(SpriteBatch batch, Vector2 camera_pos, float camera_scale)
         {
-            batch.Draw(image, new Vector2(683 + 20, 384 - actor.ImageHeight) + (camera_scale * (actor.Position - camera_pos)), new Rectangle(0, 0, image.Width, image.Height), new Color(1f, 1f, 1f, .8f), 0f, new Vector2(0, image.Height), camera_scale-.01f, SpriteEffects.None, 0.1f);
-
-            batch.DrawString(font, text, new Vector2(683 + 25, 364 + 40 - actor.ImageHeight - image.Height) + (camera_scale * (actor.Position - camera_pos)), Color.Black, 0f, Vector2.Zero, camera_scale, SpriteEffects.None, 0f);
-            batch.DrawString(font, text, new Vector2(683 + 25, 364 + 40 - actor.ImageHeight - image.Height) + (camera_scale * (actor.Position - camera_pos)), Color.Black, 0f, Vector2.Zero, camera_scale, SpriteEffects.None, 0f);
+            batch.Draw(image, new Vector2(683 + 20, 384 - actor.ImageHeight) + (camera_scale * (actor.Position - camera_pos)), new Rectangle(0, 0, image.Width, image.Height), new Color(1f, 1f, 1f, .8f), 0f, new Vector2(0, image.Height), camera_scale - .01f, SpriteEffects.None, 0.1f);
+            for (int i = 0; i < 5; i++)
+            {
+                if (lines[i] != null)
+                {
+                    batch.DrawString(font, lines[i], new Vector2(683 + (25 + lineSpace[i])*camera_scale, 364 + (40 + (25 * i))*camera_scale - actor.ImageHeight - image.Height) + (camera_scale * (actor.Position - camera_pos)), Color.Black, 0f, Vector2.Zero, camera_scale, SpriteEffects.None, 0f);
+                    batch.DrawString(font, lines[i], new Vector2(683 + (25 + lineSpace[i]) * camera_scale, 364 + (40 + (25 * i))*camera_scale - actor.ImageHeight - image.Height) + (camera_scale * (actor.Position - camera_pos)), Color.Black, 0f, Vector2.Zero, camera_scale, SpriteEffects.None, 0f);
+                }
+            }
         }
-
 
     }
 
-
+/*
     class LinesMenu : Lines 
     {
         RingMenu menu;
@@ -212,7 +150,7 @@ namespace StoneCircle
         public override void Draw(SpriteBatch batch, Vector2 camera_pos, float camera_scale)
         { }
 
-    }
+    }*/
 }
 
        

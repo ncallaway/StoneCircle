@@ -70,6 +70,25 @@ namespace UserMenus
 
     }
 
+    class StateConditionItem : MenuItem
+    {
+        String stateCondition;
+        StageManager stageManager;
+
+        public StateConditionItem(String StateCondition, StageManager SM)
+        {
+            stateCondition = StateCondition;
+            stageManager = SM;
+        }
+
+        public override void execute()
+        {
+            stageManager.SetCondition(stateCondition);
+            
+        }
+
+    }
+
     class InventoryItem : MenuItem
     {
         public Item item;
@@ -114,4 +133,98 @@ namespace UserMenus
 
     }
 
+    class EventItem : MenuItem
+    {
+        String nextEvent;
+        UIManager UI;
+        Stage stage;
+
+
+
+        public EventItem(Stage Stage, String Next, String Icon, String id, UIManager uI)
+        {
+            nextEvent = Next;
+            stage = Stage;
+            this.id = id;
+            iconName = Icon;
+            color = Color.NavajoWhite;
+            UI = uI;
+
+        }
+
+        public EventItem(Stage Stage, String Next, bool yesNo, UIManager uI)
+        {
+            nextEvent = Next;
+            stage = Stage;
+
+
+            if (yesNo) { iconName = "ThumbsUpIcon"; id = "Yes"; }
+            else { iconName = "ThumbsDownIcon"; id = "No"; }
+
+            color = Color.Beige;
+            UI = uI;
+        }
+
+        public override void execute()
+        {
+            stage.RunEvent(nextEvent);
+            UI.CloseMenu();
+
+        }
+
+
+    }
+
+    class ChangeLevelItem : MenuItem
+    {
+        StageManager SM;
+        UIManager UI;
+
+        public enum LevelState
+        {
+            Unavailable,
+            Unknown,
+            Available,
+            Current
+
+        }
+
+        public ChangeLevelItem(String targetName, StageManager sM, UIManager uI)
+        {
+            id = targetName;
+            SM = sM;
+            UI = uI;
+
+
+        }
+
+
+        public override void execute()
+        {
+            SM.SetStage(id);
+            UI.CloseMenu();
+        }
+    }
+
+    class ChangeBGMItem : MenuItem
+    {
+        AudioManager AM;
+        UIManager UI;
+
+        public ChangeBGMItem(String targetName, AudioManager aM, UIManager uI)
+        {
+            id = targetName;
+            AM = aM;
+            UI = uI;
+            color = Color.NavajoWhite;
+
+        }
+
+
+        public override void execute()
+        {
+            AM.SetSong(id);
+            UI.CloseMenu();
+        }
+    }
 }

@@ -178,6 +178,7 @@ namespace StoneCircle
             switch (m_Mode)
             {
                 case InputMode.Player1:
+                  //  return new Vector2(IsMoveRightPressed() - IsMoveLeftPressed(), IsMoveDownPressed() - (int)IsMoveUpPressed());
                     return new Vector2(m_newControllerState[0].ThumbSticks.Left.X, -m_newControllerState[0].ThumbSticks.Left.Y);
                 case InputMode.Player2:
                     return new Vector2(m_newControllerState[1].ThumbSticks.Left.X, -m_newControllerState[1].ThumbSticks.Left.Y);
@@ -292,7 +293,7 @@ namespace StoneCircle
             switch (m_Mode)
             {
                 case InputMode.Player1:
-                    bool keyboardNewlyReleased = m_newState.IsKeyUp(Keys.Tab) && m_oldState.IsKeyDown(Keys.Tab);
+                    bool keyboardNewlyReleased =  m_oldState.IsKeyDown(Keys.Tab);
                     bool controllerNewlyReleased = m_newControllerState[0].IsButtonDown(Buttons.RightShoulder);
                     return keyboardNewlyReleased || controllerNewlyReleased;
                 case InputMode.Player2:
@@ -476,8 +477,8 @@ namespace StoneCircle
             switch (m_Mode)
             {
                 case InputMode.Player1:
-                    System.Console.WriteLine("Controller right: " + m_newControllerState[0].Triggers.Right);
-                    return m_newState.IsKeyDown(Keys.Space) || m_newControllerState[0].Triggers.Right > .8;
+                    
+                    return m_newState.IsKeyDown(Keys.LeftShift) || m_newControllerState[0].Triggers.Right > .8;
                 case InputMode.Player2:
                     return m_newState.IsKeyDown(Keys.NumPad0);
                 default:

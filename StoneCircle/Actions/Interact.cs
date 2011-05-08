@@ -20,7 +20,7 @@ namespace StoneCircle
             id = "Interact";
             
             EffectBox = new BoundingBox(new Vector3(0, 0, 0), new Vector3(60, 60, 80));
-            maxFrame = 10;
+            maxFrame = 2;
         }
 
         public override void Update(Microsoft.Xna.Framework.GameTime t, Dictionary<String, Actor>.ValueCollection targets)
@@ -35,7 +35,7 @@ namespace StoneCircle
                     AvailableHigh.LStickAction = null;
                     break;
 
-                case 9:
+                case 1:
 
 
                     AvailableLow.LStickAction = "Walking";

@@ -56,7 +56,7 @@ namespace  UserMenus
             player.Input.Update();
                     if (player.Input.LStickPosition().LengthSquared() > .5f)
                     {
-                         degree =450 + 180/menuitems.Count + (int)MathHelper.ToDegrees((float)Math.Atan2(player.Input.LStickPosition().Y , player.Input.LStickPosition().X));
+                         degree = 450 + 180/menuitems.Count + (int)MathHelper.ToDegrees((float)Math.Atan2(player.Input.LStickPosition().Y , player.Input.LStickPosition().X));
                         current_index = (int) Math.Floor( (double)((degree % 360) / (360 / menuitems.Count + 1)));
                         current = menuitems.ElementAt(current_index);
                         if (last != current) audioManager.PlayEffect("menuBeep");
@@ -73,6 +73,7 @@ namespace  UserMenus
             
                 }
         
+
 
         public override void Draw(SpriteBatch batch)
         {

@@ -23,7 +23,7 @@ namespace StoneCircle
     /// <summary>
     /// Manages a stage
     /// </summary>
-    [Serializable]
+
     public class StageManager
     {
 
@@ -32,9 +32,9 @@ namespace StoneCircle
 
         private List<String> stateConditions = new List<String>();
         public List<String> StateConditions { get { return stateConditions; } }
-        [NonSerialized]
+
         internal ContentManager contentManager;
-        [NonSerialized]
+
         private GameManager gameManager;
 
         public StageManager(GameManager gameManager)
@@ -91,17 +91,18 @@ namespace StoneCircle
 
 
             stages["region1"].AddTrigger(new Trigger("Bandage", new TriggerANDCondition(new TriggerPlayerBoxCondition(new BoundingBox(new Vector3(600, 400, 0), new Vector3(601, 1200, 1)), gameManager.Player), new TriggerActorHasProperty(gameManager.Player, "Bleeding")), true, true));
-            ParallelEVENTGroup Bandage = new ParallelEVENTGroup("Bandage");
-            Bandage.AddEVENT(new EVENTDialogue("Bandage", stages["region1"]));
+            SerialEVENTGroup Bandage = new SerialEVENTGroup("Bandage");
+            Bandage.AddEVENT(new EVENTDialogueTimed("I'm losing a lot of blood... I'll need to bandage myself if I don't want to bleed to death", gameManager.Player, stages["region1"]));
+            Bandage.AddEVENT(new EVENTDialogueTimed("Hold RT and press Y. Don't move until you've finished bandaging.", gameManager.Player, stages["region1"]));
             Bandage.AddEVENT(new EVENTActorAddItem(gameManager.Player, new Lantern(gameManager.Player)));
             stages["region1"].AddEVENT("Bandage", Bandage);
             stages["region1"].AddTrigger(new Trigger("region2trans", new TriggerPlayerBoxCondition(new BoundingBox(new Vector3(300, 1200, 0), new Vector3(2000, 1201, 0)), gameManager.Player), true, false));
             stages["region1"].AddEVENT("region2trans", new EVENTStageChange(this, "region2"));
 
-            stages["region1"].AddLines(new Lines("Forest1", "", "Player", "I've got to get out of here... Must... warn... the village", stages["region1"], Lines.LineType.Player));
-            stages["region1"].AddLines(new Lines("Bandage", "Instructions", "Player", "I'm losing a lot of blood... I'll need to bandage myself if I don't want to bleed to death", stages["region1"], Lines.LineType.Player));
-            stages["region1"].AddLines(new Lines("Instructions", "", "Player", "Hold RT and press Y. Don't move until you've finished bandaging.", stages["region1"], Lines.LineType.Player));
-            stages["region1"].AddLines(new Lines("Village", "", "Player", "If I follow this stream to the South I should come across the village of SouthStreamVillage", stages["region1"], Lines.LineType.Player));
+            //stages["region1"].AddEVENT(new EVENTDialogueTimed("Forest1", "", "Player", "I've got to get out of here... Must... warn... the village", stages["region1"], Lines.LineType.Player));
+            //stages["region1"].AddLines(new Lines("Bandage", "Instructions", "Player", "I'm losing a lot of blood... I'll need to bandage myself if I don't want to bleed to death", stages["region1"], Lines.LineType.Player));
+            // stages["region1"].AddLines(new Lines("Instructions", "", "Player", "Hold RT and press Y. Don't move until you've finished bandaging.", stages["region1"], Lines.LineType.Player));
+            // stages["region1"].AddLines(new Lines("Village", "", "Player", "If I follow this stream to the South I should come across the village of SouthStreamVillage", stages["region1"], Lines.LineType.Player));
 
             // Stages["region1"].addActor("Fire1", new Fire(new Vector2(-100, 900), Stages["region1"], gameManager));
             stages["region1"].addLight("Light", new Vector2(-100, 600), 1200);
@@ -113,7 +114,7 @@ namespace StoneCircle
             testPar1.AddEVENT(new EVENTSetCameraLocation(stages["region1"].camera, new Vector2(684, 600)));
             testPar1.AddEVENT(new EVENTPlayerDeactivate(gameManager.Player));
             testIntroduction.AddEVENT(testPar1);
-            testIntroduction.AddEVENT(new EVENTDialogue("Forest1", stages["region1"]));
+            testIntroduction.AddEVENT(new EVENTDialogueTimed("I've got to get out of here... Must... warn... the village", gameManager.Player, stages["region1"]));
             ParallelEVENTGroup testPar2 = new ParallelEVENTGroup();
             testPar1.AddEVENT(new EVENTCameraDeactivate(stages["region1"].camera));
             testPar2.AddEVENT(new EVENTMoveCamera(stages["region1"].camera, new Vector2(900, 600), 2000f));
@@ -145,25 +146,24 @@ namespace StoneCircle
             stages["Village"].addLight(new LightSource("SarcenGlow", new Vector2(950, 600), 500f, stages["Village"], null));
             stages["Village"].AMBColor = new Vector3(.5f, .5f, 1f);
             Follower annyoingGuy = new Follower("Follower", new Vector2(1400, 600), stages["Village"], gameManager);
-            stages["Village"].AddTrigger(new Trigger("DeadGuyItem",new TriggerANDCondition(new TriggerPlayerInteracting(annyoingGuy), new TriggerActorHasProperty(annyoingGuy, "Dead")), true, true));
-            stages["Village"].AddTrigger(new Trigger("NotDeadGuyItem",new TriggerANDCondition(new TriggerPlayerInteracting(annyoingGuy), new TriggerActorHasNotProperty(annyoingGuy, "Dead")), true, false));
-            
-            
+            stages["Village"].AddTrigger(new Trigger("DeadGuyItem", new TriggerANDCondition(new TriggerPlayerInteracting(annyoingGuy), new TriggerActorHasProperty(annyoingGuy, "Dead")), true, true));
+            stages["Village"].AddTrigger(new Trigger("NotDeadGuyItem", new TriggerANDCondition(new TriggerPlayerInteracting(annyoingGuy), new TriggerActorHasNotProperty(annyoingGuy, "Dead")), true, false));
+
+
             ParallelEVENTGroup LootBody = new ParallelEVENTGroup("DeadGuyItem");
             LootBody.AddEVENT(new EVENTActorAddItem(gameManager.Player, new Item("SeveredHand", "ThumbsUpIcon")));
-            LootBody.AddEVENT(new EVENTDialogue("BodyLooting", stages["Village"]));
-            stages["Village"].AddLines(new Lines("BodyLooting", "", "Player", "Sweet! A Severed hand!", stages["Village"], Lines.LineType.Player));
+            LootBody.AddEVENT(new EVENTDialogueTimed("Sweet! A Severed hand!", gameManager.Player, stages["Village"]));
             SerialEVENTGroup AnnoyingGuyDialogue = new SerialEVENTGroup("NotDeadGuyItem");
 
-            AnnoyingGuyDialogue.AddEVENT(new EVENTDialogue("BoringConversation", stages["Village"]));
-            AnnoyingGuyDialogue.AddEVENT(new EVENTDialogue("BoringConversation2", stages["Village"]));
+            //   AnnoyingGuyDialogue.AddEVENT(new EVENTDialogue("Why are you following me?", gameManager.Player));
+            //  AnnoyingGuyDialogue.AddEVENT(new EVENTDialogue("BoringConversation2", stages["Village"]));
             AnnoyingGuyDialogue.AddEVENT(new EVENTActorAddProperty(annyoingGuy, "Dead"));
 
             stages["Village"].AddActor(annyoingGuy, new Vector2(1400, 600));
 
             stages["Village"].AddEVENT(LootBody);
             stages["Village"].AddEVENT(AnnoyingGuyDialogue);
-            stages["Village"].AddLines(new Lines("BoringConversation", "", "Player", "Why are you following me?", stages["Village"], Lines.LineType.Player));
+            //  stages["Village"].AddLines(new Lines("BoringConversation", "", "Player", "Why are you following me?", stages["Village"], Lines.LineType.Player));
 
             for (int i = 0; i < 72; i++) { stages["Village"].addActor("SarcenStone" + i, new Actor("Sarcen" + i, "SarcenStoneSmall", 2000 * Vector2.One + 2000 * new Vector2((float)Math.Cos(10 * i), (float)Math.Sin(10 * i)), stages["Village"])); }
 

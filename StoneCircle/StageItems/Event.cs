@@ -6,20 +6,18 @@ using System.Text;
 using Microsoft.Xna.Framework;
 
 namespace StoneCircle
-
-
 {
 
     class EVENTGroup : EVENT
     {
         protected List<EVENT> EVENTs = new List<EVENT>();
-        
+
 
         public void AddEVENT(EVENT add) { EVENTs.Add(add); }
 
     }
 
-    class ParallelEVENTGroup: EVENTGroup
+    class ParallelEVENTGroup : EVENTGroup
     {
         public ParallelEVENTGroup(String callID)
         {
@@ -69,8 +67,10 @@ namespace StoneCircle
             {
                 index++;
                 if (index >= EVENTs.Count) { ready = true; }
-                else { currentEVENT = EVENTs[index];
-                currentEVENT.Start();
+                else
+                {
+                    currentEVENT = EVENTs[index];
+                    currentEVENT.Start();
                 }
             }
             return ready;
@@ -88,18 +88,18 @@ namespace StoneCircle
 
 
 
-        public virtual void Start(){  }
+        public virtual void Start() { }
 
         public virtual bool Update(GameTime t) { return ready; }
 
         public virtual void End()
         {
             ready = true;
-            
+
         }
     }
 
-     class EVENTStateConditionON : EVENT
+    class EVENTStateConditionON : EVENT
     {
         StageManager SM;
         String StateCondition;
@@ -113,11 +113,11 @@ namespace StoneCircle
 
         public override void Start()
         {
-            
+
         }
     }
 
-     class EVENTPlayerDeactivate : EVENT
+    class EVENTPlayerDeactivate : EVENT
     {
         Player player;
         public EVENTPlayerDeactivate(Player player)
@@ -134,7 +134,7 @@ namespace StoneCircle
 
     class EVENTPlayerReactivate : EVENT
     {
-        
+
         Player player;
         public EVENTPlayerReactivate(Player player)
         { this.player = player; }
@@ -153,14 +153,14 @@ namespace StoneCircle
     class EVENTStageDeactivate : EVENT
     {
         Stage stage;
-        
+
         public EVENTStageDeactivate(Stage stage)
         { this.stage = stage; }
 
 
         public override void Start()
         {
-            foreach ( Actor A in stage.Actors) A.Active = false;
+            foreach (Actor A in stage.Actors) A.Active = false;
             ready = true;
         }
 
@@ -168,7 +168,7 @@ namespace StoneCircle
 
     public class EVENTStageReactivate : EVENT
     {
-        
+
         Stage stage;
 
         internal EVENTStageReactivate(Stage stage)
@@ -177,67 +177,113 @@ namespace StoneCircle
 
         public override void Start()
         {
-            foreach ( Actor A in stage.Actors) A.Active = false;
+            foreach (Actor A in stage.Actors) A.Active = false;
             ready = true;
         }
 
     }
-    
+
     public class EVENTCameraDeactivate : EVENT
-     {
-
-         Camera camera;
-
-         internal EVENTCameraDeactivate(Camera camera)
-         { this.camera = camera; }
-
-
-         public override void Start()
-         {
-             camera.Active = false;
-             ready = true;
-         }
-
-     }
-
-    public class EVENTCameraReactivate : EVENT
-     {
-
-         Camera camera;
-
-         internal EVENTCameraReactivate(Camera camera)
-         { this.camera = camera; }
-
-
-         public override void Start()
-         {
-             camera.Active = true;
-             ready = true;
-         }
-
-     }
-
-    public class EVENTDialogue : EVENT
     {
 
-        private String dialogueID;
-        private Stage Stage;
+        Camera camera;
 
-        internal EVENTDialogue(String callID, Stage stage)
+        internal EVENTCameraDeactivate(Camera camera)
+        { this.camera = camera; }
+
+
+        public override void Start()
         {
-            dialogueID = callID;
-            Stage = stage;
+            camera.Active = false;
+            ready = true;
+        }
+
+    }
+
+    public class EVENTCameraReactivate : EVENT
+    {
+
+        Camera camera;
+
+        internal EVENTCameraReactivate(Camera camera)
+        { this.camera = camera; }
+
+
+        public override void Start()
+        {
+            camera.Active = true;
+            ready = true;
+        }
+
+    }
+
+    public class EVENTDialogueTimed : EVENT
+    {
+        private Lines line;
+        private Actor actor;
+        private float etime;
+        const float TEXTTIME = 5000f;
+
+        internal EVENTDialogueTimed(String text, Actor actor, Stage stage)
+        {
+            line = new Lines(text, actor);
+            this.actor = actor;
+            stage.StartLine(line);
+        }
+
+        internal EVENTDialogueTimed(String callID, String text, Actor actor)
+        {
+            id = callID;
+            line = new Lines(text, actor);
+            this.actor = actor;
+            actor.parent.StartLine(line);
         }
 
         public override void Start()
         {
-            Stage.RunLine(dialogueID);
-            
+            etime = 0;
+            actor.parent.StartLine(line);
+
         }
 
         public override bool Update(GameTime t)
         {
-            if (Stage.input.IsAButtonNewlyPressed()) { ready = true; Stage.RemoveDialogue(dialogueID); }
+            etime += t.ElapsedGameTime.Milliseconds;
+            if (etime > TEXTTIME) { ready = true; actor.parent.StopLine(line); }
+            return ready;
+        }
+    }
+
+        public class EVENTDialogueConfirmed : EVENT
+    {
+        private Lines line;
+        private Actor actor;
+        private Player player;
+
+        internal EVENTDialogueConfirmed(String text, Actor actor, Stage stage)
+        {
+            line = new Lines(text, actor);
+            this.actor = actor;
+            stage.StartLine(line);
+        }
+
+        internal EVENTDialogueConfirmed(String callID, String text, Actor actor, Stage stage)
+        {
+            id = callID;
+            line = new Lines(text, actor);
+            this.actor = actor;
+            actor.parent.StartLine(line);
+        }
+
+        public override void Start()
+        {
+            actor.parent.StartLine(line);
+
+        }
+
+        public override bool Update(GameTime t)
+        {
+            if (player.Input.IsAButtonNewlyPressed()) { ready = true; actor.parent.StopLine(line); }
             return ready;
         }
 
@@ -274,7 +320,7 @@ namespace StoneCircle
 
         private Stage Stage;
 
-        internal EVENTAcknowledgePause(Stage stage) {Stage = stage ; }
+        internal EVENTAcknowledgePause(Stage stage) { Stage = stage; }
 
 
         public override bool Update(GameTime t)
@@ -294,24 +340,24 @@ namespace StoneCircle
         public EVENTMoveActor(Actor Actor, Vector2 Destination, Stage stage)
         {
             destination = Destination;
-            actor = Actor;          
+            actor = Actor;
             ready = false;
             Stage = stage;
         }
 
         public override void Start()
         {
-           actor.Facing = destination - actor.Position;
-           actor.Facing /= actor.Facing.Length();
+            actor.Facing = destination - actor.Position;
+            actor.Facing /= actor.Facing.Length();
 
-           actor.SetAction("Walking");
-          
+            actor.SetAction("Walking");
+
         }
 
         public override bool Update(GameTime t)
-        {  
+        {
             actor.ActionUpdate(t, Stage.Actors);
-            if((destination-actor.Position).LengthSquared() < 50f) ready = true;
+            if ((destination - actor.Position).LengthSquared() < 50f) ready = true;
             return ready;
         }
 
@@ -346,11 +392,11 @@ namespace StoneCircle
         Vector2 location;
 
         public EVENTSetCameraLocation(Camera Camera, Vector2 spot)
-    {
-        camera = Camera;
-        location = spot;
+        {
+            camera = Camera;
+            location = spot;
 
-    }
+        }
 
         public override void Start()
         {
@@ -358,7 +404,7 @@ namespace StoneCircle
             ready = true;
         }
 
-        
+
 
     }
 
@@ -393,7 +439,8 @@ namespace StoneCircle
         float time;
         float etime;
 
-        public EVENTChangeAmbient(Stage Stage, Vector3 Color, float Strength, float Time){
+        public EVENTChangeAmbient(Stage Stage, Vector3 Color, float Strength, float Time)
+        {
 
             stage = Stage;
             color = Color;
@@ -421,10 +468,10 @@ namespace StoneCircle
 
         public override bool Update(GameTime t)
         {
-            stage.AMBColor += color * t.ElapsedGameTime.Milliseconds/time;
+            stage.AMBColor += color * t.ElapsedGameTime.Milliseconds / time;
             stage.AMBStrength += strength * t.ElapsedGameTime.Milliseconds / time;
             etime += t.ElapsedGameTime.Milliseconds;
-            ready = (etime >=time);
+            ready = (etime >= time);
             return ready;
         }
 
@@ -453,13 +500,13 @@ namespace StoneCircle
         public override bool Update(GameTime t)
         {
             etime += t.ElapsedGameTime.Milliseconds;
-            camera.Pan( direction * (t.ElapsedGameTime.Milliseconds / time));
-            ready = (etime>= time);
+            camera.Pan(direction * (t.ElapsedGameTime.Milliseconds / time));
+            ready = (etime >= time);
             return ready;
         }
     }
 
-    class EVENTScaleCamera: EVENT
+    class EVENTScaleCamera : EVENT
     {
         Camera camera;
         float time;
@@ -486,8 +533,8 @@ namespace StoneCircle
         public override bool Update(GameTime t)
         {
             etime += t.ElapsedGameTime.Milliseconds;
-            camera.Zoom( ScaleInterval * t.ElapsedGameTime.Milliseconds / time); 
-            ready = (etime>=time);
+            camera.Zoom(ScaleInterval * t.ElapsedGameTime.Milliseconds / time);
+            ready = (etime >= time);
             return ready;
         }
 
@@ -586,9 +633,8 @@ namespace StoneCircle
             ready = true;
         }
     }
-    
+
     class EVENTActorAddProperty : EVENT
-    
     {
 
         Actor actor;
@@ -609,6 +655,15 @@ namespace StoneCircle
 
 
     }
-    
+
+    class EVENTOpenMenu : EVENT
+    {
+        
+
+
+
+
+    }
+
 
 }

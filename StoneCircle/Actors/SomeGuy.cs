@@ -31,8 +31,7 @@ namespace StoneCircle
             switch (affected.ID)
             {
                 case "Interact":
-                    if (current_Action.id != "Talking")  parent.RunLine("SomeGuy1");
-                   break;
+                     break;
 
                 case "UseItem":
 
