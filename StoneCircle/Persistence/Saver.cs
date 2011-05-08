@@ -16,7 +16,9 @@ namespace StoneCircle.Persistence
 
             objects.Add(root.GetId(), root);
 
-            Stack<ISaveable> toVisit = new Stack<ISaveable>(root.GetSaveableRefs(saveType));
+            Stack<ISaveable> toVisit = new Stack<ISaveable>();
+            addUnvisitedSaveablesToStack(objects, root.GetSaveableRefs(saveType), toVisit);
+
             while (toVisit.Count != 0)
             {
                 ISaveable next = toVisit.Pop();
@@ -28,14 +30,19 @@ namespace StoneCircle.Persistence
                 objects.Add(next.GetId(), next);
 
                 List<ISaveable> refs = next.GetSaveableRefs(saveType);
-                if (refs != null)
+                addUnvisitedSaveablesToStack(objects, refs, toVisit);
+            }
+        }
+
+        private void addUnvisitedSaveablesToStack(Dictionary<uint, ISaveable> visited, List<ISaveable> saveables, Stack<ISaveable> stack)
+        {
+            if (saveables != null)
+            {
+                foreach (ISaveable saveable in saveables)
                 {
-                    foreach (ISaveable saveable in refs)
+                    if (visited.ContainsKey(saveable.GetId()) == false)
                     {
-                        if (objects.ContainsKey(saveable.GetId()) == false)
-                        {
-                            toVisit.Push(saveable);
-                        }
+                        stack.Push(saveable);
                     }
                 }
             }

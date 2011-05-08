@@ -111,25 +111,25 @@ namespace StoneCircle
             stages["region1"].addLight("Light", new Vector2(-100, 600), 1200);
 
 
-            SerialEVENTGroup testIntroduction = new SerialEVENTGroup("Introduction");
-            ParallelEVENTGroup testPar1 = new ParallelEVENTGroup();
-            testPar1.AddEVENT(new EVENTMoveActor(gameManager.Player, new Vector2(150, 600), stages["region1"]));
-            testPar1.AddEVENT(new EVENTSetCameraLocation(stages["region1"].camera, new Vector2(684, 600)));
-            testPar1.AddEVENT(new EVENTPlayerDeactivate(gameManager.Player));
-            testIntroduction.AddEVENT(testPar1);
-            testIntroduction.AddEVENT(new EVENTDialogueTimed("I've got to get out of here... Must... warn... the village", gameManager.Player, stages["region1"]));
-            ParallelEVENTGroup testPar2 = new ParallelEVENTGroup();
-            testPar1.AddEVENT(new EVENTCameraDeactivate(stages["region1"].camera));
-            testPar2.AddEVENT(new EVENTMoveCamera(stages["region1"].camera, new Vector2(900, 600), 2000f));
-            testPar2.AddEVENT(new EVENTScaleCamera(stages["region1"].camera, .8f, 2000f));
-            testIntroduction.AddEVENT(testPar2);
-            testIntroduction.AddEVENT(new EVENTAcknowledgePause(stages["region1"]));
-            testIntroduction.AddEVENT(new EVENTPlayerReactivate(gameManager.Player));
-            // testPar2.AddEVENT(new PerformActionEVENT(gameManager.Player, "Resting"));
-            testIntroduction.AddEVENT(new EVENTCameraReactivate(stages["region1"].camera));
-            gameManager.Camera.setSubject(gameManager.Player);
+            //SerialEVENTGroup testIntroduction = new SerialEVENTGroup("Introduction");
+            //ParallelEVENTGroup testPar1 = new ParallelEVENTGroup();
+            //testPar1.AddEVENT(new EVENTMoveActor(gameManager.Player, new Vector2(150, 600), stages["region1"]));
+            //testPar1.AddEVENT(new EVENTSetCameraLocation(stages["region1"].camera, new Vector2(684, 600)));
+            //testPar1.AddEVENT(new EVENTPlayerDeactivate(gameManager.Player));
+            //testIntroduction.AddEVENT(testPar1);
+            //testIntroduction.AddEVENT(new EVENTDialogueTimed("I've got to get out of here... Must... warn... the village", gameManager.Player, stages["region1"]));
+            //ParallelEVENTGroup testPar2 = new ParallelEVENTGroup();
+            //testPar1.AddEVENT(new EVENTCameraDeactivate(stages["region1"].camera));
+            //testPar2.AddEVENT(new EVENTMoveCamera(stages["region1"].camera, new Vector2(900, 600), 2000f));
+            //testPar2.AddEVENT(new EVENTScaleCamera(stages["region1"].camera, .8f, 2000f));
+            //testIntroduction.AddEVENT(testPar2);
+            //testIntroduction.AddEVENT(new EVENTAcknowledgePause(stages["region1"]));
+            //testIntroduction.AddEVENT(new EVENTPlayerReactivate(gameManager.Player));
+            //// testPar2.AddEVENT(new PerformActionEVENT(gameManager.Player, "Resting"));
+            //testIntroduction.AddEVENT(new EVENTCameraReactivate(stages["region1"].camera));
+            //gameManager.Camera.setSubject(gameManager.Player);
 
-            stages["region1"].AddEVENT(testIntroduction);
+            //stages["region1"].AddEVENT(testIntroduction);
 
 
             stages.Add("region2", new Stage("Region2", this));

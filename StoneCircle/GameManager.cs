@@ -125,7 +125,7 @@ namespace StoneCircle
                 }
             }
 
-            if (Player.Input.IsLeftBumperNewlyPressed() && false)
+            if (Player.Input.IsLeftBumperNewlyPressed())
             {
 #if XBOX
                 /* Request the container */
@@ -138,7 +138,7 @@ namespace StoneCircle
                 
             }
 
-            if (Player.Input.IsRightBumperNewlyPressed() && false)
+            if (Player.Input.IsRightBumperNewlyPressed())
             {
 #if XBOX
                 loadRequested = true;
