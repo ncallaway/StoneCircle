@@ -23,23 +23,18 @@ namespace SCSede
         private void button1_Click(object sender, EventArgs e)
         {
             Stream stream = File.Open("Stages.bin", FileMode.Create);
-            BinaryFormatter binary = new BinaryFormatter();
-
-            binary.Serialize(stream, stageManager);
-            stream.Close();
+            BinaryWriter binary = new BinaryWriter(stream);
+            stageManager.FullSave(binary);
+            binary.Close();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             Stream stream = File.Open("Stages.bin", FileMode.Open);
-            BinaryFormatter binary = new BinaryFormatter();
+            BinaryReader reader = new BinaryReader(stream);
 
-            object root = binary.Deserialize(stream);
-            stream.Close();
-
-            if (root is StageManager) {
-                StageManager sm = (StageManager)root;
-            }
+            StageManager sm = new StageManager();
+            sm.Reset(reader, null);
         }
     }
 }

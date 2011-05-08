@@ -23,6 +23,8 @@ namespace StoneCircle
         public int max_X;
         public int max_Y;
 
+        internal String Id { get { return id; } }
+
         Dictionary<String, Actor> exists = new Dictionary<String, Actor>();
         public Dictionary<String, Actor>.ValueCollection Actors { get { return exists.Values; } }
         List<LightSource> lights = new List<LightSource>();
@@ -88,6 +90,7 @@ namespace StoneCircle
 
         public Stage(String id, StageManager SM)
         {
+            this.id = id;
             position = new Vector2(0, 0);
             max_X = 4000;
             max_Y = 4000;

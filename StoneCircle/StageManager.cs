@@ -24,7 +24,7 @@ namespace StoneCircle
     /// Manages a stage
     /// </summary>
 
-    public class StageManager
+    public class StageManager : ISaveable
     {
 
         private Dictionary<String, Stage> stages = new Dictionary<String, Stage>();
@@ -36,6 +36,10 @@ namespace StoneCircle
         internal ContentManager contentManager;
 
         private GameManager gameManager;
+
+        public StageManager()
+        {
+        }
 
         public StageManager(GameManager gameManager)
         {
@@ -228,6 +232,9 @@ namespace StoneCircle
             //Stages["Village"].RunEVENT("Zoom");
             //GM.player.SetAction("FightStance");
             gameManager.Player.StartBleeding();
+
+            stateConditions.Add("Condition1");
+            stateConditions.Add("Condition5");
         }
 
         /// <summary>
@@ -304,8 +311,39 @@ namespace StoneCircle
         public void SetStage(String nextStage)
         {
             SetStage(nextStage, new Vector2(-150, 600));
-
         }
 
+
+        //        private Dictionary<String, Stage> stages = new Dictionary<String, Stage>();
+        // private Stage openStage;
+
+        // private List<String> stateConditions = new List<String>();
+
+        public void FullSave(BinaryWriter writer)
+        {
+            
+            // stow openStage
+            if (openStage != null && stages.ContainsValue(openStage))
+            {
+                writer.Write(openStage.Id);
+            }
+            else
+            {
+                writer.Write("");
+            }
+            // stow stateConditions
+            SaveHelper.Save(stateConditions, writer);
+        }
+
+        public void IncrementalSave(BinaryWriter writer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Reset(BinaryReader fullSave, BinaryReader incrementalSave)
+        {
+            String openStageId = fullSave.ReadString();
+            stateConditions = SaveHelper.LoadStringList(fullSave);
+        }
     }
 }

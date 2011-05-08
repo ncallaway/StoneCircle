@@ -84,6 +84,7 @@
     <Compile Include="Actions\Burning.cs" />
     <Compile Include="AIManager.cs" />
     <Compile Include="Follower.cs" />
+    <Compile Include="ISaveable.cs" />
     <Compile Include="SerializationType.cs" />
     <Compile Include="StageItems\Event.cs" />
     <Compile Include="StageItems\AudioManager.cs" />

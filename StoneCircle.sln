@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010 Express for Windows Phone
+# Visual C# Express 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoneCircle", "StoneCircle\StoneCircle.csproj", "{BCD83619-0D85-4A33-8C14-2E0D8FE04B7E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCEd", "SCEd\SCEd.csproj", "{0BA20358-A797-4221-AF3D-A9B4AB5E66E0}"
@@ -74,6 +74,7 @@ Global
 		{3DD83ED0-295A-4A5C-84FF-3CA9E646863B}.Debug|Mixed Platforms.Build.0 = Debug|Xbox 360
 		{3DD83ED0-295A-4A5C-84FF-3CA9E646863B}.Debug|Mixed Platforms.Deploy.0 = Debug|Xbox 360
 		{3DD83ED0-295A-4A5C-84FF-3CA9E646863B}.Debug|x86.ActiveCfg = Debug|Xbox 360
+		{3DD83ED0-295A-4A5C-84FF-3CA9E646863B}.Debug|x86.Build.0 = Debug|Xbox 360
 		{3DD83ED0-295A-4A5C-84FF-3CA9E646863B}.Debug|Xbox 360.ActiveCfg = Debug|Xbox 360
 		{3DD83ED0-295A-4A5C-84FF-3CA9E646863B}.Debug|Xbox 360.Build.0 = Debug|Xbox 360
 		{3DD83ED0-295A-4A5C-84FF-3CA9E646863B}.Debug|Xbox 360.Deploy.0 = Debug|Xbox 360
@@ -82,6 +83,7 @@ Global
 		{3DD83ED0-295A-4A5C-84FF-3CA9E646863B}.Release|Mixed Platforms.Build.0 = Release|Xbox 360
 		{3DD83ED0-295A-4A5C-84FF-3CA9E646863B}.Release|Mixed Platforms.Deploy.0 = Release|Xbox 360
 		{3DD83ED0-295A-4A5C-84FF-3CA9E646863B}.Release|x86.ActiveCfg = Release|Xbox 360
+		{3DD83ED0-295A-4A5C-84FF-3CA9E646863B}.Release|x86.Build.0 = Release|Xbox 360
 		{3DD83ED0-295A-4A5C-84FF-3CA9E646863B}.Release|Xbox 360.ActiveCfg = Release|Xbox 360
 		{3DD83ED0-295A-4A5C-84FF-3CA9E646863B}.Release|Xbox 360.Build.0 = Release|Xbox 360
 		{3DD83ED0-295A-4A5C-84FF-3CA9E646863B}.Release|Xbox 360.Deploy.0 = Release|Xbox 360
