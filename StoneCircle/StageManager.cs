@@ -17,6 +17,7 @@ using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
 
 using UserMenus;
+using StoneCircle.Persistence;
 
 namespace StoneCircle
 {
@@ -26,6 +27,7 @@ namespace StoneCircle
 
     public class StageManager : ISaveable
     {
+        private uint id;
 
         private Dictionary<String, Stage> stages = new Dictionary<String, Stage>();
         private Stage openStage;
@@ -37,12 +39,15 @@ namespace StoneCircle
 
         private GameManager gameManager;
 
-        public StageManager()
+        public StageManager(uint id)
         {
+            this.id = id;
+            IdFactory.MoveNextIdPast(id);
         }
 
         public StageManager(GameManager gameManager)
         {
+            this.id = IdFactory.GetNextId();
             this.gameManager = gameManager;
             contentManager = gameManager.ContentManager;
 
@@ -330,6 +335,7 @@ namespace StoneCircle
 
         // private List<String> stateConditions = new List<String>();
 
+        /*
         public void FullSave(BinaryWriter writer)
         {
             
@@ -355,6 +361,26 @@ namespace StoneCircle
         {
             String openStageId = fullSave.ReadString();
             stateConditions = SaveHelper.LoadStringList(fullSave);
+        } */
+
+        public void Save(BinaryWriter writer, SaveType type)
+        {
+            // save nothing for now!
+        }
+
+        public void Load(BinaryReader reader, SaveType type)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ISaveable> GetSaveableRefs(SaveType type)
+        {
+            return null;
+        }
+
+        public uint GetId()
+        {
+            return this.id;
         }
     }
 }

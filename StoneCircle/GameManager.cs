@@ -17,6 +17,8 @@ using Microsoft.Xna.Framework.Storage;
 
 using UserMenus;
 
+using StoneCircle.Persistence;
+
 namespace StoneCircle
 {
     /// <summary>
@@ -46,6 +48,8 @@ namespace StoneCircle
         private StageManager stageManager;
         private DeviceManager deviceManager;
 
+        private Saver saver;
+
         /// <summary>
         /// Creates a new game manager object (including the important sub-manager objects, like the UIManager). This
         /// also attaches the given contentManager to the new GameManager.
@@ -62,6 +66,7 @@ namespace StoneCircle
             stageManager = new StageManager(this);
             audioManager = new AudioManager();
             deviceManager = new DeviceManager();
+            saver = new Saver();
 
         }
 
@@ -84,7 +89,7 @@ namespace StoneCircle
         private void saveGame(Stream outputStream)
         {
             BinaryWriter binary = new BinaryWriter(outputStream);
-            StageManager.FullSave(binary);
+            saver.Save(StageManager, binary, SaveType.FULL);
             binary.Close();
         }
 
@@ -92,8 +97,8 @@ namespace StoneCircle
         {
             BinaryReader reader = new BinaryReader(inputStream);
 
-            StageManager throwaway = new StageManager();
-            throwaway.Reset(reader, null);
+            StageManager throwaway = new StageManager(this);
+            throwaway.Load(reader, SaveType.FULL);
 
         }
 

@@ -132,8 +132,10 @@
     <Compile Include="AIManager.cs" />
     <Compile Include="DeviceManager.cs" />
     <Compile Include="Follower.cs" />
-    <Compile Include="ISaveable.cs" />
-    <Compile Include="SerializationType.cs" />
+    <Compile Include="Persistence\IdFactory.cs" />
+    <Compile Include="Persistence\ISaveable.cs" />
+    <Compile Include="Persistence\Saver.cs" />
+    <Compile Include="Persistence\SaveType.cs" />
     <Compile Include="StageItems\Event.cs" />
     <Compile Include="StageItems\AudioManager.cs" />
     <Compile Include="Camera.cs" />
@@ -219,6 +221,7 @@
       <XnaReferenceType>Content</XnaReferenceType>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
