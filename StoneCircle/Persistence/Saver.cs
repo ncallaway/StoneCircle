@@ -101,9 +101,12 @@ namespace StoneCircle.Persistence
             {
                 foreach (ISaveable saveable in saveables)
                 {
-                    if (saveable.GetId() == VALUE_TYPE_ID ||visited.ContainsKey(saveable.GetId()) == false)
+                    if (saveable.GetId() == VALUE_TYPE_ID ||  visited.ContainsKey(saveable.GetId()) == false)
                     {
-                        stack.Push(saveable);
+                        if (stack.Contains(saveable) == false)
+                        {
+                            stack.Push(saveable);
+                        }
                     }
                 }
             }

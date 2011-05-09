@@ -9,6 +9,7 @@ namespace StoneCircle.Persistence
     {
         private const int STAGE_MANAGER_ID = 1;
         private const int STAGE_ID = 2;
+        private const int STAGE_LIST_ID = 3;
 
         public static int getTypeId(ISaveable saveable)
         {
@@ -19,6 +20,10 @@ namespace StoneCircle.Persistence
             else if (saveable.GetType() == typeof(Stage))
             {
                 return STAGE_ID;
+            }
+            else if (saveable.GetType() == typeof(SaveableList<Stage>))
+            {
+                return STAGE_LIST_ID;
             }
 
             throw new KeyNotFoundException("Can't find id for type: " + saveable.GetType());
@@ -32,6 +37,8 @@ namespace StoneCircle.Persistence
                     return new StageManager(objectId);
                 case STAGE_ID:
                     return new Stage(objectId);
+                case STAGE_LIST_ID:
+                    return new SaveableList<Stage>(objectId);
             }
 
             throw new KeyNotFoundException("Can't construct saveable from id : " + typeId);

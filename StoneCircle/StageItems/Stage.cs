@@ -352,5 +352,11 @@ namespace StoneCircle
         {
             return objectId;
         }
+
+
+        public void FinishLoad()
+        {
+            
+        }
     }
 }

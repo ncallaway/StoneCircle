@@ -11,14 +11,42 @@ namespace StoneCircle.Persistence
         where T : ISaveable
     {
 
+        private uint objectId;
+        public SaveableList(uint id)
+        {
+            objectId = id;
+            IdFactory.MoveNextIdPast(objectId);
+        }
+
+
+        public SaveableList()
+        {
+            objectId = IdFactory.GetNextId();
+        }
+
         public void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
         {
-            throw new NotImplementedException();
+            writer.Write(this.Count);
+            for (int i = 0; i < this.Count; i++)
+            {
+                writer.Write(objectTable[this[i]]);
+            }
         }
+
+        private SaveableListInflatables inflatables;
 
         public void Load(BinaryReader reader, SaveType type)
         {
-            throw new NotImplementedException();
+            this.Clear();
+
+            int count = reader.ReadInt32();
+            inflatables = new SaveableListInflatables();
+            inflatables.objects = new List<uint>(count);
+
+            for (int i=0; i<count; i++) {
+                inflatables.objects.Add(reader.ReadUInt32());
+            }
+
         }
 
         public List<ISaveable> GetSaveableRefs(SaveType type)
@@ -34,12 +62,24 @@ namespace StoneCircle.Persistence
 
         public uint GetId()
         {
-            return Saver.VALUE_TYPE_ID;
+            return objectId;
         }
 
         public void Inflate(Dictionary<uint, ISaveable> objectTable)
         {
-            throw new NotImplementedException();
+            foreach (uint id in inflatables.objects)
+            {
+                ISaveable reference = objectTable[id];
+                this.Add((T)reference);
+            }
+        }
+
+        internal class SaveableListInflatables {
+            internal List<uint> objects;
+        }
+
+        public void FinishLoad()
+        {
         }
     }
 }

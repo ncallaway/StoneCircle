@@ -47,8 +47,19 @@ namespace StoneCircle.Persistence
             /* 1 - Inflate all objects */
             inflateObjects(objectTable, saveType);
 
-            /* 2 - Return the root object */
+            /* 2 - Finish the load */
+            finishObjects(objectTable, saveType);
+
+            /* 3 - Return the root object */
             return objectTable[rootId];
+        }
+
+        private static void finishObjects(Dictionary<uint, ISaveable> objectTable, SaveType type)
+        {
+            foreach (KeyValuePair<uint, ISaveable> pair in objectTable)
+            {
+                pair.Value.FinishLoad();
+            }
         }
 
         private static void inflateObjects(Dictionary<uint, ISaveable> objectTable, SaveType type)

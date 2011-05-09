@@ -329,52 +329,21 @@ namespace StoneCircle
             SetStage(nextStage, new Vector2(-150, 600));
         }
 
-
-        //        private Dictionary<String, Stage> stages = new Dictionary<String, Stage>();
-        // private Stage openStage;
-
-        // private List<String> stateConditions = new List<String>();
-
-        /*
-        public void FullSave(BinaryWriter writer)
-        {
-            
-            // stow openStage
-            if (openStage != null && stages.ContainsValue(openStage))
-            {
-                writer.Write(openStage.Id);
-            }
-            else
-            {
-                writer.Write("");
-            }
-            // stow stateConditions
-            SaveHelper.Save(stateConditions, writer);
-        }
-
-        public void IncrementalSave(BinaryWriter writer)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Reset(BinaryReader fullSave, BinaryReader incrementalSave)
-        {
-            String openStageId = fullSave.ReadString();
-            stateConditions = SaveHelper.LoadStringList(fullSave);
-        } */
-
         public void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
         {
+            writer.Write(objectTable[savedObjects.stageList]);
             writer.Write(objectTable[openStage]);
             Saver.SaveStringList(stateConditions, writer);
         }
 
+        private StageManagerSavedObjects savedObjects = new StageManagerSavedObjects();
         private StageManagerInflatables inflatables;
 
         public void Load(BinaryReader reader, SaveType type)
         {
             inflatables = new StageManagerInflatables();
 
+            inflatables.stageListId = reader.ReadUInt32();
             inflatables.openStageId = reader.ReadUInt32();
 
             if (type == SaveType.FULL)
@@ -396,9 +365,17 @@ namespace StoneCircle
 
         public List<ISaveable> GetSaveableRefs(SaveType type)
         {
-            List<ISaveable> open = new List<ISaveable>();
-            open.Add(openStage);
-            return open;
+            List<ISaveable> refs = new List<ISaveable>();
+            if (savedObjects.stageList == null)
+            {
+                savedObjects.stageList = new SaveableList<Stage>();
+            }
+            foreach (Stage s in stages.Values) {
+                savedObjects.stageList.Add(s);
+            }
+            refs.Add(openStage);
+            refs.Add(savedObjects.stageList);
+            return refs;
         }
 
         public uint GetId()
@@ -411,14 +388,30 @@ namespace StoneCircle
             if (inflatables != null)
             {
                 openStage = (Stage)objectTable[inflatables.openStageId];
+                savedObjects.stageList = (SaveableList<Stage>)objectTable[inflatables.stageListId];
             }
 
             //SetStage(openStage);
         }
 
+        public void FinishLoad()
+        {
+            stages = new Dictionary<string, Stage>();
+            foreach (Stage s in savedObjects.stageList)
+            {
+                stages.Add(s.Id, s);
+            }
+        }
+
         internal class StageManagerInflatables
         {
+            internal uint stageListId;
             internal uint openStageId;
+        }
+
+        internal class StageManagerSavedObjects
+        {
+            internal SaveableList<Stage> stageList;
         }
     }
 
