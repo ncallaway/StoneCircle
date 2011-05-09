@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using System.IO;
 
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
@@ -11,12 +12,16 @@ using Microsoft.Xna.Framework.Graphics;
 
 using UserMenus;
 
+using StoneCircle.Persistence;
+
 namespace StoneCircle
 {
 
 
-    class Stage
+    class Stage : ISaveable
     {
+        private uint objectId;
+
         private String id;
         private Texture2D background;
         private Vector2 position;
@@ -87,9 +92,16 @@ namespace StoneCircle
             loaded = false;
         }
 
+        public Stage(uint id)
+        {
+            this.objectId = id;
+            IdFactory.MoveNextIdPast(id);
+        }
+
 
         public Stage(String id, StageManager SM)
         {
+            this.objectId = IdFactory.GetNextId();
             this.id = id;
             position = new Vector2(0, 0);
             max_X = 4000;
@@ -316,8 +328,29 @@ namespace StoneCircle
 
         }
 
+        public void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        {
+            writer.Write(id);
+        }
 
+        public void Load(BinaryReader reader, SaveType type)
+        {
+            id = reader.ReadString();
+        }
 
+        public void Inflate(Dictionary<uint, ISaveable> objectTable)
+        {
+            /* no-op*/
+        }
 
+        public List<ISaveable> GetSaveableRefs(SaveType type)
+        {
+            return null;
+        }
+
+        public uint GetId()
+        {
+            return objectId;
+        }
     }
 }

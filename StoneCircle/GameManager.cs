@@ -118,7 +118,7 @@ namespace StoneCircle
                 }
             }
 
-            if (Player.Input.IsLeftBumperNewlyPressed() && false)
+            if (Player.Input.IsLeftBumperNewlyPressed())
             {
 #if XBOX
                 /* Request the container */
@@ -127,11 +127,12 @@ namespace StoneCircle
 #else
                 Stream stream = File.Open("Stages.bin", FileMode.Create);
                 saveGame(stream);
+                stream.Close();
 #endif
                 
             }
 
-            if (Player.Input.IsRightBumperNewlyPressed() && false)
+            if (Player.Input.IsRightBumperNewlyPressed())
             {
 #if XBOX
                 loadRequested = true;
@@ -139,6 +140,7 @@ namespace StoneCircle
 #else
                 Stream stream = File.Open("Stages.bin", FileMode.Open);
                 loadGame(stream);
+                stream.Close();
 #endif
             }
 

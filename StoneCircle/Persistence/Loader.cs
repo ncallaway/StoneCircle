@@ -53,6 +53,10 @@ namespace StoneCircle.Persistence
 
         private static void inflateObjects(Dictionary<uint, ISaveable> objectTable, SaveType type)
         {
+            foreach (KeyValuePair<uint, ISaveable> pair in objectTable)
+            {
+                pair.Value.Inflate(objectTable);
+            }
         }
 
         public static List<String> LoadStringList(BinaryReader reader)

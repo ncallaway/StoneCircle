@@ -365,11 +365,18 @@ namespace StoneCircle
 
         public void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
         {
+            writer.Write(objectTable[openStage]);
             Saver.SaveStringList(stateConditions, writer);
         }
 
+        private StageManagerInflatables inflatables;
+
         public void Load(BinaryReader reader, SaveType type)
         {
+            inflatables = new StageManagerInflatables();
+
+            inflatables.openStageId = reader.ReadUInt32();
+
             if (type == SaveType.FULL)
             {
                 stateConditions = Loader.LoadStringList(reader);
@@ -389,7 +396,9 @@ namespace StoneCircle
 
         public List<ISaveable> GetSaveableRefs(SaveType type)
         {
-            return null;
+            List<ISaveable> open = new List<ISaveable>();
+            open.Add(openStage);
+            return open;
         }
 
         public uint GetId()
@@ -399,7 +408,18 @@ namespace StoneCircle
 
         public void Inflate(Dictionary<uint, ISaveable> objectTable)
         {
-            throw new NotImplementedException();
+            if (inflatables != null)
+            {
+                openStage = (Stage)objectTable[inflatables.openStageId];
+            }
+
+            //SetStage(openStage);
+        }
+
+        internal class StageManagerInflatables
+        {
+            internal uint openStageId;
         }
     }
+
 }
