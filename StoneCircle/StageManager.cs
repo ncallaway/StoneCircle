@@ -394,13 +394,19 @@ namespace StoneCircle
             //SetStage(openStage);
         }
 
-        public void FinishLoad()
+        public void FinishLoad(GameManager manager)
         {
+            this.gameManager = manager;
+            contentManager = gameManager.ContentManager;
+            savedObjects.stageList.FinishLoad(manager);
+
             stages = new Dictionary<string, Stage>();
             foreach (Stage s in savedObjects.stageList)
             {
                 stages.Add(s.Id, s);
             }
+
+            SetStage(openStage.Id);
         }
 
         internal class StageManagerInflatables

@@ -93,6 +93,9 @@ namespace StoneCircle
         {
             BinaryReader reader = new BinaryReader(inputStream);
             StageManager throwaway = (StageManager)Loader.Load(reader, SaveType.FULL);
+
+            stageManager = throwaway;
+            StageManager.FinishLoad(this);
         }
 
         public void Update(GameTime T)
@@ -118,7 +121,7 @@ namespace StoneCircle
                 }
             }
 
-            if (Player.Input.IsLeftBumperNewlyPressed() && false)
+            if (Player.Input.IsLeftBumperNewlyPressed())
             {
 #if XBOX
                 /* Request the container */
@@ -132,7 +135,7 @@ namespace StoneCircle
                 
             }
 
-            if (Player.Input.IsRightBumperNewlyPressed() && false)
+            if (Player.Input.IsRightBumperNewlyPressed())
             {
 #if XBOX
                 loadRequested = true;

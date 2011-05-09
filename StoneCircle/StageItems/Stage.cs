@@ -331,11 +331,21 @@ namespace StoneCircle
         public void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
         {
             writer.Write(id);
+            writer.Write(max_X);
+            writer.Write(max_Y);
+            writer.Write(AMBStrength);
+            writer.Write(AMBColor.X);
+            writer.Write(AMBColor.Y);
+            writer.Write(AMBColor.Z);
         }
 
         public void Load(BinaryReader reader, SaveType type)
         {
             id = reader.ReadString();
+            max_X = reader.ReadInt32();
+            max_Y = reader.ReadInt32();
+            AMBStrength = reader.ReadSingle();
+            AMBColor = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
         }
 
         public void Inflate(Dictionary<uint, ISaveable> objectTable)
@@ -354,9 +364,12 @@ namespace StoneCircle
         }
 
 
-        public void FinishLoad()
+        public void FinishLoad(GameManager gameManager)
         {
-            
+            this.gameManager = gameManager;
+            this.SM = gameManager.StageManager;
+            this.AM = gameManager.AudioManager;
+            camera = new Camera(this, input);
         }
     }
 }

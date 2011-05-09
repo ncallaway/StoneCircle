@@ -78,8 +78,12 @@ namespace StoneCircle.Persistence
             internal List<uint> objects;
         }
 
-        public void FinishLoad()
+        public void FinishLoad(GameManager gameManager)
         {
+            foreach (ISaveable saveable in this)
+            {
+                saveable.FinishLoad(gameManager);
+            }
         }
     }
 }
