@@ -48,8 +48,6 @@ namespace StoneCircle
         private StageManager stageManager;
         private DeviceManager deviceManager;
 
-        private Saver saver;
-
         /// <summary>
         /// Creates a new game manager object (including the important sub-manager objects, like the UIManager). This
         /// also attaches the given contentManager to the new GameManager.
@@ -66,8 +64,6 @@ namespace StoneCircle
             stageManager = new StageManager(this);
             audioManager = new AudioManager();
             deviceManager = new DeviceManager();
-            saver = new Saver();
-
         }
 
         public void LoadContent()
@@ -89,17 +85,14 @@ namespace StoneCircle
         private void saveGame(Stream outputStream)
         {
             BinaryWriter binary = new BinaryWriter(outputStream);
-            saver.Save(StageManager, binary, SaveType.FULL);
+            Saver.Save(StageManager, binary, SaveType.FULL);
             binary.Close();
         }
 
         private void loadGame(Stream inputStream)
         {
             BinaryReader reader = new BinaryReader(inputStream);
-
-            StageManager throwaway = new StageManager(this);
-            throwaway.Load(reader, SaveType.FULL);
-
+            StageManager throwaway = (StageManager)Loader.Load(reader, SaveType.FULL);
         }
 
         public void Update(GameTime T)

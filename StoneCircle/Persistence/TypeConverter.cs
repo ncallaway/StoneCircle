@@ -19,7 +19,7 @@ namespace StoneCircle.Persistence
             throw new KeyNotFoundException("Can't find id for type: " + saveable.GetType());
         }
 
-        public static ISaveable constructSaveableFromTypeId(int typeId, uint objectId)
+        public static ISaveable ConstructSaveableFromTypeId(int typeId, uint objectId)
         {
             switch (typeId)
             {

@@ -7,11 +7,11 @@ using System.IO;
 
 namespace StoneCircle.Persistence
 {
-    class Saver
+    static class Saver
     {
         public static readonly uint VALUE_TYPE_ID = 0;
 
-        public void Save(ISaveable root, BinaryWriter writer, SaveType saveType)
+        public static void Save(ISaveable root, BinaryWriter writer, SaveType saveType)
         {
             /* 0 - Build Object Table */
             Dictionary<uint, ISaveable> objects = buildObjectTable(root, saveType);
@@ -20,23 +20,50 @@ namespace StoneCircle.Persistence
             persistObjectTable(root, writer, saveType, objects);
         }
 
-        private void persistObjectTable(ISaveable root, BinaryWriter writer, SaveType type, Dictionary<uint, ISaveable> objectTable)
+        private static void persistObjectTable(ISaveable root, BinaryWriter writer, SaveType type, Dictionary<uint, ISaveable> objectTable)
         {
+            if (objectTable == null)
+            {
+                writer.Write(-1);
+                return;
+            }
+
+            Dictionary<ISaveable, uint> reverseTable = reverseObjectTable(objectTable);
+
+            writer.Write(objectTable.Count);
             foreach (KeyValuePair<uint, ISaveable> pair in objectTable)
             {
                 writeHeader(pair.Key, pair.Value, root, writer);
-                pair.Value.Save(writer, type);
+                if (pair.Value != null)
+                {
+                    pair.Value.Save(writer, type, reverseTable);
+                }
             }
         }
 
-        private void writeHeader(uint id, ISaveable saveable, ISaveable root, BinaryWriter writer)
+        private static Dictionary<ISaveable, uint> reverseObjectTable(Dictionary<uint, ISaveable> objectTable)
+        {
+            Dictionary<ISaveable, uint> reverseTable = new Dictionary<ISaveable, uint>();
+            foreach (KeyValuePair<uint, ISaveable> pair in objectTable)
+            {
+                if (reverseTable.ContainsKey(pair.Value))
+                {
+                    throw new NotSupportedException("Cannot have multiple saveables in the object table");
+                }
+                reverseTable.Add(pair.Value, pair.Key);
+            }
+
+            return reverseTable;
+        }
+
+        private static void writeHeader(uint id, ISaveable saveable, ISaveable root, BinaryWriter writer)
         {
             writer.Write(id);
             writer.Write(TypeConverter.getTypeId(saveable));
             writer.Write((saveable == root));
         }
 
-        private Dictionary<uint, ISaveable> buildObjectTable(ISaveable root, SaveType saveType)
+        private static Dictionary<uint, ISaveable> buildObjectTable(ISaveable root, SaveType saveType)
         {
             Dictionary<uint, ISaveable> objects = new Dictionary<uint, ISaveable>();
 
@@ -68,7 +95,7 @@ namespace StoneCircle.Persistence
 
         
 
-        private void addUnvisitedSaveablesToStack(Dictionary<uint, ISaveable> visited, List<ISaveable> saveables, Stack<ISaveable> stack)
+        private static void addUnvisitedSaveablesToStack(Dictionary<uint, ISaveable> visited, List<ISaveable> saveables, Stack<ISaveable> stack)
         {
             if (saveables != null)
             {

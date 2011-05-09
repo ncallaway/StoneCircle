@@ -9,9 +9,9 @@ namespace StoneCircle.Persistence
     
     public interface ISaveable
     {
-        void Save(BinaryWriter writer, SaveType type);
+        void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable);
         void Load(BinaryReader reader, SaveType type);
-        void Inflate();
+        void Inflate(Dictionary<uint, ISaveable> objectTable);
 
         List<ISaveable> GetSaveableRefs(SaveType type);
         uint GetId();

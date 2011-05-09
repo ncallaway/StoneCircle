@@ -11,7 +11,7 @@ namespace StoneCircle.Persistence
         where T : ISaveable
     {
 
-        public void Save(BinaryWriter writer, SaveType type)
+        public void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
         {
             throw new NotImplementedException();
         }
@@ -37,8 +37,7 @@ namespace StoneCircle.Persistence
             return Saver.VALUE_TYPE_ID;
         }
 
-
-        public void Inflate()
+        public void Inflate(Dictionary<uint, ISaveable> objectTable)
         {
             throw new NotImplementedException();
         }

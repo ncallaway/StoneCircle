@@ -363,14 +363,28 @@ namespace StoneCircle
             stateConditions = SaveHelper.LoadStringList(fullSave);
         } */
 
-        public void Save(BinaryWriter writer, SaveType type)
+        public void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
         {
             Saver.SaveStringList(stateConditions, writer);
         }
 
         public void Load(BinaryReader reader, SaveType type)
         {
-            throw new NotImplementedException();
+            if (type == SaveType.FULL)
+            {
+                stateConditions = Loader.LoadStringList(reader);
+            }
+            else
+            {
+                if (stateConditions == null)
+                {
+                    stateConditions = Loader.LoadStringList(reader);
+                }
+                else
+                {
+                    stateConditions.AddRange(Loader.LoadStringList(reader));
+                }
+            }
         }
 
         public List<ISaveable> GetSaveableRefs(SaveType type)
@@ -383,8 +397,7 @@ namespace StoneCircle
             return this.id;
         }
 
-
-        public void Inflate()
+        public void Inflate(Dictionary<uint, ISaveable> objectTable)
         {
             throw new NotImplementedException();
         }
