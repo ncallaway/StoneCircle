@@ -5,6 +5,8 @@ using System.Text;
 
 using Microsoft.Xna.Framework;
 
+using StoneCircle.Persistence;
+
 namespace StoneCircle
 {
 

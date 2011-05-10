@@ -14,7 +14,14 @@ namespace SCEd
             List<Type> availableEvents = loadEvents();
 
             foreach (Type t in availableEvents) {
-                listBox1.Items.Add(t.Name + " : " + t.BaseType.Name);
+                if (t.Name != "EVENT")
+                {
+                    listBox1.Items.Add(t.Name + " : " + t.BaseType.Name);
+                }
+                else
+                {
+                    listBox1.Items.Add(t.Name);
+                }
             }
         }
 
@@ -33,7 +40,7 @@ namespace SCEd
 
 
             foreach (Type t in assemblyTypes) {
-                Type baseType = t.BaseType;
+                Type baseType = t;
                 while (baseType != null) {
                     if (baseType.ToString() == EVENT_TYPE) {
                         if (!t.IsAbstract) {
