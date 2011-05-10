@@ -11,7 +11,7 @@ namespace StoneCircle.Persistence
         private const int STAGE_ID = 2;
         private const int STAGE_LIST_ID = 3;
 
-        public static int getTypeId(ISaveable saveable)
+        public static int GetTypeId(ISaveable saveable)
         {
             if (saveable.GetType() == typeof(StageManager))
             {

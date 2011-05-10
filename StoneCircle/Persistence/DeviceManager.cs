@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Storage;
 
-namespace StoneCircle
+namespace StoneCircle.Persistence
 {
     class DeviceManager
     {

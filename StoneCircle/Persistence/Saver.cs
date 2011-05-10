@@ -59,7 +59,7 @@ namespace StoneCircle.Persistence
         private static void writeHeader(uint id, ISaveable saveable, ISaveable root, BinaryWriter writer)
         {
             writer.Write(id);
-            writer.Write(TypeConverter.getTypeId(saveable));
+            writer.Write(TypeConverter.GetTypeId(saveable));
             writer.Write((saveable == root));
         }
 

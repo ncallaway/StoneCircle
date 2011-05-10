@@ -130,7 +130,7 @@
     <Compile Include="Actors\Tree.cs" />
     <Compile Include="Actions\Burning.cs" />
     <Compile Include="AIManager.cs" />
-    <Compile Include="DeviceManager.cs" />
+    <Compile Include="Persistence\DeviceManager.cs" />
     <Compile Include="Follower.cs" />
     <Compile Include="Persistence\IdFactory.cs" />
     <Compile Include="Persistence\ISaveable.cs" />
