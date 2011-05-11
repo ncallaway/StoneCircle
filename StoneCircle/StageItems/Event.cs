@@ -138,27 +138,29 @@ namespace StoneCircle
 
         public void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
         {
-            throw new NotImplementedException();
+            writer.Write(this.id);
+            writer.Write(this.ready);
         }
 
         public void Load(BinaryReader reader, SaveType type)
         {
-            throw new NotImplementedException();
+            this.id = reader.ReadString();
+            this.ready = reader.ReadBoolean();
         }
 
         public void Inflate(Dictionary<uint, ISaveable> objectTable)
         {
-            throw new NotImplementedException();
+            /* no-op */
         }
 
         public void FinishLoad(GameManager manager)
         {
-            throw new NotImplementedException();
+            /* no-op */
         }
 
         public List<ISaveable> GetSaveableRefs(SaveType type)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public uint GetId()
