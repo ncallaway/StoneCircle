@@ -10,7 +10,13 @@ namespace StoneCircle.Persistence
 {
     static class Loader
     {
-        public static ISaveable Load(BinaryReader reader, SaveType saveType)
+        public class LoadResponse
+        {
+            public ISaveable root;
+            public List<ISaveable> objects;
+        }
+
+        public static LoadResponse Load(BinaryReader reader, SaveType saveType)
         {
             /* 0 - Depersist object table. */
             uint rootId = 0;
@@ -48,8 +54,19 @@ namespace StoneCircle.Persistence
             /* 1 - Inflate all objects */
             inflateObjects(objectTable, saveType);
 
-            /* 3 - Return the root object */
-            return objectTable[rootId];
+            /* 2 - Construct the result object */
+            List<ISaveable> values = new List<ISaveable>();
+            foreach (ISaveable saveable in objectTable.Values)
+            {
+                values.Add(saveable);
+            }
+
+            LoadResponse response = new LoadResponse();
+            response.root = objectTable[rootId];
+            response.objects = values;
+
+            /* 3 - Return the response object */
+            return response;
         }
 
         private static ISaveable constructType(String assemblyQualifiedName, uint objectId)
@@ -94,20 +111,37 @@ namespace StoneCircle.Persistence
             return list;
         }
 
-        //public static void SaveStringList(List<String> stringList, BinaryWriter writer)
-        //{
-        //    if (stringList == null)
-        //    {
-        //        writer.Write(-1);
-        //        return;
-        //    }
+        public static List<uint> LoadSaveableList(BinaryReader reader) {
+            int count = reader.ReadInt32();
+            if (count == -1)
+            {
+                return null;
+            }
 
-        //    writer.Write(stringList.Count);
+            List<UInt32> list = new List<UInt32>();
+            for (int i = 0; i < count; i++)
+            {
+                list.Add(reader.ReadUInt32());
+            }
 
-        //    foreach (String s in stringList)
-        //    {
-        //        writer.Write(s);
-        //    }
-        //}
+            return list;
+        }
+
+        public static List<ISaveable> InflateSaveableList(List<uint> saveableList, Dictionary<uint, ISaveable> objectTable)
+        {
+            if (saveableList == null)
+            {
+                return null;
+            }
+
+            List<ISaveable> list = new List<ISaveable>();
+
+            foreach (uint objectId in saveableList)
+            {
+                list.Add(objectTable[objectId]);
+            }
+
+            return list;
+        }
     }
 }

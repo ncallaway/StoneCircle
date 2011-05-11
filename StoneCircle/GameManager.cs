@@ -92,10 +92,19 @@ namespace StoneCircle
         private void loadGame(Stream inputStream)
         {
             BinaryReader reader = new BinaryReader(inputStream);
-            StageManager throwaway = (StageManager)Loader.Load(reader, SaveType.FULL);
+            Loader.LoadResponse response = Loader.Load(reader, SaveType.FULL);
 
-            stageManager = throwaway;
-            StageManager.FinishLoad(this);
+            stageManager = (StageManager)response.root;
+            foreach (ISaveable saveable in response.objects)
+            {
+                if (saveable == stageManager)
+                {
+                    continue;
+                }
+                saveable.FinishLoad(this);
+            }
+
+            stageManager.FinishLoad(this);
         }
 
         public void Update(GameTime T)

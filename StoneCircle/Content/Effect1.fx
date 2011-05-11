@@ -35,7 +35,7 @@ float4 LightSource(float2 texCoord: TEXCOORD0) : COLOR0
 	
 	//color/=8;
 	
-	color.rgb -= AMBStrength * AMBColor;
+	//color.rgb -= AMBStrength * AMBColor;
 	
 	
 	for (int i =0; i<index; i++){
@@ -51,7 +51,7 @@ float4 LightSource(float2 texCoord: TEXCOORD0) : COLOR0
 	//if(distF>0)
 	//{
 
-	float g = (color.r*.3 + color.g*.59 + color.b*.11);
+	//float g = (color.r*.3 + color.g*.59 + color.b*.11);
 	
 	//float blur =.1;
 
@@ -66,8 +66,8 @@ float4 LightSource(float2 texCoord: TEXCOORD0) : COLOR0
 	
 	//color/=8;
 
-	if (g>.5){ g -=.1;}	else g+=.1;
-	color.rgb = float3(g,g,g);
+	//if (g>.5){ g -=.1;}	else g+=.1;
+	//color.rgb = float3(g,g,g);
 
 
 	//}
