@@ -19,6 +19,8 @@ namespace StoneCircle
         
        // These variables represent the location and position of the actor. 
 
+       public Player(uint objectId) : base(objectId) {}
+
 
 
         public Player(String Id, String asset_name, Vector2 starting, GameManager gameManager, InputController Input)

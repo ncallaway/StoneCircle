@@ -408,7 +408,6 @@ namespace StoneCircle
     public class EVENTDialogueConfirmed : EVENT
     {
         private Lines line;
-        private Actor actor;
         private Stage stage;
 
         public EVENTDialogueConfirmed(uint objectId) : base(objectId) { }
@@ -416,7 +415,6 @@ namespace StoneCircle
         internal EVENTDialogueConfirmed(String text, Actor actor, Stage stage)
         {
             line = new Lines(text, actor);
-            this.actor = actor;
             this.stage = stage;
             stage.StartLine(line);
         }
@@ -425,7 +423,6 @@ namespace StoneCircle
         {
             id = callID;
             line = new Lines(text, actor);
-            this.actor = actor;
             stage.StartLine(line);
             this.stage = stage;
         }
@@ -441,6 +438,40 @@ namespace StoneCircle
         {
             if (stage.player.Input.IsAButtonNewlyPressed()) { ready = true; stage.StopLine(line); }
             return ready;
+        }
+
+        public override List<ISaveable> GetSaveableRefs(SaveType type)
+        {
+            List<ISaveable> parentRefs = base.GetSaveableRefs(type);
+            if (parentRefs == null) { parentRefs = new List<ISaveable>(); }
+
+            parentRefs.Add(line);
+            parentRefs.Add(stage);
+
+            return parentRefs;
+        }
+
+        public override void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        {
+            base.Save(writer, type, objectTable);
+            writer.Write(objectTable[line]);
+            writer.Write(objectTable[stage]);
+        }
+
+        private uint lineId;
+        private uint stageId;
+        public override void Load(BinaryReader reader, SaveType type)
+        {
+            base.Load(reader, type);
+            lineId = reader.ReadUInt32();
+            stageId = reader.ReadUInt32();
+        }
+
+        public override void Inflate(Dictionary<uint, ISaveable> objectTable)
+        {
+            base.Inflate(objectTable);
+            line = (Lines)objectTable[lineId];
+            stage = (Stage)objectTable[stageId];
         }
 
 

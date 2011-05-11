@@ -143,5 +143,22 @@ namespace StoneCircle.Persistence
                 writer.Write(objectTable[s]);
             }
         }
+
+        public static void SaveSaveableList<T>(List<T> saveableList, BinaryWriter writer, Dictionary<ISaveable, uint> objectTable)
+            where T : ISaveable
+        {
+            if (saveableList == null)
+            {
+                writer.Write(-1);
+                return;
+            }
+
+            writer.Write(saveableList.Count);
+
+            foreach (T s in saveableList)
+            {
+                writer.Write(objectTable[s]);
+            }
+        }
     }
 }

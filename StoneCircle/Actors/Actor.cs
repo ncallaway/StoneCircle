@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
@@ -10,10 +11,14 @@ using Microsoft.Xna.Framework.Graphics;
 
 using UserMenus;
 
+using StoneCircle.Persistence;
+
 namespace StoneCircle
 {
-    class Actor
+    class Actor : ISaveable
     {
+        private uint objectId;
+
         protected String name;  // Name of the actor.
         public String Name { get { return name; } }
 
@@ -97,6 +102,7 @@ namespace StoneCircle
 
         public Actor(GameManager gameManager)
         {
+            this.objectId = IdFactory.GetNextId();
             asset_Name = "male_select";
             speed = 100;
             Location = Vector3.Zero;
@@ -131,6 +137,7 @@ namespace StoneCircle
 
         public Actor(String Id, String asset_name, Vector2 starting)  // Basic constructor.
         {
+            this.objectId = IdFactory.GetNextId();
             asset_Name = asset_name;
             speed = 100;
             Location = new Vector3(starting.X, starting.Y, 0);
@@ -145,6 +152,7 @@ namespace StoneCircle
 
         public Actor(String id, String asset_name, Vector2 starting, Stage Parent)  // Basic constructor.
         {
+            this.objectId = IdFactory.GetNextId();
             asset_Name = asset_name;
             speed = 100;
             Location = new Vector3(starting.X, starting.Y, 0);
@@ -160,6 +168,12 @@ namespace StoneCircle
 
             defaultAction = knownActions["Standing"];
             SetAction("Standing");
+        }
+
+        public Actor(uint objectId)
+        {
+            this.objectId = objectId;
+            IdFactory.MoveNextIdPast(this.objectId);
         }
 
         protected virtual void learnAction(Actionstate learned) { knownActions.Add(learned.id, learned); learned.Actor = this; }
@@ -329,6 +343,42 @@ namespace StoneCircle
 
 
 
+
+        public void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        {
+            writer.Write(name);
+            writer.Write(asset_Name);
+            writer.Write(Location.X);
+            writer.Write(Location.Y);
+            writer.Write(Location.Z);
+        }
+
+        public void Load(BinaryReader reader, SaveType type)
+        {
+            name = reader.ReadString();
+            asset_Name = reader.ReadString();
+            Location = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+        }
+
+        public void Inflate(Dictionary<uint, ISaveable> objectTable)
+        {
+            /* TODO: Fix this */
+        }
+
+        public void FinishLoad(GameManager manager)
+        {
+            this.gameManager = manager;
+        }
+
+        public List<ISaveable> GetSaveableRefs(SaveType type)
+        {
+            return null;
+        }
+
+        public uint GetId()
+        {
+            return objectId;
+        }
     }
 
 

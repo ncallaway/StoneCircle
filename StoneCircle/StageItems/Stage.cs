@@ -348,6 +348,8 @@ namespace StoneCircle
             }
 
             Saver.SaveSaveableList(eventsList, writer, objectTable);
+
+            Saver.SaveSaveableList<Lines>(openConversations, writer, objectTable);
         }
 
         private StageInflatables inflatables;
@@ -363,6 +365,7 @@ namespace StoneCircle
             inflatables = new StageInflatables();
 
             inflatables.eventsList = Loader.LoadSaveableList(reader);
+            inflatables.openConversationsList = Loader.LoadSaveableList(reader);
         }
 
         public void Inflate(Dictionary<uint, ISaveable> objectTable)
@@ -378,12 +381,14 @@ namespace StoneCircle
                         events.Add(inflatedEVENT.ID, inflatedEVENT);
                     }
                 }
+                openConversations = Loader.InflateSaveableList<Lines>(inflatables.openConversationsList, objectTable);
             }
         }
 
         private class StageInflatables
         {
             public List<uint> eventsList;
+            public List<uint> openConversationsList;
         }
 
         public void FinishLoad(GameManager gameManager)
@@ -400,6 +405,10 @@ namespace StoneCircle
             foreach (EVENT s in events.Values)
             {
                 refs.Add(s);
+            }
+            foreach (Lines l in openConversations)
+            {
+                refs.Add(l);
             }
             return refs;
         }

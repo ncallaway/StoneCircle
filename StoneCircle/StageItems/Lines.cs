@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 
 using Microsoft.Xna.Framework;
@@ -131,30 +132,39 @@ namespace StoneCircle
             }
         }
 
-
-        public void Save(System.IO.BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        public void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
         {
-            throw new NotImplementedException();
+            writer.Write(objectTable[actor]);
+            writer.Write(text);
         }
 
-        public void Load(System.IO.BinaryReader reader, SaveType type)
+        private LinesInflatables inflatables;
+
+        public void Load(BinaryReader reader, SaveType type)
         {
-            throw new NotImplementedException();
+            inflatables = new LinesInflatables();
+            inflatables.actor = reader.ReadUInt32();
+            text = reader.ReadString();
         }
 
         public void Inflate(Dictionary<uint, ISaveable> objectTable)
         {
-            throw new NotImplementedException();
+            actor = (Actor)objectTable[inflatables.actor];
+        }
+
+        private class LinesInflatables
+        {
+            public uint actor;
         }
 
         public void FinishLoad(GameManager manager)
         {
-            throw new NotImplementedException();
+            /* no-op */
         }
 
         public List<ISaveable> GetSaveableRefs(SaveType type)
         {
-            throw new NotImplementedException();
+            return new List<ISaveable>{ actor };
         }
 
         public uint GetId()
@@ -162,34 +172,6 @@ namespace StoneCircle
             return objectId;
         }
     }
-
-/*
-    class LinesMenu : Lines 
-    {
-        RingMenu menu;
-        UIManager UI;
-
-        public LinesMenu(String ID, RingMenu Menu, UIManager uI) { callID = ID; menu = Menu; UI = uI; }
-
-        public override bool Update(GameTime t)
-        {
-            return true;
-        }
-
-        public override void Load(ContentManager CM)
-        {
-            menu.Load(CM);
-        }
-
-        public override void Start()
-        {
-            UI.OpenMenu(menu);
-        }
-
-        public override void Draw(SpriteBatch batch, Vector2 camera_pos, float camera_scale)
-        { }
-
-    }*/
 }
 
        
