@@ -132,8 +132,8 @@ namespace StoneCircle
             //stages["region1"].AddEVENT(testIntroduction);
 
 
-            stages.Add("region2", new Stage("Region2", this));
-            stages["region2"].AddEVENT("Introduction", new EVENT());
+            stages.Add("region2", new Stage("region2", this));
+            //stages["region2"].AddEVENT("Introduction", new EVENT());
             stages["region2"].AddTrigger(new Trigger("VillageTrans", new TriggerPlayerBoxCondition(new BoundingBox(new Vector3(300, 300, 0), new Vector3(2000, 1201, 0)), gameManager.Player), true, false));
             stages["region2"].AddEVENT("VillageTrans", new EVENTStageChange(this, "Village"));
 
@@ -408,10 +408,10 @@ namespace StoneCircle
             return this.id;
         }
 
-        internal class StageManagerInflatables
+        private class StageManagerInflatables
         {
-            internal List<uint> stageIds;
-            internal uint openStageId;
+            public List<uint> stageIds;
+            public uint openStageId;
         }
     }
 

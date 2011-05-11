@@ -337,7 +337,20 @@ namespace StoneCircle
             writer.Write(AMBColor.X);
             writer.Write(AMBColor.Y);
             writer.Write(AMBColor.Z);
+
+            List<ISaveable> eventsList = new List<ISaveable>();
+            foreach (KeyValuePair<String, EVENT> pair in events) {
+                if (pair.Key != pair.Value.ID)
+                {
+                    pair.Value.ID = pair.Key;
+                }
+                eventsList.Add(pair.Value);
+            }
+
+            Saver.SaveSaveableList(eventsList, writer, objectTable);
         }
+
+        private StageInflatables inflatables;
 
         public void Load(BinaryReader reader, SaveType type)
         {
@@ -346,23 +359,32 @@ namespace StoneCircle
             max_Y = reader.ReadInt32();
             AMBStrength = reader.ReadSingle();
             AMBColor = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+
+            inflatables = new StageInflatables();
+
+            inflatables.eventsList = Loader.LoadSaveableList(reader);
         }
 
         public void Inflate(Dictionary<uint, ISaveable> objectTable)
         {
-            /* no-op*/
+            if (inflatables != null)
+            {
+                events = new Dictionary<String, EVENT>();
+                foreach (uint objectId in inflatables.eventsList)
+                {
+                    EVENT inflatedEVENT = (EVENT)objectTable[objectId];
+                    if (inflatedEVENT != null)
+                    {
+                        events.Add(inflatedEVENT.ID, inflatedEVENT);
+                    }
+                }
+            }
         }
 
-        public List<ISaveable> GetSaveableRefs(SaveType type)
+        private class StageInflatables
         {
-            return null;
+            public List<uint> eventsList;
         }
-
-        public uint GetId()
-        {
-            return objectId;
-        }
-
 
         public void FinishLoad(GameManager gameManager)
         {
@@ -371,5 +393,23 @@ namespace StoneCircle
             this.AM = gameManager.AudioManager;
             camera = new Camera(this, input);
         }
+
+        public List<ISaveable> GetSaveableRefs(SaveType type)
+        {
+            List<ISaveable> refs = new List<ISaveable>();
+            foreach (EVENT s in events.Values)
+            {
+                refs.Add(s);
+            }
+            return refs;
+        }
+
+        public uint GetId()
+        {
+            return objectId;
+        }
+
+
+        
     }
 }

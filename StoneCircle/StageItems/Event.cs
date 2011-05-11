@@ -52,7 +52,6 @@ namespace StoneCircle
             bool Ready = true;
             foreach (EVENT E in EVENTs) if (!E.Ready) { E.Update(t); Ready = (Ready && E.Ready); }
             return Ready;
-
         }
 
     }
@@ -72,8 +71,11 @@ namespace StoneCircle
         public override void Start()
         {
             index = 0;
-            currentEVENT = EVENTs[index];
-            currentEVENT.Start();
+            if (EVENTs.Count > 0)
+            {
+                currentEVENT = EVENTs[index];
+                currentEVENT.Start();
+            }
             Reset();
         }
 
@@ -103,7 +105,7 @@ namespace StoneCircle
     public class EVENT : ISaveable
     {
         protected String id;
-        public String ID { get { return id; } }
+        public String ID { get { return id; } set { id = value; } }
         protected bool ready;
         public bool Ready { get { return ready; } }
 
@@ -138,13 +140,24 @@ namespace StoneCircle
 
         public void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
         {
-            writer.Write(this.id);
+            writer.Write(this.id == null);
+            if (this.id != null)
+            {
+                writer.Write(this.id);
+            }
             writer.Write(this.ready);
         }
 
         public void Load(BinaryReader reader, SaveType type)
         {
-            this.id = reader.ReadString();
+            bool idNull = reader.ReadBoolean();
+
+            this.id = null;
+            if (!idNull)
+            {
+                this.id = reader.ReadString();
+            }
+
             this.ready = reader.ReadBoolean();
         }
 
