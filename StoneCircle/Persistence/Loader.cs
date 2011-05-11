@@ -127,18 +127,19 @@ namespace StoneCircle.Persistence
             return list;
         }
 
-        public static List<ISaveable> InflateSaveableList(List<uint> saveableList, Dictionary<uint, ISaveable> objectTable)
+        public static List<T> InflateSaveableList<T>(List<uint> saveableList, Dictionary<uint, ISaveable> objectTable)
+            where T : ISaveable
         {
             if (saveableList == null)
             {
                 return null;
             }
 
-            List<ISaveable> list = new List<ISaveable>();
+            List<T> list = new List<T>();
 
             foreach (uint objectId in saveableList)
             {
-                list.Add(objectTable[objectId]);
+                list.Add((T)objectTable[objectId]);
             }
 
             return list;

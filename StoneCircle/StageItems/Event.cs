@@ -26,6 +26,58 @@ namespace StoneCircle
             ready = false;
             foreach (EVENT E in EVENTs) E.Reset();
         }
+
+        public override List<ISaveable> GetSaveableRefs(SaveType type)
+        {
+            List<ISaveable> parentRefs = base.GetSaveableRefs(type);
+            if (parentRefs == null)
+            {
+                parentRefs = new List<ISaveable>();
+            }
+
+            foreach (EVENT e in EVENTs)
+            {
+                parentRefs.Add(e);
+            }
+
+            return parentRefs;
+        }
+
+        public override void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        {
+            base.Save(writer, type, objectTable);
+
+            List<ISaveable> eventList = new List<ISaveable>();
+            foreach (EVENT e in EVENTs)
+            {
+                eventList.Add(e);
+            }
+
+            Saver.SaveSaveableList(eventList, writer, objectTable);
+        }
+
+        private EVENTGroupInflatables inflatables;
+
+        public override void Load(BinaryReader reader, SaveType type)
+        {
+            base.Load(reader, type);
+            inflatables = new EVENTGroupInflatables();
+            inflatables.eventsList = Loader.LoadSaveableList(reader);
+        }
+
+        public override void Inflate(Dictionary<uint, ISaveable> objectTable)
+        {
+            base.Inflate(objectTable);
+            if (inflatables != null)
+            {
+                EVENTs = Loader.InflateSaveableList<EVENT>(inflatables.eventsList, objectTable);
+            }
+        }
+
+        private class EVENTGroupInflatables
+        {
+            public List<uint> eventsList;
+        }
         
     }
 
@@ -138,7 +190,7 @@ namespace StoneCircle
         }
 
 
-        public void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        public virtual void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
         {
             writer.Write(this.id == null);
             if (this.id != null)
@@ -148,7 +200,7 @@ namespace StoneCircle
             writer.Write(this.ready);
         }
 
-        public void Load(BinaryReader reader, SaveType type)
+        public virtual void Load(BinaryReader reader, SaveType type)
         {
             bool idNull = reader.ReadBoolean();
 
@@ -161,17 +213,17 @@ namespace StoneCircle
             this.ready = reader.ReadBoolean();
         }
 
-        public void Inflate(Dictionary<uint, ISaveable> objectTable)
+        public virtual void Inflate(Dictionary<uint, ISaveable> objectTable)
         {
             /* no-op */
         }
 
-        public void FinishLoad(GameManager manager)
+        public virtual void FinishLoad(GameManager manager)
         {
             /* no-op */
         }
 
-        public List<ISaveable> GetSaveableRefs(SaveType type)
+        public virtual List<ISaveable> GetSaveableRefs(SaveType type)
         {
             return null;
         }
@@ -208,6 +260,8 @@ namespace StoneCircle
         Player player;
         public EVENTPlayerDeactivate(Player player)
         { this.player = player; }
+
+        public EVENTPlayerDeactivate(uint objectId) : base(objectId) { }
 
 
         public override void Start()
