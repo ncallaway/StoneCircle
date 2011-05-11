@@ -16,27 +16,36 @@ using Microsoft.Xna.Framework.Storage;
 
 using UserMenus;
 
+using StoneCircle.Persistence;
+
 namespace StoneCircle
 {
-    class Lines
+    class Lines : ISaveable
     {
-        Actor actor;
-        String text;
-        SpriteFont font;
-        bool talkThought;
-        Texture2D image;
-        String[] lines = new String[5];
-        int[] lineSpace = new int[5];
+        private uint objectId;
+        private Actor actor;
+        private String text;
+        private SpriteFont font;
+        private bool talkThought;
+        private Texture2D image;
+        private String[] lines = new String[5];
+        private int[] lineSpace = new int[5];
 
 
-        public Lines() { }
+        public Lines() { this.objectId = IdFactory.GetNextId(); }
 
         public Lines(String text, Actor actor)
         {
+            this.objectId = IdFactory.GetNextId();
             this.text = text;
             this.actor = actor;
         }
 
+        public Lines(uint objectId)
+        {
+            this.objectId = objectId;
+            IdFactory.MoveNextIdPast(objectId);
+        }
 
         public virtual void Load(ContentManager CM)
         {
@@ -122,6 +131,36 @@ namespace StoneCircle
             }
         }
 
+
+        public void Save(System.IO.BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Load(System.IO.BinaryReader reader, SaveType type)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Inflate(Dictionary<uint, ISaveable> objectTable)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void FinishLoad(GameManager manager)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ISaveable> GetSaveableRefs(SaveType type)
+        {
+            throw new NotImplementedException();
+        }
+
+        public uint GetId()
+        {
+            return objectId;
+        }
     }
 
 /*
