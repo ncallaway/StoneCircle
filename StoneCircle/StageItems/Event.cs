@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 using Microsoft.Xna.Framework;
 
@@ -13,6 +14,9 @@ namespace StoneCircle
     class EVENTGroup : EVENT
     {
         protected List<EVENT> EVENTs = new List<EVENT>();
+
+        public EVENTGroup() { }
+        public EVENTGroup(uint objectId) : base(objectId) { }
 
 
         public void AddEVENT(EVENT add) { EVENTs.Add(add); }
@@ -33,6 +37,7 @@ namespace StoneCircle
         }
 
         public ParallelEVENTGroup() { }
+        public ParallelEVENTGroup(uint objectId) : base(objectId) { }
 
 
 
@@ -61,6 +66,8 @@ namespace StoneCircle
         {
             id = ID;
         }
+
+        public SerialEVENTGroup(uint objectId) : base(objectId) { }
 
         public override void Start()
         {
@@ -93,14 +100,25 @@ namespace StoneCircle
 
     }
 
-    public class EVENT
+    public class EVENT : ISaveable
     {
         protected String id;
         public String ID { get { return id; } }
         protected bool ready;
         public bool Ready { get { return ready; } }
 
+        private uint objectId;
 
+        public EVENT()
+        {
+            objectId = IdFactory.GetNextId();
+        }
+
+        public EVENT(uint objectId)
+        {
+            this.objectId = objectId;
+            IdFactory.MoveNextIdPast(objectId);
+        }
 
         public virtual void Start() { }
 
@@ -117,6 +135,36 @@ namespace StoneCircle
             ready = false;
         }
 
+
+        public void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Load(BinaryReader reader, SaveType type)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Inflate(Dictionary<uint, ISaveable> objectTable)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void FinishLoad(GameManager manager)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ISaveable> GetSaveableRefs(SaveType type)
+        {
+            throw new NotImplementedException();
+        }
+
+        public uint GetId()
+        {
+            return this.objectId;
+        }
     }
 
     class EVENTStateConditionON : EVENT
@@ -130,6 +178,8 @@ namespace StoneCircle
             StateCondition = sc;
 
         }
+
+        public EVENTStateConditionON(uint objectId) : base(objectId) { }
 
         public override void Start()
         {
@@ -160,6 +210,8 @@ namespace StoneCircle
         public EVENTPlayerReactivate(Player player)
         { this.player = player; }
 
+        public EVENTPlayerReactivate(uint objectId) : base(objectId) { }
+
 
         public override void Start()
         {
@@ -178,6 +230,7 @@ namespace StoneCircle
         public EVENTStageDeactivate(Stage stage)
         { this.stage = stage; }
 
+        public EVENTStageDeactivate(uint objectId) : base(objectId) { }
 
         public override void Start()
         {
@@ -194,6 +247,8 @@ namespace StoneCircle
 
         internal EVENTStageReactivate(Stage stage)
         { this.stage = stage; }
+
+        public EVENTStageReactivate(uint objectId) : base(objectId) { }
 
 
         public override void Start()
@@ -212,6 +267,8 @@ namespace StoneCircle
         internal EVENTCameraDeactivate(Camera camera)
         { this.camera = camera; }
 
+        public EVENTCameraDeactivate(uint objectId) : base(objectId) { }
+
 
         public override void Start()
         {
@@ -229,6 +286,7 @@ namespace StoneCircle
         internal EVENTCameraReactivate(Camera camera)
         { this.camera = camera; }
 
+        public EVENTCameraReactivate(uint objectId) : base(objectId) { }
 
         public override void Start()
         {
@@ -244,6 +302,8 @@ namespace StoneCircle
         private Actor actor;
         private float etime;
         const float TEXTTIME = 5000f;
+
+        public EVENTDialogueTimed(uint objectId) : base(objectId) { }
 
         internal EVENTDialogueTimed(String text, Actor actor, Stage stage)
         {
@@ -281,6 +341,8 @@ namespace StoneCircle
         private Lines line;
         private Actor actor;
         private Stage stage;
+
+        public EVENTDialogueConfirmed(uint objectId) : base(objectId) { }
 
         internal EVENTDialogueConfirmed(String text, Actor actor, Stage stage)
         {
@@ -322,6 +384,8 @@ namespace StoneCircle
 
         internal EVENTDramaticPause(float Time) { time = Time; }
 
+        public EVENTDramaticPause(uint objectId) : base(objectId) { }
+
         public override void Start()
         {
             etime = 0;
@@ -338,6 +402,8 @@ namespace StoneCircle
 
     public class PauseEVENT : EVENT
     {
+        public PauseEVENT() { }
+        public PauseEVENT(uint objectId) : base(objectId) { }
     }
 
     public class EVENTAcknowledgePause : PauseEVENT
@@ -346,6 +412,8 @@ namespace StoneCircle
         private Stage Stage;
 
         internal EVENTAcknowledgePause(Stage stage) { Stage = stage; }
+
+        public EVENTAcknowledgePause(uint objectId) : base(objectId) { }
 
 
         public override bool Update(GameTime t)
@@ -369,6 +437,8 @@ namespace StoneCircle
             ready = false;
             Stage = stage;
         }
+
+        public EVENTMoveActor(uint objectId) : base(objectId) { }
 
         public override void Start()
         {
@@ -399,8 +469,9 @@ namespace StoneCircle
         {
             SM = sM;
             stageName = StageName;
-
         }
+
+        public EVENTStageChange(uint objectId) : base(objectId) { }
 
         public override void Start()
         {
@@ -416,6 +487,8 @@ namespace StoneCircle
         Camera camera;
         Vector2 location;
 
+        public EVENTSetCameraLocation(uint objectId) : base(objectId) { }
+
         public EVENTSetCameraLocation(Camera Camera, Vector2 spot)
         {
             camera = Camera;
@@ -428,9 +501,6 @@ namespace StoneCircle
             camera.Location = location;
             ready = true;
         }
-
-
-
     }
 
     class EVENTSetCameraSubject : EVENT
@@ -443,8 +513,9 @@ namespace StoneCircle
         {
             camera = Camera;
             subject = Subject;
-
         }
+
+        public EVENTSetCameraSubject(uint objectId) : base(objectId) { }
 
 
         public override void Start()
@@ -483,6 +554,8 @@ namespace StoneCircle
             etime = 0;
         }
 
+        public EVENTChangeAmbient(uint objectId) : base(objectId) { }
+
 
 
         public override void Start()
@@ -511,6 +584,8 @@ namespace StoneCircle
         Vector2 direction;
         float time;
         float etime;
+
+        public EVENTMoveCamera(uint objectId) : base(objectId) { }
 
         public EVENTMoveCamera(Camera Camera, Vector2 Destination, float Time)
         {
@@ -546,6 +621,8 @@ namespace StoneCircle
             EndScale = Scale;
             time = Time;
         }
+
+        public EVENTScaleCamera(uint objectId) : base(objectId) { }
 
         public override void Start()
         {
@@ -583,6 +660,8 @@ namespace StoneCircle
             etime = 0f;
         }
 
+        public EVENTPerformAction(uint objectId) : base(objectId) { }
+
         public override void Start()
         {
             actor.SetAction(action);
@@ -610,6 +689,8 @@ namespace StoneCircle
             target = Target;
         }
 
+        public EVENTActorExitStage(uint objectId) : base(objectId) { }
+
         public override void Start()
         {
             stage.removeActor(target);
@@ -630,6 +711,8 @@ namespace StoneCircle
             actor = Actor;
             item = Item;
         }
+
+        public EVENTActorAddItem(uint objectId) : base(objectId) { }
 
         public override void Start()
         {
@@ -652,6 +735,8 @@ namespace StoneCircle
             ready = true;
         }
 
+        public EVENTActorRemoveItem(uint objectId) : base(objectId) { }
+
         public override void Start()
         {
             actor.RemoveItem(item);
@@ -670,6 +755,8 @@ namespace StoneCircle
             this.actor = actor;
             this.property = property;
         }
+
+        public EVENTActorAddProperty(uint objectId) : base(objectId) { }
 
         public override void Start()
         {
@@ -693,6 +780,8 @@ namespace StoneCircle
             
         }
 
+        public EVENTOpenMenu(uint objectId) : base(objectId) { }
+
         public override void Start()
         {
             UIM.OpenMenu(target);
@@ -711,6 +800,8 @@ namespace StoneCircle
             nextEvent= Next;
             stage = Stage;
         }
+
+        public EVENTOpenEvent(uint objectId) : base(objectId) { }
 
         public override void Start()
         {
