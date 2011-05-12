@@ -220,7 +220,42 @@ namespace UserMenus
         {
             stage.RunEvent(nextEvent);
             UI.CloseMenu();
+        }
 
+        public override List<ISaveable> GetSaveableRefs(SaveType type)
+        {
+            List<ISaveable> parentRefs =  base.GetSaveableRefs(type);
+            if (parentRefs == null)
+                parentRefs = new List<ISaveable>();
+            parentRefs.Add(stage);
+            return parentRefs;
+        }
+
+        public override void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        {
+            base.Save(writer, type, objectTable);
+            Saver.SaveString(nextEvent, writer);
+            writer.Write(objectTable[stage]);
+        }
+
+        private uint stageId;
+        public override void Load(BinaryReader reader, SaveType type)
+        {
+            base.Load(reader, type);
+            nextEvent = Loader.LoadString(reader);
+            stageId = reader.ReadUInt32();
+        }
+
+        public override void Inflate(Dictionary<uint, ISaveable> objectTable)
+        {
+            base.Inflate(objectTable);
+            stage = (Stage)objectTable[stageId];
+        }
+
+        public override void FinishLoad(GameManager manager)
+        {
+            base.FinishLoad(manager);
+            UI = manager.UIManager;
         }
 
 

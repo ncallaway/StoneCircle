@@ -474,6 +474,12 @@ namespace StoneCircle
             stage = (Stage)objectTable[stageId];
         }
 
+        public override void FinishLoad(GameManager manager)
+        {
+            base.FinishLoad(manager);
+            stage.StartLine(line);
+        }
+
 
     }
 
