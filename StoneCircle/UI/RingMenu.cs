@@ -33,6 +33,8 @@ namespace  UserMenus
             player = gameManager.Player;
         }
 
+        public RingMenu(uint objectId) : base(objectId) { }
+
         public override void Initialize()
         {
             
@@ -42,12 +44,6 @@ namespace  UserMenus
             audioManager = gameManager.AudioManager;
             
         }
-
-
-        
-
-
-
 
         public override void Update(GameTime gametime)
         {
@@ -90,10 +86,15 @@ namespace  UserMenus
             }
 
         }
-    
 
 
 
+        public override void FinishLoad(GameManager manager)
+        {
+            base.FinishLoad(manager);
+            audioManager = manager.AudioManager;
+            gameManager = manager;
+        }
 
 
     }

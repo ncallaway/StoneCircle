@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 
 using Microsoft.Xna.Framework;
@@ -15,14 +16,14 @@ using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
 
 using StoneCircle;
-
+using StoneCircle.Persistence;
 
 
 namespace UserMenus
 {
-    abstract class Menu
+    abstract class Menu : ISaveable
     {
-
+        private uint objectId;
         protected List<MenuItem> menuitems = new List<MenuItem>();
         protected MenuItem current;
         protected Player player;
@@ -38,7 +39,9 @@ namespace UserMenus
         protected bool loaded;
         public bool Loaded { get { return loaded; } }
 
-        public Menu() { }
+        public Menu() {
+            objectId = IdFactory.GetNextId();
+        }
 
         /// <summary>
         /// Creates a menu that runs in the UIManager attached to the given GameManager.
@@ -46,6 +49,7 @@ namespace UserMenus
         /// <param name="gameManager">GameManager that's hosting the desired UIManager</param>
         public Menu(GameManager gameManager)
         {
+            objectId = IdFactory.GetNextId();
             parent = gameManager.UIManager;
             player = gameManager.Player;
             font = parent.Font;
@@ -57,6 +61,12 @@ namespace UserMenus
             x_spacing = 0;
             title = "";
             loaded = false;
+        }
+
+        public Menu(uint objectId)
+        {
+            this.objectId = objectId;
+            IdFactory.MoveNextIdPast(objectId);
         }
 
         /// <summary>
@@ -131,6 +141,58 @@ namespace UserMenus
 
 
 
+
+        public void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        {
+            Saver.SaveSaveableList<MenuItem>(menuitems, writer, objectTable);
+        }
+
+        private class MenuInflatables
+        {
+            public List<uint> menuItems;
+        }
+
+        private MenuInflatables inflatables;
+        public void Load(BinaryReader reader, SaveType type)
+        {
+            inflatables = new MenuInflatables();
+            inflatables.menuItems = Loader.LoadSaveableList(reader);
+        }
+
+        public void Inflate(Dictionary<uint, ISaveable> objectTable)
+        {
+            menuitems = Loader.InflateSaveableList<MenuItem>(inflatables.menuItems, objectTable);
+        }
+
+        public virtual void FinishLoad(GameManager manager)
+        {
+            parent = manager.UIManager;
+            player = manager.Player;
+            font = parent.Font;
+            image = parent.Image;
+            current_index = 0;
+            x_position = 400;
+            y_position = 400;
+            y_spacing = 20;
+            x_spacing = 0;
+
+        }
+
+        public List<ISaveable> GetSaveableRefs(SaveType type)
+        {
+            List<ISaveable> refs = new List<ISaveable>();
+            foreach (MenuItem mi in menuitems)
+            {
+                refs.Add(mi);
+            }
+
+            return refs;
+        }
+
+        public uint GetId()
+        {
+            return objectId;
+        }
     }
 
 

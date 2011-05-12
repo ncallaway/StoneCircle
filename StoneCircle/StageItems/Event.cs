@@ -888,6 +888,43 @@ namespace StoneCircle
             ready = true;
         }
 
+        public override void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        {
+            base.Save(writer, type, objectTable);
+            writer.Write(objectTable[target]);
+        }
+
+        uint targetId;
+        public override void Load(BinaryReader reader, SaveType type)
+        {
+            base.Load(reader, type);
+            targetId = reader.ReadUInt32();
+        }
+
+        public override void Inflate(Dictionary<uint, ISaveable> objectTable)
+        {
+            base.Inflate(objectTable);
+            target = (UserMenus.Menu)objectTable[targetId];
+        }
+
+        public override List<ISaveable> GetSaveableRefs(SaveType type)
+        {
+            List<ISaveable> parentRefs = base.GetSaveableRefs(type);
+            if (parentRefs == null)
+            {
+                parentRefs = new List<ISaveable>();
+            }
+
+            parentRefs.Add(target);
+            return parentRefs;
+        }
+
+        public override void FinishLoad(GameManager manager)
+        {
+            base.FinishLoad(manager);
+            UIM = manager.UIManager;
+        }
+
     }
 
     class EVENTOpenEvent : EVENT

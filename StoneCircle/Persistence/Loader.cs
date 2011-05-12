@@ -94,6 +94,14 @@ namespace StoneCircle.Persistence
             }
         }
 
+        public static String LoadString(BinaryReader reader) {
+            bool isStringValid = reader.ReadBoolean();
+            if (isStringValid)
+                return reader.ReadString();
+
+            return null;
+        }
+
         public static List<String> LoadStringList(BinaryReader reader)
         {
             int count = reader.ReadInt32();

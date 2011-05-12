@@ -160,5 +160,12 @@ namespace StoneCircle.Persistence
                 writer.Write(objectTable[s]);
             }
         }
+
+        public static void SaveString(String s, BinaryWriter writer)
+        {
+            writer.Write(s != null);
+            if (s != null)
+                writer.Write(s);
+        }
     }
 }

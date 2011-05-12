@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
 using StoneCircle;
+using StoneCircle.Persistence;
 
 namespace UserMenus
 {
-    class MenuItem
+    class MenuItem : ISaveable
     {
         protected String id;
         public String Id { get { return id; } }
@@ -19,14 +21,34 @@ namespace UserMenus
         protected String iconName;
         protected Texture2D icon;
 
+        private uint objectId;
+
 
 
         public MenuItem(String ID)
         {
+            objectId = IdFactory.GetNextId();
             id = ID;
             color = Color.NavajoWhite;
             iconName = "BlankIcon";
         }
+
+        public MenuItem()
+        {
+            objectId = IdFactory.GetNextId();
+            id = "Default ID";
+
+            color = Color.NavajoWhite;
+
+            iconName = "BlankIcon";
+        }
+
+        public MenuItem(uint objectId)
+        {
+            this.objectId = objectId;
+            IdFactory.MoveNextIdPast(objectId);
+        }
+
 
 
         public void Load(ContentManager CM)
@@ -34,14 +56,6 @@ namespace UserMenus
             icon = CM.Load<Texture2D>(iconName);
         }
 
-        public MenuItem()
-        {
-            id = "Default ID";
-
-            color = Color.NavajoWhite;
-
-            iconName = "BlankIcon";
-        }
 
 
       
@@ -68,6 +82,43 @@ namespace UserMenus
         }
 
 
+
+        public virtual void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        {
+            Saver.SaveString(id, writer);
+            writer.Write(color.R);
+            writer.Write(color.G);
+            writer.Write(color.B);
+            writer.Write(color.A);
+            Saver.SaveString(iconName, writer);
+        }
+
+        public virtual void Load(BinaryReader reader, SaveType type)
+        {
+            id = Loader.LoadString(reader);
+            color = new Color(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+            iconName = Loader.LoadString(reader);
+        }
+
+        public virtual void Inflate(Dictionary<uint, ISaveable> objectTable)
+        {
+            /* no-op*/
+        }
+
+        public virtual void FinishLoad(GameManager manager)
+        {
+            /* no-op */
+        }
+
+        public virtual List<ISaveable> GetSaveableRefs(SaveType type)
+        {
+            return null;
+        }
+
+        public uint GetId()
+        {
+            return objectId;
+        }
     }
 
     class StateConditionItem : MenuItem
@@ -139,8 +190,6 @@ namespace UserMenus
         UIManager UI;
         Stage stage;
 
-
-
         public EventItem(Stage Stage, String Next, String Icon, String id, UIManager uI)
         {
             nextEvent = Next;
@@ -164,6 +213,8 @@ namespace UserMenus
             color = Color.Beige;
             UI = uI;
         }
+
+        public EventItem(uint objectId) : base(objectId) { }
 
         public override void execute()
         {
