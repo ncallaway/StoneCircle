@@ -584,6 +584,24 @@ namespace StoneCircle
             SM.SetStage(stageName);
         }
 
+        public override void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        {
+            base.Save(writer, type, objectTable);
+            Saver.SaveString(stageName, writer);
+        }
+
+        public override void Load(BinaryReader reader, SaveType type)
+        {
+            base.Load(reader, type);
+            stageName = Loader.LoadString(reader);
+        }
+
+        public override void FinishLoad(GameManager manager)
+        {
+            base.FinishLoad(manager);
+            SM = manager.StageManager;
+        }
+
 
 
     }
