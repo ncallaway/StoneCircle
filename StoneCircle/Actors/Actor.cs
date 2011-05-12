@@ -20,7 +20,7 @@ namespace StoneCircle
         private uint objectId;
 
         protected String name;  // Name of the actor.
-        public String Name { get { return name; } }
+        public String Name { get { return name; } set { name = value; } }
 
         protected List<String> properties = new List<String>();
 

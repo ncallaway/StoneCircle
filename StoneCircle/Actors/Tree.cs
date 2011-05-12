@@ -27,6 +27,7 @@ namespace StoneCircle
             ImageWidth = 162;
         }
 
+        public Tree(uint objectId) : base(objectId) { }
 
 
         public override void ApplyAction(Actionstate affected, Actor affector)

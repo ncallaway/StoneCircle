@@ -23,6 +23,8 @@ namespace StoneCircle
              ImageWidth = 80;
         }
 
+        public Fire(uint objectId) : base(objectId) { }
+
         public override void Initialize()
         {
 

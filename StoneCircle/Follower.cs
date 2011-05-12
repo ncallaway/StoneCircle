@@ -30,6 +30,8 @@ namespace StoneCircle
 
         }
 
+        public Follower(uint objectId) : base(objectId) { }
+
 
 
 

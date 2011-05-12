@@ -347,9 +347,21 @@ namespace StoneCircle
                 eventsList.Add(pair.Value);
             }
 
+            List<ISaveable> actorsList = new List<ISaveable>();
+            foreach (KeyValuePair<String, Actor> pair in exists)
+            {
+                if (pair.Key != pair.Value.Name)
+                {
+                    pair.Value.Name = pair.Key;
+                }
+                actorsList.Add(pair.Value);
+            }
+
             Saver.SaveSaveableList(eventsList, writer, objectTable);
 
             Saver.SaveSaveableList<Lines>(openConversations, writer, objectTable);
+
+            Saver.SaveSaveableList(actorsList, writer, objectTable);
         }
 
         private StageInflatables inflatables;
@@ -366,6 +378,7 @@ namespace StoneCircle
 
             inflatables.eventsList = Loader.LoadSaveableList(reader);
             inflatables.openConversationsList = Loader.LoadSaveableList(reader);
+            inflatables.actorsList = Loader.LoadSaveableList(reader);
         }
 
         public void Inflate(Dictionary<uint, ISaveable> objectTable)
@@ -381,6 +394,16 @@ namespace StoneCircle
                         events.Add(inflatedEVENT.ID, inflatedEVENT);
                     }
                 }
+
+                exists = new Dictionary<String, Actor>();
+                foreach (uint objectId in inflatables.actorsList)
+                {
+                    Actor inflatedActor = (Actor)objectTable[objectId];
+                    if (inflatedActor != null)
+                    {
+                        exists.Add(inflatedActor.Name, inflatedActor);
+                    }
+                }
                 openConversations = Loader.InflateSaveableList<Lines>(inflatables.openConversationsList, objectTable);
             }
         }
@@ -389,6 +412,7 @@ namespace StoneCircle
         {
             public List<uint> eventsList;
             public List<uint> openConversationsList;
+            public List<uint> actorsList;
         }
 
         public void FinishLoad(GameManager gameManager)
@@ -409,6 +433,10 @@ namespace StoneCircle
             foreach (Lines l in openConversations)
             {
                 refs.Add(l);
+            }
+            foreach (Actor a in exists.Values)
+            {
+                refs.Add(a);
             }
             return refs;
         }
