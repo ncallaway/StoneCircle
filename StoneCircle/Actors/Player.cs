@@ -45,9 +45,7 @@ namespace StoneCircle
         
           
             currentFatigue = 100;
-        }
-
-     
+        }     
 
         public override void loadImage(ContentManager theContentManager)
         {
@@ -105,11 +103,11 @@ namespace StoneCircle
 
             if (currentFatigue <= 0) SetAction("Unconcious");
             if (currentFatigue > totalFatigue) currentFatigue = totalFatigue;
-            currentFatigue += current_Action.Fatigue;
+            if (current_Action != null) currentFatigue += current_Action.Fatigue;
 
             if (Input.IsRightBumperNewlyPressed()) { gameManager.UIManager.OpenMenu(inventoryMenu); if(currentItem!=null) currentItem.OnUnequipItem(); }
 
-            current_Action.Update(t, targets);
+            if (current_Action != null) current_Action.Update(t, targets);
             SetAction(ChooseAction(t, targets));
         }
 
@@ -129,6 +127,28 @@ namespace StoneCircle
 
 
         public void AddInventoryItem(Item item) { inventoryMenu.AddMenuItem(new InventoryItem(item)); }
+
+        public override void FinishLoad(GameManager manager)
+        {
+            base.FinishLoad(manager);
+            Input = new InputController(InputController.InputMode.Player1);
+            speed = 125;
+            learnAction(new Interact());
+            inventoryMenu = new Inventory(this, gameManager);
+            ImageHeight = 128;
+            ImageWidth = 128;
+            inventoryOpen = false;
+            learnAction(new FightStance());
+            learnAction(new Dash());
+            learnAction(new DashJump());
+            learnAction(new BandageSelf(this));
+
+            learnAction(new Run());
+
+
+
+            currentFatigue = 100;
+        }
 
               
     }

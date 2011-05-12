@@ -36,7 +36,7 @@ namespace StoneCircle
         internal ContentManager ContentManager { get { return contentManager; } }
         public  StageManager StageManager { get { return stageManager; } }
 
-        internal Player Player { get { return player; } }
+        internal Player Player { get { return player; } set { player = value; } }
         internal Camera Camera { get { return camera; } }
 
         private Player player;

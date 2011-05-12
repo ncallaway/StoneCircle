@@ -339,6 +339,7 @@ namespace StoneCircle
 
             Saver.SaveSaveableList(saveableList, writer, objectTable);
             writer.Write(objectTable[openStage]);
+            writer.Write(objectTable[gameManager.Player]);
             Saver.SaveStringList(stateConditions, writer);
         }
 
@@ -350,6 +351,7 @@ namespace StoneCircle
 
             inflatables.stageIds = Loader.LoadSaveableList(reader);
             inflatables.openStageId = reader.ReadUInt32();
+            inflatables.playerId = reader.ReadUInt32();
 
             if (type == SaveType.FULL)
             {
@@ -373,6 +375,8 @@ namespace StoneCircle
             if (inflatables != null)
             {
                 openStage = (Stage)objectTable[inflatables.openStageId];
+                loadingPlayer = (Player)objectTable[inflatables.playerId];
+                
 
                 stages = new Dictionary<String, Stage>();
                 foreach (uint objectId in inflatables.stageIds)
@@ -387,6 +391,8 @@ namespace StoneCircle
 
         public void FinishLoad(GameManager manager)
         {
+            manager.Player = loadingPlayer;
+
             this.gameManager = manager;
             contentManager = gameManager.ContentManager;
 
@@ -400,6 +406,7 @@ namespace StoneCircle
                 refs.Add(s);
             }
             refs.Add(openStage);
+            refs.Add(gameManager.Player);
             return refs;
         }
 
@@ -408,10 +415,13 @@ namespace StoneCircle
             return this.id;
         }
 
+        private Player loadingPlayer;
+
         private class StageManagerInflatables
         {
             public List<uint> stageIds;
             public uint openStageId;
+            public uint playerId;
         }
     }
 

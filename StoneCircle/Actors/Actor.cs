@@ -92,7 +92,7 @@ namespace StoneCircle
         protected Vector3 boundsMin;
         protected Vector3 boundsMax;
 
-        public BoundingBox Bounds { get { return new BoundingBox(Location + boundsMin, Location + boundsMax);}}
+        public BoundingBox Bounds { get { return new BoundingBox(Location + boundsMin, Location + boundsMax); } }
 
 
         public Stage parent;
@@ -180,10 +180,13 @@ namespace StoneCircle
 
         public virtual void SetAction(String nextAction)
         {
-            if (nextAction == "Walking" || nextAction == "Running") {
+            if (nextAction == "Walking" || nextAction == "Running")
+            {
                 current_Action = knownActions[movement(nextAction)];
                 //  current_Action.Reset();
-            } else if (knownActions.ContainsKey(nextAction)) {
+            }
+            else if (knownActions.ContainsKey(nextAction))
+            {
                 current_Action = knownActions[nextAction];
                 current_Action.Reset();
             }
@@ -218,9 +221,9 @@ namespace StoneCircle
         public virtual void Draw(SpriteBatch theSpriteBatch, Vector2 camera_pos, float camera_scale, float intensity, SpriteFont font) // Draws the sprite and shadow of actor in relation to camera.
         {
             if (Math.Abs(facing.X) > Math.Abs(facing.Y)) { if (facing.X > 0) ImageYindex = 0; else ImageYindex = 1; }
-          //  else { if (facing.Y > 0) ImageYindex = 2; else ImageYindex = 3; }
+            //  else { if (facing.Y > 0) ImageYindex = 2; else ImageYindex = 3; }
             theSpriteBatch.Draw(image_map, screenadjust + (camera_scale * (Position - camera_pos)), new Rectangle(ImageXindex * ImageWidth, ImageYindex * ImageHeight, ImageWidth, ImageHeight), new Color(intensity, intensity, intensity, 1f), 0f, origin, camera_scale, SpriteEffects.None, .2f - Location.Y / 100000f);
-          //  theSpriteBatch.DrawString(font, current_Action.ID + "  " + current_Action.Frame, screenadjust + (camera_scale * (Position - camera_pos) - new Vector2(ImageWidth / 2, ImageHeight + 15)), Color.White);
+            //  theSpriteBatch.DrawString(font, current_Action.ID + "  " + current_Action.Frame, screenadjust + (camera_scale * (Position - camera_pos) - new Vector2(ImageWidth / 2, ImageHeight + 15)), Color.White);
         }
 
 
@@ -231,7 +234,7 @@ namespace StoneCircle
             else theSpriteBatch.Draw(image_map, new Rectangle((int)renderTarget.X, (int)renderTarget.Y, (int)(ImageWidth * camera_scale), (int)(ImageHeight * (intensity + 1) * camera_scale)), new Rectangle(ImageXindex * ImageWidth, ImageYindex * ImageHeight, ImageWidth, ImageHeight), new Color(0f, 0f, 0f, intensity), rotation, origin, SpriteEffects.None, .2f - (Location.Y - 2) / 100000f);
         }
 
-       
+
         public virtual BoundingBox GetBounds(Vector3 update)// Returns the bounding box of a moving actor for collision detection.
         {
             return new BoundingBox(Location + update + boundsMin, Location + update + boundsMax);
@@ -239,7 +242,8 @@ namespace StoneCircle
 
         public virtual void ApplyAction(Actionstate affected, Actor affector)
         {
-            switch (affected.ID) {
+            switch (affected.ID)
+            {
                 case "Interact":
 
                     break;
@@ -260,9 +264,11 @@ namespace StoneCircle
         {
             Interacting = false;
 
-            if (Bleeding && currentLife > 0) {
+            if (Bleeding && currentLife > 0)
+            {
                 currentBeatTime -= t.ElapsedGameTime.Milliseconds;
-                if (currentBeatTime < 0) {
+                if (currentBeatTime < 0)
+                {
                     heartBeat();
                     currentBeatTime = currentBeatTimer;
                 }
@@ -286,7 +292,8 @@ namespace StoneCircle
         public virtual String ChooseAction(GameTime t, Dictionary<String, Actor>.ValueCollection actor_list)
         {
 
-            foreach (AIOption AIO in AIStance) {
+            foreach (AIOption AIO in AIStance)
+            {
                 if (AIO.condition.Condition) return AIO.action.ActionReturn();
 
             }
@@ -306,7 +313,8 @@ namespace StoneCircle
 
         protected virtual String GetAIAction()
         {
-            foreach (AIOption AIO in AIStance) {
+            foreach (AIOption AIO in AIStance)
+            {
                 if (AIO.condition.Condition) return (AIO.action.ActionReturn());
 
             }
@@ -318,7 +326,7 @@ namespace StoneCircle
             return properties.Contains(Property);
         }
         public bool DoesNotHaveProperty(String Property) { return !HasProperty(Property); }
-        public void AddProperty(String Property) {if(!properties.Contains(Property)) properties.Add(Property); }
+        public void AddProperty(String Property) { if (!properties.Contains(Property)) properties.Add(Property); }
         public void RemoveProperty(String Property) { if (properties.Contains(Property)) properties.Remove(Property); }
 
         public virtual void AddAIOption(AIOption next)
@@ -338,39 +346,78 @@ namespace StoneCircle
         {
             inventoryMenu.RemoveMenuItem(item.II);
             inventory.Remove(item);
-           
+
         }
 
 
 
 
-        public void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        public virtual void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
         {
             writer.Write(name);
             writer.Write(asset_Name);
             writer.Write(Location.X);
             writer.Write(Location.Y);
             writer.Write(Location.Z);
+            writer.Write(Active);
+            writer.Write(Interacting); // bool
+            Saver.SaveStringList(properties, writer);
+            writer.Write(currentBeatTimer); // single
+            writer.Write(currentBeatTime); // single
+            writer.Write(RenderPosition.X); writer.Write(RenderPosition.Y); // single, // single
+            writer.Write(facing.X); writer.Write(facing.Y); // single, // single
+            writer.Write(totalLifeTime); // single
+            writer.Write(currentLife); // single
+        
+            writer.Write(totalFatigue); // single
+            writer.Write(currentFatigue); // single
+            writer.Write(boundsMin.X); writer.Write(boundsMin.Y); writer.Write(boundsMin.Z);
+            writer.Write(boundsMax.X); writer.Write(boundsMax.Y); writer.Write(boundsMax.Z);
+            writer.Write(objectTable[parent]);
         }
 
-        public void Load(BinaryReader reader, SaveType type)
+        public virtual void Load(BinaryReader reader, SaveType type)
         {
             name = reader.ReadString();
             asset_Name = reader.ReadString();
             Location = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+            Active = reader.ReadBoolean();
+            Interacting = reader.ReadBoolean();
+            properties = Loader.LoadStringList(reader);
+            currentBeatTimer = reader.ReadSingle();
+            currentBeatTime = reader.ReadSingle();
+            RenderPosition = new Vector2(reader.ReadSingle(), reader.ReadSingle());
+            facing = new Vector2(reader.ReadSingle(), reader.ReadSingle());
+            totalLifeTime = reader.ReadSingle();
+            currentLife = reader.ReadSingle();
+            totalFatigue = reader.ReadSingle();
+            currentFatigue = reader.ReadSingle();
+            boundsMin = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+            boundsMax = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+            stageId = reader.ReadUInt32();
         }
 
-        public void Inflate(Dictionary<uint, ISaveable> objectTable)
+        private uint stageId;
+        public virtual void Inflate(Dictionary<uint, ISaveable> objectTable)
         {
-            /* TODO: Fix this */
+            parent = (Stage)objectTable[stageId];
         }
 
-        public void FinishLoad(GameManager manager)
+        public virtual void FinishLoad(GameManager manager)
         {
             this.gameManager = manager;
+
+            learnAction(new Actionstate("Talking"));
+            learnAction(new Actionstate("Standing"));
+            learnAction(new Jump());
+            learnAction(new UseItem());
+            learnAction(new Walk());
+
+            defaultAction = knownActions["Standing"];
+            SetAction("Standing");
         }
 
-        public List<ISaveable> GetSaveableRefs(SaveType type)
+        public virtual List<ISaveable> GetSaveableRefs(SaveType type)
         {
             return null;
         }
@@ -380,25 +427,4 @@ namespace StoneCircle
             return objectId;
         }
     }
-
-
-
-
-
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    }
+}
