@@ -142,10 +142,19 @@ namespace StoneCircle
             speed = 100;
             Location = new Vector3(starting.X, starting.Y, 0);
             name = Id;
-
             learnAction(new Actionstate("Talking"));
-            learnAction(new Actionstate("Standing"));
+            learnAction(new Stand());
+            learnAction(new Walk());
+            learnAction(new Limp());
             learnAction(new Jump());
+            learnAction(new Run());
+            learnAction(new UseItem());
+            learnAction(new Dead());
+            learnAction(new Unconcious());
+            learnAction(new FallForward());
+            learnAction(new StandUp());
+            learnAction(new Prone());
+            learnAction(new Rest());
             defaultAction = knownActions["Standing"];
             SetAction("Standing");
         }
@@ -159,12 +168,19 @@ namespace StoneCircle
 
             parent = Parent;
             name = id;
-
             learnAction(new Actionstate("Talking"));
-            learnAction(new Actionstate("Standing"));
-            learnAction(new Jump());
-            learnAction(new UseItem());
+            learnAction(new Stand());
             learnAction(new Walk());
+            learnAction(new Limp());
+            learnAction(new Jump());
+            learnAction(new Run());
+            learnAction(new UseItem());
+            learnAction(new Dead());
+            learnAction(new Unconcious());
+            learnAction(new FallForward());
+            learnAction(new StandUp());
+            learnAction(new Prone());
+            learnAction(new Rest());
 
             defaultAction = knownActions["Standing"];
             SetAction("Standing");

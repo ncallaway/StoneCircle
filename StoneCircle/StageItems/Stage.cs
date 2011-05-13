@@ -23,10 +23,10 @@ namespace StoneCircle
         private uint objectId;
 
         private String id;
-        private Texture2D background;
+        private Texture2D terrainPallette;
         private Vector2 position;
-        public int max_X;
-        public int max_Y;
+        public int MaxX;
+        public int MaxY;
 
         internal String Id { get { return id; } }
 
@@ -37,7 +37,6 @@ namespace StoneCircle
         public InputController input = new InputController();
         public Camera camera;
 
-        private Texture2D terrain;
         private GameManager gameManager;
 
         [XmlIgnoreAttribute]
@@ -49,6 +48,9 @@ namespace StoneCircle
         public Vector3 AMBColor;
         public float AMBStrength;
 
+        protected int regionsWide;
+        protected int regionsHigh;
+        protected Texture2D[,] regions;
 
         [XmlIgnoreAttribute]
         
@@ -69,7 +71,7 @@ namespace StoneCircle
         // LightSource sun = new LightSource("sun", new Vector2(200000, 10000), 3000000f, null, null);
 
         [XmlIgnoreAttribute]
-        Effect ambientLightShader;
+        Effect TerrainMapper;
         [XmlIgnoreAttribute]
         Effect lightSourceShader;
         [XmlIgnoreAttribute]
@@ -78,16 +80,17 @@ namespace StoneCircle
 
         Texture2D DeathScreen;
 
-
         public Stage()
         {
+            regionsWide = 1;
+            regionsHigh = 1;
+
             position = new Vector2(0, 0);
-            max_X = 4000;
-            max_Y = 4000;
+            MaxX = 4096;
+            MaxY = 4096;
             camera = new Camera(this, input);
-            BGMTitle = "FlowerWaltz";
             AMBColor = new Vector3(1f, 1f, .4f);
-            AMBStrength = .8f;
+            AMBStrength = 0;
             AM = new AudioManager();
             loaded = false;
         }
@@ -101,11 +104,14 @@ namespace StoneCircle
 
         public Stage(String id, StageManager SM)
         {
+            regionsWide = 1;
+            regionsHigh = 1;
+
             this.objectId = IdFactory.GetNextId();
             this.id = id;
             position = new Vector2(0, 0);
-            max_X = 4000;
-            max_Y = 4000;
+            MaxX = 4000;
+            MaxY = 4000;
             camera = new Camera(this, input);
             this.SM = SM;
             BGMTitle = "FlowerWaltz";
@@ -117,14 +123,20 @@ namespace StoneCircle
 
         public Stage(GameManager gameManager)
         {
+            regionsWide = 1;
+            regionsHigh = 1;
+
             this.gameManager = gameManager;
             this.SM = gameManager.StageManager;
             this.AM = gameManager.AudioManager;
             position = new Vector2(0, 0);
-            max_X = 4000;
-            max_Y = 4000;
+            MaxX = 4000;
+            MaxY = 4000;
             camera = new Camera(this, input);
 
+            regionsWide = 1;
+            regionsHigh = 1;
+         
             BGMTitle = "FlowerWaltz";
             AMBColor = new Vector3(1f, 1f, .4f);
             AMBStrength = .8f;
@@ -145,10 +157,10 @@ namespace StoneCircle
             if (!loaded)
             {
                 this.CM = CM;
-                terrain = CM.Load<Texture2D>("Grass");
+                terrainPallette = CM.Load<Texture2D>("texturePallette");
                 font = CM.Load<SpriteFont>("Text");
                 player.loadImage(CM);
-                ambientLightShader = CM.Load<Effect>("AmbientLight");
+                TerrainMapper = CM.Load<Effect>("TerrainMapper");
                 lightSourceShader = CM.Load<Effect>("Effect1");
                 statusShader = CM.Load<Effect>("AmbientLight");
                 AM.Load(CM);
@@ -157,7 +169,15 @@ namespace StoneCircle
                 foreach (Lines D in openConversations) D.Load(CM);
                 openConversations.Clear();
                 DeathScreen = CM.Load<Texture2D>("RedScreenOfDeath");
+                regions = new Texture2D[regionsWide, regionsHigh];
+                for (int i = 0; i < regionsWide; i++)
+                {
+                    for (int j = 0; j < regionsHigh; j++)
+                    {
+                        regions[i, j] = CM.Load<Texture2D>(id + "_" + i + "_" + j + "IMG");
 
+                    }
+                }
             }
         }
 
@@ -170,6 +190,13 @@ namespace StoneCircle
         }
 
         public void AddTrigger(Trigger newT) { triggers.Add(newT); }
+
+        public void AddActor(String id)
+        {   Actor temp = SM.MainCharacters[id];
+            exists.Add(id, temp);
+            temp.parent = this;
+
+        }
 
         public void AddEVENT(EVENT add)
         {
@@ -235,24 +262,28 @@ namespace StoneCircle
 
         public void setCamera() { camera.setSubject(player); }
 
-        public void Draw(GraphicsDevice device, SpriteBatch theSpriteBatch, RenderTarget2D shadeTemp)
+        public void Draw(GraphicsDevice device, SpriteBatch theSpriteBatch, RenderTarget2D heightMap)
         {
-
-            device.SetRenderTarget(shadeTemp);
-            theSpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null);
-
-            device.Clear(Color.Ivory);
-            for (int i = 0; i < 40; i++)
+            device.SetRenderTarget(null);
+            device.Textures[1] = terrainPallette;
+            theSpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.Opaque, null, null, null, TerrainMapper);
+            
+            for (int i = 0; i < regionsWide; i++)
             {
-                for (int j = 0; j < 40; j++)
-                    theSpriteBatch.Draw(terrain, ((new Vector2(i * terrain.Width, j * terrain.Height)) - camera.Location) * camera.Scale + camera.screenadjust, new Rectangle(0, 0, terrain.Width, terrain.Height), Color.White, 0f, new Vector2(0, 0), camera.Scale, SpriteEffects.None, 1f);
-            }
+                for (int j = 0; j < regionsHigh; j++)
+                {
+                    theSpriteBatch.Draw(regions[i, j], (4096 * new Vector2(i, j) - camera.Location) * camera.Scale + camera.screenadjust, Color.White);
+                 
+                }
+
+            } theSpriteBatch.End();
+
+            theSpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null);
 
             foreach (Actor y in exists.Values)
             {
+
                 y.Draw(theSpriteBatch, camera.Location, camera.Scale, 1f, font);
-
-
                 foreach (LightSource x in lights)
                 {
                     float rotation = x.calcRotate(y);
@@ -265,9 +296,6 @@ namespace StoneCircle
 
             theSpriteBatch.End();
             device.SetRenderTarget(null);
-            theSpriteBatch.Begin(0, BlendState.Opaque, null, null, null, lightSourceShader);
-            theSpriteBatch.Draw(shadeTemp, Vector2.Zero, Color.White);
-            theSpriteBatch.End();
             theSpriteBatch.Begin(0, BlendState.AlphaBlend, null, null, null, statusShader);
             theSpriteBatch.Draw(DeathScreen, Vector2.Zero, Color.White);
             theSpriteBatch.End();
@@ -314,9 +342,9 @@ namespace StoneCircle
             {
                 if (x.Active) { x.Update(t, exists.Values); }
                 if ((int)x.Location.X < x.ImageWidth / 2) x.Location.X = x.ImageWidth / 2;
-                if ((int)x.Location.X > max_X - x.ImageWidth / 2) x.Location.X = max_X - x.ImageWidth / 2;
+                if ((int)x.Location.X > MaxX - x.ImageWidth / 2) x.Location.X = MaxX - x.ImageWidth / 2;
                 if ((int)x.Location.Y < x.ImageHeight) x.Location.Y = x.ImageHeight;
-                if ((int)x.Location.Y > max_Y) x.Location.Y = max_Y;
+                if ((int)x.Location.Y > MaxY) x.Location.Y = MaxY;
 
 
             }
@@ -331,8 +359,8 @@ namespace StoneCircle
         public void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
         {
             writer.Write(id);
-            writer.Write(max_X);
-            writer.Write(max_Y);
+            writer.Write(MaxX);
+            writer.Write(MaxY);
             writer.Write(AMBStrength);
             writer.Write(AMBColor.X);
             writer.Write(AMBColor.Y);
@@ -369,8 +397,8 @@ namespace StoneCircle
         public void Load(BinaryReader reader, SaveType type)
         {
             id = reader.ReadString();
-            max_X = reader.ReadInt32();
-            max_Y = reader.ReadInt32();
+            MaxX = reader.ReadInt32();
+            MaxY = reader.ReadInt32();
             AMBStrength = reader.ReadSingle();
             AMBColor = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
 

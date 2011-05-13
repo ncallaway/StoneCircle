@@ -234,19 +234,19 @@ namespace StoneCircle
         }
     }
 
-    class EVENTStateConditionON : EVENT
+    class EVENTStateConditionSet : EVENT
     {
         StageManager SM;
         String StateCondition;
 
-        public EVENTStateConditionON(String sc, StageManager sm)
+        public EVENTStateConditionSet(String sc, StageManager sm)
         {
             SM = sm;
             StateCondition = sc;
 
         }
 
-        public EVENTStateConditionON(uint objectId) : base(objectId) { }
+        public EVENTStateConditionSet(uint objectId) : base(objectId) { }
 
         public override void Start()
         {
@@ -370,15 +370,26 @@ namespace StoneCircle
         private Lines line;
         private Actor actor;
         private float etime;
+        float time;
         const float TEXTTIME = 5000f;
 
         public EVENTDialogueTimed(uint objectId) : base(objectId) { }
+
+        internal EVENTDialogueTimed(String text, Actor actor, Stage stage, float Time)
+        {
+            line = new Lines(text, actor);
+            this.actor = actor;
+            stage.StartLine(line);
+            time = Time;
+        }
 
         internal EVENTDialogueTimed(String text, Actor actor, Stage stage)
         {
             line = new Lines(text, actor);
             this.actor = actor;
             stage.StartLine(line);
+
+            time = TEXTTIME;
         }
 
         internal EVENTDialogueTimed(String callID, String text, Actor actor)
@@ -387,6 +398,7 @@ namespace StoneCircle
             line = new Lines(text, actor);
             this.actor = actor;
             actor.parent.StartLine(line);
+            time = TEXTTIME;
         }
 
         public override void Start()
@@ -570,18 +582,20 @@ namespace StoneCircle
     {
         StageManager SM;
         String stageName;
+        Vector2 destination;
 
-        public EVENTStageChange(StageManager sM, String StageName)
+        public EVENTStageChange(StageManager sM, String StageName, Vector2 destination)
         {
             SM = sM;
             stageName = StageName;
+            this.destination = destination;
         }
 
         public EVENTStageChange(uint objectId) : base(objectId) { }
 
         public override void Start()
         {
-            SM.SetStage(stageName);
+            SM.SetStage(stageName, destination);
         }
 
         public override void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)

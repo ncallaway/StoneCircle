@@ -199,6 +199,26 @@ namespace StoneCircle
 
 
     }
+  class TriggerStateCondition : TriggerCondition
+    {
+        StageManager SM;
+        String Condition;
+
+        public TriggerStateCondition(StageManager SM, String Condition)
+        {
+            this.SM = SM;
+            this.Condition = Condition;
+
+        }
+
+        public override bool CheckCondition()
+        {
+            return SM.StateConditions.Contains(Condition);
+        }
+
+
+
+    }
 
 
 }

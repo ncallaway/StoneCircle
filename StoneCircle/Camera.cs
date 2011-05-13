@@ -37,8 +37,8 @@ namespace StoneCircle
         {
             input = Input;
             currentStage = Parent;
-            maxX = currentStage.max_X;
-            maxY = currentStage.max_Y;
+            maxX = currentStage.MaxX;
+            maxY = currentStage.MaxY;
             Active = true;
         }
 

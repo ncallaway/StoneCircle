@@ -83,7 +83,8 @@ namespace StoneCircle
                 case 10: lineSpace = new int[] { 120, 180, 220, 180, 1200 }; break;
                 case 11: lineSpace = new int[] { 120, 180, 220, 180, 1200 }; break;
                 case 12: lineSpace = new int[] { 120, 180, 220, 180, 1200 }; break;
-
+                default: lineSpace = new int[] { 120, 180, 220, 180, 120000 }; break;
+           
             }
 
 
