@@ -158,11 +158,11 @@ namespace StoneCircle
             {
                 this.CM = CM;
                 terrainPallette = CM.Load<Texture2D>("texturePallette");
-                font = CM.Load<SpriteFont>("Text");
+                font = CM.Load<SpriteFont>("Fonts/Text");
                 player.loadImage(CM);
-                TerrainMapper = CM.Load<Effect>("TerrainMapper");
-                lightSourceShader = CM.Load<Effect>("Effect1");
-                statusShader = CM.Load<Effect>("AmbientLight");
+                TerrainMapper = CM.Load<Effect>("Shaders/TerrainMapper");
+                lightSourceShader = CM.Load<Effect>("Shaders/Effect1");
+                statusShader = CM.Load<Effect>("Shaders/AmbientLight");
                 AM.Load(CM);
                 foreach (Actor x in exists.Values) x.loadImage(CM);
                 loaded = true;
@@ -174,7 +174,7 @@ namespace StoneCircle
                 {
                     for (int j = 0; j < regionsHigh; j++)
                     {
-                        regions[i, j] = CM.Load<Texture2D>(id + "_" + i + "_" + j + "IMG");
+                        regions[i, j] = CM.Load<Texture2D>("Levels/" + id + "_" + i + "_" + j + "IMG");
 
                     }
                 }

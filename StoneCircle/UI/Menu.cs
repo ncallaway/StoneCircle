@@ -21,14 +21,16 @@ using StoneCircle.Persistence;
 
 namespace UserMenus
 {
-    abstract class Menu : ISaveable
+    class Menu : ISaveable
     {
         private uint objectId;
         protected List<MenuItem> menuitems = new List<MenuItem>();
         protected MenuItem current;
         protected Player player;
         protected UIManager parent;
+        protected String fontName;
         protected SpriteFont font;
+        protected String imageName;
         protected Texture2D image;
         protected int current_index;
         protected int x_position;
@@ -52,14 +54,30 @@ namespace UserMenus
             objectId = IdFactory.GetNextId();
             parent = gameManager.UIManager;
             player = gameManager.Player;
-            font = parent.Font;
-            image = parent.Image;
+            fontName = "Text";
+            imageName = "BlankIcon";
             current_index = 0;
-            x_position = 400;
-            y_position = 400;
+            x_position = 500;
+            y_position = 500;
             y_spacing = 20;
             x_spacing = 0;
             title = "";
+            loaded = false;
+        }
+
+        public Menu(GameManager gameManager, String ImageName, String FontName, String Title)
+        {
+            objectId = IdFactory.GetNextId();
+            parent = gameManager.UIManager;
+            player = gameManager.Player;
+            fontName = FontName;
+            imageName = ImageName;
+            current_index = 0;
+            x_position = 1000;
+            y_position = 500;
+            y_spacing = 20;
+            x_spacing = 0;
+            title = Title;
             loaded = false;
         }
 
@@ -84,17 +102,19 @@ namespace UserMenus
 
         public void Load(ContentManager contentManager)
         {
-
-            font = contentManager.Load<SpriteFont>("Text");
-            image = contentManager.Load<Texture2D>("BlankIcon");
-            foreach (MenuItem mi in menuitems) mi.Load(contentManager);
+            if (!loaded)
+            {
+                font = contentManager.Load<SpriteFont>("Fonts/" + fontName);
+                image = contentManager.Load<Texture2D>("UI Images/" + imageName);
+            }
+             foreach (MenuItem mi in menuitems) mi.Load(contentManager);
             loaded = true;
         }
 
         /// <summary>
         /// Menu-specific initialization
         /// </summary>
-        public abstract void Initialize();
+        public virtual void Initialize() { }
 
         /// <summary>
         /// Allow the menu to update itself
@@ -125,16 +145,14 @@ namespace UserMenus
         /// <param name="batch">SpriteBatch to render with</param>
         public virtual void Draw(SpriteBatch batch)
         {
-            // batch.Draw(image, new Rectangle(x_position - 5, y_position - 5, 410, y_spacing * (menuitems.Count+1) + 10), Color.Gray);
-
-            // batch.Draw(image, new Rectangle(x_position, y_position, 400, y_spacing * (menuitems.Count+1)), Color.Black);
+           if(image!=null) batch.Draw(image, new Rectangle(0, 0, 1366, 768), Color.White);
 
             batch.DrawString(font, title, new Vector2(x_position, y_position), Color.White);
             foreach (MenuItem x in menuitems) {
 
                 int i = menuitems.IndexOf(x);
-                //  if (i == current_index) x.Draw(batch, font, x_position + (i + 1) * x_spacing + 15, y_position + y_spacing * (i + 1));
-                //else x.Draw(batch, font, x_position + (i+1) * x_spacing, y_position + y_spacing * (i+1));
+                if (i == current_index) x.Draw(batch, font, x_position + (i + 1) * x_spacing - 15, y_position + y_spacing * (i + 1));
+                else x.Draw(batch, font, x_position + (i+1) * x_spacing, y_position + y_spacing * (i+1));
             }
 
         }
@@ -169,7 +187,7 @@ namespace UserMenus
             parent = manager.UIManager;
             player = manager.Player;
             font = parent.Font;
-            image = parent.Image;
+            
             current_index = 0;
             x_position = 400;
             y_position = 400;
@@ -194,6 +212,38 @@ namespace UserMenus
             return objectId;
         }
     }
+
+
+    class FullscreenMenu : Menu
+    {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+
+
 
 
 }

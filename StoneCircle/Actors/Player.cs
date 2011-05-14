@@ -12,7 +12,7 @@ using UserMenus;
 
 namespace StoneCircle
 {
-   class Player : Actor
+   class Player : Character
     {
         public InputController Input;
        

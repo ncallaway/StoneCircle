@@ -35,6 +35,7 @@ namespace StoneCircle
        
         
         private Stage openStage;
+        internal Stage OpenStage { get { return openStage; } }
 
         private List<String> stateConditions = new List<String>();
         public List<String> StateConditions { get { return stateConditions; } }
@@ -123,10 +124,10 @@ namespace StoneCircle
 
             Stage Court = new Stage("Court", this);
             SerialEVENTGroup Intro = new SerialEVENTGroup("Introduction");
-            Actor villagerA = new Actor("VillagerA", "Actor2", new Vector2(600, 600));
-            Actor villagerB = new Actor("VillagerB", "Actor2", new Vector2(1000, 600));
-            Actor Aide = new Actor("Aide", "Actor2", new Vector2(800, 300));
-            Actor Rhett = new Actor("Rhett", "male_select", new Vector2(800, 800));
+            Character villagerA = new Character("VillagerA", "Actor2", new Vector2(600, 600), gameManager);
+            Character villagerB = new Character("VillagerB", "Actor2", new Vector2(1000, 600), gameManager);
+            Character Aide = new Character("Aide", "Actor2", new Vector2(800, 300), gameManager);
+            Character Rhett = new Character("Rhett", "male_select", new Vector2(800, 800), gameManager);
             mainCharacters.Add("Rhett", Rhett);
             Court.AddActor(Rhett, new Vector2(800, 800));
             Court.AddActor(Aide, new Vector2(800, 300));
@@ -250,7 +251,7 @@ namespace StoneCircle
             //ShadyArea.addLight(new LightSource("Light2", new Vector2(1100, 1050), 800f, ShadyArea, null));
 
             //Actor Maximus = new Actor("Maximus", "knightm1", new Vector2(800, 800));
-            Actor Wraith = new Actor("Wraith", "DJ", new Vector2(800, 1000));
+            Character Wraith = new Character("Wraith", "DJ", new Vector2(800, 1000), gameManager);
             //ShadyArea.AddActor(Maximus, new Vector2(800, 800));
             //ShadyArea.AddActor(Wraith, new Vector2(800, 1000));
             //SerialEVENTGroup ShadyIntro = new SerialEVENTGroup("Introduction");
@@ -282,56 +283,56 @@ namespace StoneCircle
 
 
             stages["Village"].AMBStrength = 1f;
-            Actor CenterStone = new Actor("CenterStone", "SarcenStone2", new Vector2(2000, 2000), stages["Village"]);
-            stages["Village"].addActor("CenterStone", new Actor("CenterStone", "SarcenStone2", new Vector2(2000, 2000), stages["Village"]));
-            for (int i = 0; i < 72; i++) { stages["Village"].addActor("SarcenStone" + i, new Actor("Sarcen" + i, "SarcenStoneSmall", 2000 * Vector2.One + 1900 * new Vector2((float)Math.Cos(10 * i), (float)Math.Sin(10 * i)), stages["Village"])); }
+            SetProp CenterStone = new SetProp("CenterStone", "SarcenStone2", new Vector2(2000, 2000), gameManager);
+            stages["Village"].addActor("CenterStone", new SetProp("CenterStone", "SarcenStone2", new Vector2(2000, 2000), gameManager));
+            for (int i = 0; i < 72; i++) { stages["Village"].addActor("SarcenStone" + i, new SetProp("Sarcen" + i, "SarcenStoneSmall", 2000 * Vector2.One + 1900 * new Vector2((float)Math.Cos(10 * i), (float)Math.Sin(10 * i)), gameManager)); }
 
-            stages["Village"].addActor("Shack1", new Actor("Shack1", "Shack", new Vector2(600, 2000)));
-            stages["Village"].addActor("Shack2", new Actor("Shack2", "Shack", new Vector2(900, 2000)));
-            stages["Village"].addActor("Shack3", new Actor("Shack3", "Shack", new Vector2(1200, 2000)));
-            stages["Village"].addActor("Shack4", new Actor("Shack4", "Shack", new Vector2(300, 2000)));
-            stages["Village"].addActor("Shack5", new Actor("Shack5", "Shack", new Vector2(3700, 2000)));
-            stages["Village"].addActor("Shack6", new Actor("Shack6", "Shack", new Vector2(2800, 2000)));
-            stages["Village"].addActor("Shack7", new Actor("Shack7", "Shack", new Vector2(3100, 2000)));
-            stages["Village"].addActor("Shack8", new Actor("Shack8", "Shack", new Vector2(3400, 2000)));
+            stages["Village"].addActor("Shack1", new SetProp("Shack1", "Shack", new Vector2(600, 2000), gameManager));
+            stages["Village"].addActor("Shack2", new SetProp("Shack2", "Shack", new Vector2(900, 2000), gameManager));
+            stages["Village"].addActor("Shack3", new SetProp("Shack3", "Shack", new Vector2(1200, 2000), gameManager));
+            stages["Village"].addActor("Shack4", new SetProp("Shack4", "Shack", new Vector2(300, 2000), gameManager));
+            stages["Village"].addActor("Shack5", new SetProp("Shack5", "Shack", new Vector2(3700, 2000), gameManager));
+            stages["Village"].addActor("Shack6", new SetProp("Shack6", "Shack", new Vector2(2800, 2000), gameManager));
+            stages["Village"].addActor("Shack7", new SetProp("Shack7", "Shack", new Vector2(3100, 2000), gameManager));
+            stages["Village"].addActor("Shack8", new SetProp("Shack8", "Shack", new Vector2(3400, 2000), gameManager));
 
-            stages["Village"].addActor("Shack11", new Actor("Shack11", "Shack", new Vector2(700, 1700)));
-            stages["Village"].addActor("Shack12", new Actor("Shack12", "Shack", new Vector2(1000, 1700)));
-            stages["Village"].addActor("Shack13", new Actor("Shack13", "Shack", new Vector2(1300, 1700)));
-            stages["Village"].addActor("Shack14", new Actor("Shack14", "Shack", new Vector2(400, 1700)));
-            stages["Village"].addActor("Shack15", new Actor("Shack15", "Shack", new Vector2(3600, 1700)));
-            stages["Village"].addActor("Shack16", new Actor("Shack16", "Shack", new Vector2(2700, 1700)));
-            stages["Village"].addActor("Shack17", new Actor("Shack17", "Shack", new Vector2(3000, 1700)));
-            stages["Village"].addActor("Shack18", new Actor("Shack18", "Shack", new Vector2(3300, 1700)));
+            stages["Village"].addActor("Shack11", new SetProp("Shack11", "Shack", new Vector2(700, 1700), gameManager));
+            stages["Village"].addActor("Shack12", new SetProp("Shack12", "Shack", new Vector2(1000, 1700), gameManager));
+            stages["Village"].addActor("Shack13", new SetProp("Shack13", "Shack", new Vector2(1300, 1700), gameManager));
+            stages["Village"].addActor("Shack14", new SetProp("Shack14", "Shack", new Vector2(400, 1700), gameManager));
+            stages["Village"].addActor("Shack15", new SetProp("Shack15", "Shack", new Vector2(3600, 1700), gameManager));
+            stages["Village"].addActor("Shack16", new SetProp("Shack16", "Shack", new Vector2(2700, 1700), gameManager));
+            stages["Village"].addActor("Shack17", new SetProp("Shack17", "Shack", new Vector2(3000, 1700), gameManager));
+            stages["Village"].addActor("Shack18", new SetProp("Shack18", "Shack", new Vector2(3300, 1700), gameManager));
 
-            stages["Village"].addActor("Shack21", new Actor("Shack21", "Shack", new Vector2(700, 2300)));
-            stages["Village"].addActor("Shack22", new Actor("Shack22", "Shack", new Vector2(1000, 2300)));
-            stages["Village"].addActor("Shack23", new Actor("Shack23", "Shack", new Vector2(1300, 2300)));
-            stages["Village"].addActor("Shack24", new Actor("Shack24", "Shack", new Vector2(400, 2300)));
-            stages["Village"].addActor("Shack25", new Actor("Shack25", "Shack", new Vector2(3600, 2300)));
-            stages["Village"].addActor("Shack26", new Actor("Shack26", "Shack", new Vector2(2700, 2300)));
-            stages["Village"].addActor("Shack27", new Actor("Shack27", "Shack", new Vector2(3000, 2300)));
-            stages["Village"].addActor("Shack28", new Actor("Shack28", "Shack", new Vector2(3300, 2300)));
-
-
-            stages["Village"].addActor("Shack31", new Actor("Shack31", "Shack", new Vector2(900, 2600)));
-            stages["Village"].addActor("Shack32", new Actor("Shack32", "Shack", new Vector2(1200, 2600)));
-            stages["Village"].addActor("Shack33", new Actor("Shack33", "Shack", new Vector2(1500, 2600)));
-            stages["Village"].addActor("Shack34", new Actor("Shack34", "Shack", new Vector2(600, 2600)));
-            stages["Village"].addActor("Shack35", new Actor("Shack35", "Shack", new Vector2(3400, 2600)));
-            stages["Village"].addActor("Shack36", new Actor("Shack36", "Shack", new Vector2(2500, 2600)));
-            stages["Village"].addActor("Shack37", new Actor("Shack37", "Shack", new Vector2(2800, 2600)));
-            stages["Village"].addActor("Shack38", new Actor("Shack38", "Shack", new Vector2(3100, 2600)));
+            stages["Village"].addActor("Shack21", new SetProp("Shack21", "Shack", new Vector2(700, 2300), gameManager));
+            stages["Village"].addActor("Shack22", new SetProp("Shack22", "Shack", new Vector2(1000, 2300), gameManager));
+            stages["Village"].addActor("Shack23", new SetProp("Shack23", "Shack", new Vector2(1300, 2300), gameManager));
+            stages["Village"].addActor("Shack24", new SetProp("Shack24", "Shack", new Vector2(400, 2300), gameManager));
+            stages["Village"].addActor("Shack25", new SetProp("Shack25", "Shack", new Vector2(3600, 2300), gameManager));
+            stages["Village"].addActor("Shack26", new SetProp("Shack26", "Shack", new Vector2(2700, 2300), gameManager));
+            stages["Village"].addActor("Shack27", new SetProp("Shack27", "Shack", new Vector2(3000, 2300), gameManager));
+            stages["Village"].addActor("Shack28", new SetProp("Shack28", "Shack", new Vector2(3300, 2300), gameManager));
 
 
-            stages["Village"].addActor("Shack41", new Actor("Shack41", "Shack", new Vector2(900, 1400)));
-            stages["Village"].addActor("Shack42", new Actor("Shack42", "Shack", new Vector2(1200, 1400)));
-            stages["Village"].addActor("Shack43", new Actor("Shack43", "Shack", new Vector2(1500, 1400)));
-            stages["Village"].addActor("Shack44", new Actor("Shack44", "Shack", new Vector2(600, 1400)));
-            stages["Village"].addActor("Shack45", new Actor("Shack45", "Shack", new Vector2(3400, 1400)));
-            stages["Village"].addActor("Shack46", new Actor("Shack46", "Shack", new Vector2(2500, 1400)));
-            stages["Village"].addActor("Shack47", new Actor("Shack47", "Shack", new Vector2(2800, 1400)));
-            stages["Village"].addActor("Shack48", new Actor("Shack48", "Shack", new Vector2(3100, 1400)));
+            stages["Village"].addActor("Shack31", new SetProp("Shack31", "Shack", new Vector2(900, 2600), gameManager));
+            stages["Village"].addActor("Shack32", new SetProp("Shack32", "Shack", new Vector2(1200, 2600), gameManager));
+            stages["Village"].addActor("Shack33", new SetProp("Shack33", "Shack", new Vector2(1500, 2600), gameManager));
+            stages["Village"].addActor("Shack34", new SetProp("Shack34", "Shack", new Vector2(600, 2600), gameManager));
+            stages["Village"].addActor("Shack35", new SetProp("Shack35", "Shack", new Vector2(3400, 2600), gameManager));
+            stages["Village"].addActor("Shack36", new SetProp("Shack36", "Shack", new Vector2(2500, 2600), gameManager));
+            stages["Village"].addActor("Shack37", new SetProp("Shack37", "Shack", new Vector2(2800, 2600), gameManager));
+            stages["Village"].addActor("Shack38", new SetProp("Shack38", "Shack", new Vector2(3100, 2600), gameManager));
+
+
+            stages["Village"].addActor("Shack41", new SetProp("Shack41", "Shack", new Vector2(900, 1400), gameManager));
+            stages["Village"].addActor("Shack42", new SetProp("Shack42", "Shack", new Vector2(1200, 1400), gameManager));
+            stages["Village"].addActor("Shack43", new SetProp("Shack43", "Shack", new Vector2(1500, 1400), gameManager));
+            stages["Village"].addActor("Shack44", new SetProp("Shack44", "Shack", new Vector2(600, 1400), gameManager));
+            stages["Village"].addActor("Shack45", new SetProp("Shack45", "Shack", new Vector2(3400, 1400), gameManager));
+            stages["Village"].addActor("Shack46", new SetProp("Shack46", "Shack", new Vector2(2500, 1400), gameManager));
+            stages["Village"].addActor("Shack47", new SetProp("Shack47", "Shack", new Vector2(2800, 1400), gameManager));
+            stages["Village"].addActor("Shack48", new SetProp("Shack48", "Shack", new Vector2(3100, 1400), gameManager));
             stages["Village"].AMBColor = new Vector3(.5f, .5f, 1f);
             //  Follower Rhett = new Follower("Follower", new Vector2(2000, 4000), stages["Village"], gameManager);
 
@@ -376,7 +377,7 @@ namespace StoneCircle
             KD1A.AddEVENT(new EVENTChangeAmbient(stages["Village"], new Vector3(1.0f, 1.0f, 1.0f), 0, 10000f));
 
             PD1.AddEVENT(KD1A);
-            Actor Elysia = new Actor("Elysia", "male_select", new Vector2(2000, 3000), stages["Village"]);
+            Character Elysia = new Character("Elysia", "male_select", new Vector2(2000, 3000), gameManager);
             stages["Village"].AddActor(Elysia, new Vector2(3500, 2000));
             PD1.AddEVENT(new EVENTMoveActor(Elysia, new Vector2(2300, 2200), stages["Village"]));
             SerialEVENTGroup KD2A = new SerialEVENTGroup("KD2A");

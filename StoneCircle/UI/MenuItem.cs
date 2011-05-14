@@ -17,6 +17,7 @@ namespace UserMenus
     {
         protected String id;
         public String Id { get { return id; } }
+        protected String display;
         protected Color color;
         protected String iconName;
         protected Texture2D icon;
@@ -37,7 +38,7 @@ namespace UserMenus
         {
             objectId = IdFactory.GetNextId();
             id = "Default ID";
-
+            display = "Default";
             color = Color.NavajoWhite;
 
             iconName = "BlankIcon";
@@ -53,7 +54,7 @@ namespace UserMenus
 
         public void Load(ContentManager CM)
         {
-            icon = CM.Load<Texture2D>(iconName);
+            icon = CM.Load<Texture2D>("UI Images/" + iconName);
         }
 
 
@@ -70,14 +71,14 @@ namespace UserMenus
         public virtual void Draw(SpriteBatch batch, SpriteFont font,  int x_pos, int y_pos)
         {
             batch.Draw(icon, new Rectangle(x_pos, y_pos, 60, 60), new Rectangle(0, 0, 80, 80),color, 0f, new Vector2(30,30), SpriteEffects.None, 0f);
-          //  batch.DrawString(font, id, new Vector2(x_pos, y_pos), color);
+            batch.DrawString(font, display, new Vector2(x_pos, y_pos), color);
 
         }
 
         public virtual void Draw(SpriteBatch batch, SpriteFont font, int x_pos, int y_pos, Color color)
         {
             batch.Draw(icon, new Rectangle(x_pos, y_pos, 60, 60), new Rectangle(0, 0, 80, 80), color, 0f, new Vector2(30, 30), SpriteEffects.None, 0f);
-            //  batch.DrawString(font, id, new Vector2(x_pos, y_pos), color);
+              batch.DrawString(font, display,  new Vector2(x_pos, y_pos), color);
 
         }
 
@@ -275,12 +276,12 @@ namespace UserMenus
 
         }
 
-        public ChangeLevelItem(String targetName, StageManager sM, UIManager uI)
+        public ChangeLevelItem(String targetName, StageManager sM, UIManager uI, String display)
         {
             id = targetName;
             SM = sM;
             UI = uI;
-
+            this.display = display;
 
         }
 

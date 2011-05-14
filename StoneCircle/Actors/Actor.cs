@@ -443,4 +443,61 @@ namespace StoneCircle
             return objectId;
         }
     }
+
+    class Character : Actor
+    {
+        public Character(GameManager gameManager) : base(gameManager) { }
+        public Character(String Id, String asset_name, Vector2 starting,  GameManager gameManager)
+            : base(gameManager)  // Basic constructor.
+        {
+            
+            asset_Name = asset_name;
+            speed = 100;
+            Location = new Vector3(starting.X, starting.Y, 0);
+            name = Id;
+            defaultAction = knownActions["Standing"];
+            SetAction("Standing");
+        }
+
+        public Character(uint objectId) : base(objectId) { }
+
+        public override void loadImage(ContentManager theContentManager) // This loads the image map of the actor and locates the origin.
+        {
+            image_map = theContentManager.Load<Texture2D>("Characters/" + asset_Name);
+            if (ImageWidth == 0) ImageWidth = image_map.Width;
+            if (ImageHeight == 0) ImageHeight = image_map.Height;
+            origin = new Vector2(ImageWidth / 2, ImageHeight - ImageWidth / 3);
+
+        }
+
+
+    }
+
+
+    class SetProp : Actor
+    {
+
+        
+        public SetProp(String Id, String asset_name, Vector2 starting,  GameManager gameManager)
+            : base(gameManager)  // Basic constructor.
+        {
+            
+            asset_Name = asset_name;
+            speed = 100;
+            Location = new Vector3(starting.X, starting.Y, 0);
+            name = Id;
+            defaultAction = knownActions["Standing"];
+            SetAction("Standing");
+        }
+
+        public override void loadImage(ContentManager theContentManager) // This loads the image map of the actor and locates the origin.
+        {
+            image_map = theContentManager.Load<Texture2D>("Set Props/" + asset_Name);
+            if (ImageWidth == 0) ImageWidth = image_map.Width;
+            if (ImageHeight == 0) ImageHeight = image_map.Height;
+            origin = new Vector2(ImageWidth / 2, ImageHeight - ImageWidth / 3);
+
+        }
+    }
+
 }

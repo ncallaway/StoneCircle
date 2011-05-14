@@ -20,9 +20,6 @@ namespace UserMenus
         private SpriteFont font;
         public SpriteFont Font { get { return font; } }
 
-        private Texture2D image;
-        public Texture2D Image { get { return image; } }
-
         /// <summary>
         /// Gets the GameManager that this UIManager is attached to.
         /// </summary>
@@ -33,27 +30,35 @@ namespace UserMenus
         private RingMenu pauseMenu1;
         private Player player;
 
+        private Menu mainMenu;
+        public Menu MainMenu { get {return mainMenu;}}
+
         public UIManager(GameManager gameManager)
         {
             this.gameManager = gameManager;
             contentManager = gameManager.ContentManager;
 
             player = gameManager.Player;
+
+        //    mainMenu = new Menu(gameManager, "Wallpaper", "Text", "");
+
+          //  mainMenu.AddMenuItem(new ChangeLevelItem("Court", gameManager.StageManager, this, "New Game"));
             pauseMenu1 = new RingMenu(gameManager);
-            pauseMenu1.AddMenuItem(new ChangeLevelItem("region1", gameManager.StageManager, this));
-            pauseMenu1.AddMenuItem(new ChangeLevelItem("region2", gameManager.StageManager, this));
+            pauseMenu1.AddMenuItem(new ChangeLevelItem("region1", gameManager.StageManager, this, "Region 1"));
+            pauseMenu1.AddMenuItem(new ChangeLevelItem("region2", gameManager.StageManager, this, "Region 2"));
         }
 
 
         public void Initialize()
-        {
+        {         
+           
             pauseMenu1.Initialize();
         }
 
 
         public void Load(ContentManager CM)
         {
-            font = CM.Load<SpriteFont>("Text");
+            font = CM.Load<SpriteFont>("Fonts/Text");
             pauseMenu1.Load(CM);
         }
 
@@ -75,7 +80,7 @@ namespace UserMenus
 
         public void OpenMenu(Menu menu)
         {
-            if (!menu.Loaded) { menu.Load(contentManager); menu.Initialize(); }
+            if (!menu.Loaded) {  menu.Initialize();menu.Load(contentManager); }
             
             currentMenus.Push(menu);
         }
@@ -90,5 +95,7 @@ namespace UserMenus
         {
             if (currentMenus.Count != 0) currentMenus.Peek().Draw(batch);
         }
+
+
     }
 }

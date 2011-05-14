@@ -50,9 +50,9 @@ namespace StoneCircle
 
         public virtual void Load(ContentManager CM)
         {
-            font = CM.Load<SpriteFont>("Text");
-            if (talkThought) image = CM.Load<Texture2D>("DialogueBox");
-            else image = CM.Load<Texture2D>("ThoughtBox");
+            font = CM.Load<SpriteFont>("Fonts/Text");
+            if (talkThought) image = CM.Load<Texture2D>("UI Images/DialogueBox");
+            else image = CM.Load<Texture2D>("UI Images/ThoughtBox");
             ProcessText();
         }
 

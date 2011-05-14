@@ -28,6 +28,8 @@ namespace  UserMenus
 
         public RingMenu(GameManager gameManager)
         {
+            fontName = "Text";
+            imageName = "BlankIcon";
             this.gameManager = gameManager;
             this.parent = gameManager.UIManager;
             player = gameManager.Player;
@@ -44,6 +46,8 @@ namespace  UserMenus
             audioManager = gameManager.AudioManager;
             
         }
+
+       
 
         public override void Update(GameTime gametime)
         {

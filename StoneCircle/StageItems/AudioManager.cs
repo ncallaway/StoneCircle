@@ -58,7 +58,7 @@ namespace StoneCircle
 
         private void loadSound(ContentManager CM, String assetName, String callName){
 
-            SoundEffect asset = CM.Load<SoundEffect>(assetName);
+            SoundEffect asset = CM.Load<SoundEffect>("Sound Effects/" + assetName);
 
             try
             {
