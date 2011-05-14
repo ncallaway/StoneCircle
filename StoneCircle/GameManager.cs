@@ -69,8 +69,8 @@ namespace StoneCircle
         public void LoadContent()
         {
             UIManager.Load(ContentManager);
-            StageManager.SetStage("Village");
-           // UIManager.OpenMenu(UIManager.MainMenu);
+           // StageManager.SetStage("Village");
+            UIManager.OpenMenu(UIManager.MainMenu);
         }
 
         public void Initialize()
@@ -131,7 +131,7 @@ namespace StoneCircle
                 }
             }
 
-            if (Player.Input.IsLeftBumperNewlyPressed())
+            if (Player.Input.IsLeftBumperNewlyPressed()&& false)
             {
 #if XBOX
                 /* Request the container */
@@ -145,11 +145,11 @@ namespace StoneCircle
                 
             }
 
-            if (Player.Input.IsRightBumperNewlyPressed())
+            if (Player.Input.IsRightBumperNewlyPressed() && false)
             {
 #if XBOX
                 loadRequested = true;
-                deviceManager.RequestStorageContainer(PlayerIndex.One);
+                deviceManager.RequestStorageContainer(PlayerIndex.One) ;
 #else
                 Stream stream = File.Open("Stages.bin", FileMode.Open);
                 loadGame(stream);
@@ -164,7 +164,7 @@ namespace StoneCircle
         public void Draw(GraphicsDevice device, SpriteBatch batch, RenderTarget2D shadeTemp)
         {
           if(StageManager.OpenStage != null)  StageManager.Draw(device, batch, shadeTemp);
-            batch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null);
+            batch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, DepthStencilState.Default, RasterizerState.CullNone, null);
             UIManager.Draw(batch);
             batch.End();
 

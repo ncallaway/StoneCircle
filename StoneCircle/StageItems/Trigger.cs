@@ -113,10 +113,10 @@ namespace StoneCircle
     class TriggerPlayerBoxCondition : TriggerCondition
     {
 
-        protected BoundingBox area;
+        protected CollisionCylinder area;
         protected Player player;
 
-        public TriggerPlayerBoxCondition(BoundingBox box, Player Player)
+        public TriggerPlayerBoxCondition(CollisionCylinder box, Player Player)
         {
             area = box;
             player = Player;

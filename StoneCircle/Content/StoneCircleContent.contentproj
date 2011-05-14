@@ -142,8 +142,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Shaders\AmbientLight.fx">
-      <Name>AmbientLight</Name>
+    <Compile Include="Shaders\StatusShader.fx">
+      <Name>StatusShader</Name>
       <Importer>EffectImporter</Importer>
       <Processor>EffectProcessor</Processor>
     </Compile>

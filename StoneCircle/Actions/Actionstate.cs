@@ -14,7 +14,7 @@ namespace StoneCircle
     class Actionstate
     {
 
-        public BoundingBox EffectBox { get; set; }
+        public CollisionCylinder EffectBox { get; set; }
         public string id;
         public String ID { get { return id; } }
         private List<String> properties;
@@ -68,11 +68,6 @@ namespace StoneCircle
         
     }
 
-    public Actionstate(string newId, BoundingBox ef_box)
-    {
-        id = newId;
-        EffectBox = ef_box;
-    }
 
     public virtual void Update(GameTime t)
     {
@@ -101,4 +96,33 @@ namespace StoneCircle
 
 
     }
+
+
+
+
+    class CombatAction : Actionstate
+    {
+       // CollisionCylinder DefenseBox;
+
+
+
+        public virtual void Update(GameTime t, Dictionary<String, Actor>.ValueCollection targets)
+        {
+            
+
+        }
+
+
+
+
+
+    
+
+
+
+
+
+    }
+
+
 }

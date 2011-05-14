@@ -41,9 +41,8 @@ namespace StoneCircle
             learnAction(new Dash());
             learnAction(new DashJump());
             learnAction(new BandageSelf(this));
-            
-        
-          
+
+            currentLife = 25;
             currentFatigue = 100;
         }     
 
@@ -99,9 +98,9 @@ namespace StoneCircle
                 }
             }
 
-            if (currentLife <= 0) SetAction("Dead");
+           // if (currentLife <= 0) SetAction("Dead");
 
-            if (currentFatigue <= 0) SetAction("Unconcious");
+           // if (currentFatigue <= 0) SetAction("Unconcious");
             if (currentFatigue > totalFatigue) currentFatigue = totalFatigue;
             if (current_Action != null) currentFatigue += current_Action.Fatigue;
 

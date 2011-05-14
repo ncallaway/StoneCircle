@@ -33,6 +33,8 @@ namespace UserMenus
         protected String imageName;
         protected Texture2D image;
         protected int current_index;
+        protected int titleX;
+        protected int titleY;
         protected int x_position;
         protected int y_position;
         protected int x_spacing;
@@ -73,8 +75,8 @@ namespace UserMenus
             fontName = FontName;
             imageName = ImageName;
             current_index = 0;
-            x_position = 1000;
-            y_position = 500;
+            x_position = 700;
+            y_position = 400;
             y_spacing = 20;
             x_spacing = 0;
             title = Title;
@@ -145,14 +147,15 @@ namespace UserMenus
         /// <param name="batch">SpriteBatch to render with</param>
         public virtual void Draw(SpriteBatch batch)
         {
-           if(image!=null) batch.Draw(image, new Rectangle(0, 0, 1366, 768), Color.White);
+          // if(image!=null) batch.Draw(image, new Rectangle(0, 0, 1366, 768), Color.White);
+            batch.Draw(image, new Rectangle(0, 0, 1366, 768), new Rectangle(0, 0, image.Width, image.Height), Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
 
-            batch.DrawString(font, title, new Vector2(x_position, y_position), Color.White);
+            batch.DrawString(font, title, new Vector2(titleX, titleY), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, .5f );
             foreach (MenuItem x in menuitems) {
 
                 int i = menuitems.IndexOf(x);
-                if (i == current_index) x.Draw(batch, font, x_position + (i + 1) * x_spacing - 15, y_position + y_spacing * (i + 1));
-                else x.Draw(batch, font, x_position + (i+1) * x_spacing, y_position + y_spacing * (i+1));
+                if (i == current_index) x.DrawText(batch, font, x_position + (i + 1) * x_spacing - 15, y_position + y_spacing * (i + 1));
+                else x.DrawText(batch, font, x_position + (i+1) * x_spacing, y_position + y_spacing * (i+1));
             }
 
         }

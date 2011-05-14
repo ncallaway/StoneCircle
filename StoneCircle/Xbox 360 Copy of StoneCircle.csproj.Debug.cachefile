@@ -19,7 +19,6 @@ Content\UI Images\Wallpaper.xnb
 Content\RedScreenOfDeath.xnb
 Content\texturePallette.xnb
 Content\Fonts\Text.xnb
-Content\Shaders\AmbientLight.xnb
 Content\Shaders\Effect1.xnb
 Content\Shaders\TerrainMapper.xnb
 Content\Sound Effects\beep.xnb
@@ -30,3 +29,4 @@ Content\Sound Effects\nature004.xnb
 Content\Sound Effects\nature014.xnb
 Content\Sound Effects\nature021.xnb
 Content\Sound Effects\fire.xnb
+Content\Shaders\StatusShader.xnb

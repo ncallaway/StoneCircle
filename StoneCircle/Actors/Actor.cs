@@ -64,7 +64,7 @@ namespace StoneCircle
         // These variables represent the location and position of the actor. 
         protected Vector2 origin;
         public Vector3 Location;
-        public Vector2 Position { get { return new Vector2(Location.X, Location.Y - Location.Z / 2); } }
+        public Vector2 Position { get { return new Vector2(Location.X, (Location.Y - Location.Z) / 2); } }
 
         public Vector2 RenderPosition;
         protected Vector2 facing;
@@ -89,10 +89,8 @@ namespace StoneCircle
 
         public List<AIOption> AIStance = new List<AIOption>();
 
-        protected Vector3 boundsMin;
-        protected Vector3 boundsMax;
 
-        public BoundingBox Bounds { get { return new BoundingBox(Location + boundsMin, Location + boundsMax); } }
+        public CollisionCylinder Bounds { get { return new CollisionCylinder(Location, 15, 60); } }
 
 
         public Stage parent;
@@ -128,8 +126,7 @@ namespace StoneCircle
             currentFatigue = totalFatigue;
             currentBeatTimer = defaultBeatTimer;
             currentBeatTime = 0;
-            boundsMin = new Vector3(-20, -20, 0);
-            boundsMax = new Vector3(20, 20, 72);
+          
 
             this.gameManager = gameManager;
             Active = true;
@@ -211,8 +208,10 @@ namespace StoneCircle
         public virtual void loadImage(ContentManager theContentManager) // This loads the image map of the actor and locates the origin.
         {
             image_map = theContentManager.Load<Texture2D>(asset_Name);
-            if (ImageWidth == 0) ImageWidth = image_map.Width;
-            if (ImageHeight == 0) ImageHeight = image_map.Height;
+            //if (ImageWidth == 0) 
+                ImageWidth = image_map.Width;
+           // if (ImageHeight == 0) 
+                ImageHeight = image_map.Height;
             origin = new Vector2(ImageWidth / 2, ImageHeight - ImageWidth / 3);
 
         }
@@ -237,23 +236,23 @@ namespace StoneCircle
         public virtual void Draw(SpriteBatch theSpriteBatch, Vector2 camera_pos, float camera_scale, float intensity, SpriteFont font) // Draws the sprite and shadow of actor in relation to camera.
         {
             if (Math.Abs(facing.X) > Math.Abs(facing.Y)) { if (facing.X > 0) ImageYindex = 0; else ImageYindex = 1; }
-            //  else { if (facing.Y > 0) ImageYindex = 2; else ImageYindex = 3; }
+              else { if (facing.Y > 0) ImageYindex = 2; else ImageYindex = 3; }
             theSpriteBatch.Draw(image_map, screenadjust + (camera_scale * (Position - camera_pos)), new Rectangle(ImageXindex * ImageWidth, ImageYindex * ImageHeight, ImageWidth, ImageHeight), new Color(intensity, intensity, intensity, 1f), 0f, origin, camera_scale, SpriteEffects.None, .2f - Location.Y / 100000f);
-            //  theSpriteBatch.DrawString(font, current_Action.ID + "  " + current_Action.Frame, screenadjust + (camera_scale * (Position - camera_pos) - new Vector2(ImageWidth / 2, ImageHeight + 15)), Color.White);
+              theSpriteBatch.DrawString(font, current_Action.ID + "  " + current_Action.Frame, screenadjust + (camera_scale * (Position - camera_pos) - new Vector2(ImageWidth / 2, ImageHeight + 15)), Color.White);
         }
 
 
         public virtual void DrawShadow(SpriteBatch theSpriteBatch, Vector2 camera_pos, float camera_scale, float rotation, float intensity)
         {
-            Vector2 renderTarget = screenadjust + (camera_scale * (Position - camera_pos));
-            if (rotation < Math.PI / 2) theSpriteBatch.Draw(image_map, new Rectangle((int)renderTarget.X, (int)renderTarget.Y, (int)(ImageWidth * camera_scale), (int)(ImageHeight * (intensity + 1) * camera_scale)), new Rectangle(ImageXindex * ImageWidth, ImageYindex * ImageHeight, ImageWidth, ImageHeight), new Color(0f, 0f, 0f, intensity), rotation, origin, SpriteEffects.None, .2f - (Location.Y - 2) / 100000f);
-            else theSpriteBatch.Draw(image_map, new Rectangle((int)renderTarget.X, (int)renderTarget.Y, (int)(ImageWidth * camera_scale), (int)(ImageHeight * (intensity + 1) * camera_scale)), new Rectangle(ImageXindex * ImageWidth, ImageYindex * ImageHeight, ImageWidth, ImageHeight), new Color(0f, 0f, 0f, intensity), rotation, origin, SpriteEffects.None, .2f - (Location.Y - 2) / 100000f);
+            Vector2 shadowTarget = screenadjust + (camera_scale * (Position - camera_pos));
+            if (rotation < Math.PI / 2) theSpriteBatch.Draw(image_map, new Rectangle((int)shadowTarget.X, (int)shadowTarget.Y, (int)(ImageWidth * camera_scale), (int)(ImageHeight * (intensity + 1) * camera_scale)), new Rectangle(ImageXindex * ImageWidth, ImageYindex * ImageHeight, ImageWidth, ImageHeight), new Color(0f, 0f, 0f, intensity), rotation, origin, SpriteEffects.None, .2f - (Location.Y - 2) / 100000f);
+            else theSpriteBatch.Draw(image_map, new Rectangle((int)shadowTarget.X, (int)shadowTarget.Y, (int)(ImageWidth * camera_scale), (int)(ImageHeight * (intensity + 1) * camera_scale)), new Rectangle(ImageXindex * ImageWidth, ImageYindex * ImageHeight, ImageWidth, ImageHeight), new Color(0f, 0f, 0f, intensity), rotation, origin, SpriteEffects.None, .2f - (Location.Y - 2) / 100000f);
         }
 
 
-        public virtual BoundingBox GetBounds(Vector3 update)// Returns the bounding box of a moving actor for collision detection.
+        public virtual CollisionCylinder GetBounds(Vector3 update)// Returns the bounding box of a moving actor for collision detection.
         {
-            return new BoundingBox(Location + update + boundsMin, Location + update + boundsMax);
+            return new CollisionCylinder(Location + update, ImageWidth/2, 60);
         }
 
         public virtual void ApplyAction(Actionstate affected, Actor affector)
@@ -387,8 +386,6 @@ namespace StoneCircle
         
             writer.Write(totalFatigue); // single
             writer.Write(currentFatigue); // single
-            writer.Write(boundsMin.X); writer.Write(boundsMin.Y); writer.Write(boundsMin.Z);
-            writer.Write(boundsMax.X); writer.Write(boundsMax.Y); writer.Write(boundsMax.Z);
             writer.Write(objectTable[parent]);
         }
 
@@ -408,9 +405,7 @@ namespace StoneCircle
             currentLife = reader.ReadSingle();
             totalFatigue = reader.ReadSingle();
             currentFatigue = reader.ReadSingle();
-            boundsMin = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
-            boundsMax = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
-            stageId = reader.ReadUInt32();
+           stageId = reader.ReadUInt32();
         }
 
         private uint stageId;
@@ -493,10 +488,10 @@ namespace StoneCircle
         public override void loadImage(ContentManager theContentManager) // This loads the image map of the actor and locates the origin.
         {
             image_map = theContentManager.Load<Texture2D>("Set Props/" + asset_Name);
-            if (ImageWidth == 0) ImageWidth = image_map.Width;
-            if (ImageHeight == 0) ImageHeight = image_map.Height;
+             ImageWidth = image_map.Width;
+             ImageHeight = image_map.Height;
+            
             origin = new Vector2(ImageWidth / 2, ImageHeight - ImageWidth / 3);
-
         }
     }
 

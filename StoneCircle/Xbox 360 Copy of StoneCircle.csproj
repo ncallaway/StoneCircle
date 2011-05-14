@@ -83,6 +83,7 @@
     <Compile Include="Actors\Tree.cs" />
     <Compile Include="Actions\Burning.cs" />
     <Compile Include="AIManager.cs" />
+    <Compile Include="Class1.cs" />
     <Compile Include="Follower.cs" />
     <Compile Include="GameManager.cs" />
     <Compile Include="Persistence\DeviceManager.cs" />

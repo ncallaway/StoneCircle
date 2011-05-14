@@ -18,7 +18,8 @@ namespace UserMenus
         protected String id;
         public String Id { get { return id; } }
         protected String display;
-        protected Color color;
+        protected Color textColor;
+        protected Color iconColor;
         protected String iconName;
         protected Texture2D icon;
 
@@ -30,7 +31,8 @@ namespace UserMenus
         {
             objectId = IdFactory.GetNextId();
             id = ID;
-            color = Color.NavajoWhite;
+            iconColor = Color.NavajoWhite;
+            textColor = Color.Black;
             iconName = "BlankIcon";
         }
 
@@ -39,8 +41,8 @@ namespace UserMenus
             objectId = IdFactory.GetNextId();
             id = "Default ID";
             display = "Default";
-            color = Color.NavajoWhite;
-
+            iconColor = Color.NavajoWhite;
+            textColor = Color.Black;
             iconName = "BlankIcon";
         }
 
@@ -68,18 +70,27 @@ namespace UserMenus
 
         }
 
-        public virtual void Draw(SpriteBatch batch, SpriteFont font,  int x_pos, int y_pos)
+        public virtual void DrawText(SpriteBatch batch, SpriteFont font,  int x_pos, int y_pos)
         {
-            batch.Draw(icon, new Rectangle(x_pos, y_pos, 60, 60), new Rectangle(0, 0, 80, 80),color, 0f, new Vector2(30,30), SpriteEffects.None, 0f);
-            batch.DrawString(font, display, new Vector2(x_pos, y_pos), color);
+            batch.DrawString(font, display, new Vector2(x_pos, y_pos), textColor,0f, Vector2.Zero, 1f, SpriteEffects.None, .5f );
 
         }
 
-        public virtual void Draw(SpriteBatch batch, SpriteFont font, int x_pos, int y_pos, Color color)
+        public virtual void DrawText(SpriteBatch batch, SpriteFont font, int x_pos, int y_pos, Color tcolor)
         {
-            batch.Draw(icon, new Rectangle(x_pos, y_pos, 60, 60), new Rectangle(0, 0, 80, 80), color, 0f, new Vector2(30, 30), SpriteEffects.None, 0f);
-              batch.DrawString(font, display,  new Vector2(x_pos, y_pos), color);
+             batch.DrawString(font, display, new Vector2(x_pos, y_pos), tcolor, 0f, Vector2.Zero, 1f, SpriteEffects.None, .5f);
+        }
 
+        public virtual void DrawIcon(SpriteBatch batch, SpriteFont font, int x_pos, int y_pos)
+        {
+            batch.Draw(icon, new Rectangle(x_pos, y_pos, 60, 60), new Rectangle(0, 0, 80, 80), iconColor, 0f, new Vector2(30, 30), SpriteEffects.None, 0f);
+          
+        }
+
+        public virtual void DrawIcon(SpriteBatch batch, SpriteFont font, int x_pos, int y_pos, Color icolor)
+        {
+            if (icon != null) batch.Draw(icon, new Rectangle(x_pos, y_pos, 60, 60), new Rectangle(0, 0, 80, 80), icolor, 0f, new Vector2(30, 30), SpriteEffects.None, 0f);
+          
         }
 
 
@@ -87,17 +98,17 @@ namespace UserMenus
         public virtual void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
         {
             Saver.SaveString(id, writer);
-            writer.Write(color.R);
-            writer.Write(color.G);
-            writer.Write(color.B);
-            writer.Write(color.A);
+            writer.Write(textColor.R);
+            writer.Write(textColor.G);
+            writer.Write(textColor.B);
+            writer.Write(textColor.A);
             Saver.SaveString(iconName, writer);
         }
 
         public virtual void Load(BinaryReader reader, SaveType type)
         {
             id = Loader.LoadString(reader);
-            color = new Color(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+            textColor = new Color(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
             iconName = Loader.LoadString(reader);
         }
 
@@ -197,7 +208,7 @@ namespace UserMenus
             stage = Stage;
             this.id = id;
             iconName = Icon;
-            color = Color.NavajoWhite;
+            textColor = Color.NavajoWhite;
             UI = uI;
 
         }
@@ -211,7 +222,7 @@ namespace UserMenus
             if (yesNo) { iconName = "ThumbsUpIcon"; id = "Yes"; }
             else { iconName = "ThumbsDownIcon"; id = "No"; }
 
-            color = Color.Beige;
+            textColor = Color.Beige;
             UI = uI;
         }
 
@@ -303,7 +314,7 @@ namespace UserMenus
             id = targetName;
             AM = aM;
             UI = uI;
-            color = Color.NavajoWhite;
+            textColor = Color.NavajoWhite;
 
         }
 

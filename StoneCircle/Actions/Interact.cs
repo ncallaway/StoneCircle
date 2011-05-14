@@ -19,7 +19,7 @@ namespace StoneCircle
         {
             id = "Interact";
             
-            EffectBox = new BoundingBox(new Vector3(0, 0, 0), new Vector3(60, 60, 80));
+            
             maxFrame = 2;
         }
 
@@ -47,7 +47,7 @@ namespace StoneCircle
 
 
             Vector3 update = new Vector3(30 * Actor.Facing, 0);
-            BoundingBox CheckBox = Actor.GetBounds(update);
+            CollisionCylinder CheckBox = Actor.GetBounds(update);
 
                 foreach (Actor y in targets)
                 {

@@ -77,16 +77,19 @@ namespace  UserMenus
         public override void Draw(SpriteBatch batch)
         {
             batch.Draw(image, new Rectangle((int)player.Position.X - (int)player.parent.camera.Location.X + 683 - 100, (int)player.Position.Y - (int)player.parent.camera.Location.Y - 90 + 384, 200, 90), new Rectangle(0,0, 80,80), Color.Beige, 0f, Vector2.Zero, SpriteEffects.None, .1f);
-            if(current != null) batch.DrawString(font, current.Id, new Vector2((int)player.Position.X - 95 - (int)player.parent.camera.Location.X + 683, (int)player.Position.Y - (int)player.parent.camera.Location.Y  - 80 + 384), Color.Black);
-
+            
             int dFactor = 360;
             if ( menuitems.Count > 0) dFactor = 360 / menuitems.Count;
             
             foreach (MenuItem x in menuitems)
             {
                 int i = menuitems.IndexOf(x);
-                if (x != current) x.Draw(batch, font, (int)player.Position.X - (int)player.parent.camera.Location.X + 683 + (int)(150 * Math.Sin(MathHelper.ToRadians(i * dFactor))), (int)player.Position.Y - (int)player.parent.camera.Location.Y - player.ImageHeight / 3 + 384 - (int)(150 * Math.Cos(MathHelper.ToRadians(i * dFactor))));
-                else x.Draw(batch, font, (int)player.Position.X - (int)player.parent.camera.Location.X + 683 + (int)(150 * Math.Sin(MathHelper.ToRadians(i * dFactor))), (int)player.Position.Y - (int)player.parent.camera.Location.Y - player.ImageHeight / 3 + 384 - (int)(150 * Math.Cos(MathHelper.ToRadians(i * dFactor))) , Color.Gold);
+                if (x != current) x.DrawIcon(batch, font, (int)player.Position.X - (int)player.parent.camera.Location.X + 683 + (int)(150 * Math.Sin(MathHelper.ToRadians(i * dFactor))), (int)player.Position.Y - (int)player.parent.camera.Location.Y - player.ImageHeight / 3 + 384 - (int)(150 * Math.Cos(MathHelper.ToRadians(i * dFactor))));
+                else
+                {
+                    x.DrawIcon(batch, font, (int)player.Position.X - (int)player.parent.camera.Location.X + 683 + (int)(150 * Math.Sin(MathHelper.ToRadians(i * dFactor))), (int)player.Position.Y - (int)player.parent.camera.Location.Y - player.ImageHeight / 3 + 384 - (int)(150 * Math.Cos(MathHelper.ToRadians(i * dFactor))), Color.Gold);
+                    batch.DrawString(font, current.Id, new Vector2((int)player.Position.X - 95 - (int)player.parent.camera.Location.X + 683, (int)player.Position.Y - (int)player.parent.camera.Location.Y - 80 + 384), Color.Black);
+                }
             }
 
         }

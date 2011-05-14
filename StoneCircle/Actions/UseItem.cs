@@ -44,7 +44,7 @@ namespace StoneCircle
                     if (currentItem != null)
                     {
 
-                        EffectBox = new BoundingBox(currentItem.EffectBox.Min + update + Actor.Location, currentItem.EffectBox.Max + update + Actor.Location);
+                        //EffectBox = new BoundingBox(currentItem.EffectBox.Min + update + Actor.Location, currentItem.EffectBox.Max + update + Actor.Location);
                         foreach (Actor y in targets)
                         {
                             if ((EffectBox.Intersects(y.Bounds) && !Actor.Equals(y))) //Collision Detection. Ideally reduces movement to outside collision bounds.

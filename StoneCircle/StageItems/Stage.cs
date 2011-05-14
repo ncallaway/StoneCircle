@@ -42,7 +42,7 @@ namespace StoneCircle
         [XmlIgnoreAttribute]
         public Player player;
         Stack<Menu> activeMenus = new Stack<Menu>();
-
+        
 
         public String BGMTitle;
         public Vector3 AMBColor;
@@ -75,7 +75,6 @@ namespace StoneCircle
         [XmlIgnoreAttribute]
         Effect lightSourceShader;
         [XmlIgnoreAttribute]
-
         Effect statusShader;
 
         Texture2D DeathScreen;
@@ -86,8 +85,8 @@ namespace StoneCircle
             regionsHigh = 1;
 
             position = new Vector2(0, 0);
-            MaxX = 4096;
-            MaxY = 4096;
+            MaxX = regionsWide * 8192;
+            MaxY = regionsHigh * 8192;
             camera = new Camera(this, input);
             AMBColor = new Vector3(1f, 1f, .4f);
             AMBStrength = 0;
@@ -110,8 +109,8 @@ namespace StoneCircle
             this.objectId = IdFactory.GetNextId();
             this.id = id;
             position = new Vector2(0, 0);
-            MaxX = 4000;
-            MaxY = 4000;
+            MaxX = regionsWide * 8192;
+            MaxY = regionsHigh * 8192;
             camera = new Camera(this, input);
             this.SM = SM;
             BGMTitle = "FlowerWaltz";
@@ -130,8 +129,8 @@ namespace StoneCircle
             this.SM = gameManager.StageManager;
             this.AM = gameManager.AudioManager;
             position = new Vector2(0, 0);
-            MaxX = 4000;
-            MaxY = 4000;
+            MaxX = regionsWide * 8192;
+            MaxY = regionsHigh * 8192;
             camera = new Camera(this, input);
 
             regionsWide = 1;
@@ -162,7 +161,7 @@ namespace StoneCircle
                 player.loadImage(CM);
                 TerrainMapper = CM.Load<Effect>("Shaders/TerrainMapper");
                 lightSourceShader = CM.Load<Effect>("Shaders/Effect1");
-                statusShader = CM.Load<Effect>("Shaders/AmbientLight");
+                statusShader = CM.Load<Effect>("Shaders/StatusShader");
                 AM.Load(CM);
                 foreach (Actor x in exists.Values) x.loadImage(CM);
                 loaded = true;
@@ -296,9 +295,13 @@ namespace StoneCircle
 
             theSpriteBatch.End();
             device.SetRenderTarget(null);
-            theSpriteBatch.Begin(0, BlendState.AlphaBlend, null, null, null, statusShader);
+
+
+
+            theSpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, statusShader);
             theSpriteBatch.Draw(DeathScreen, Vector2.Zero, Color.White);
             theSpriteBatch.End();
+
             theSpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null);
             foreach (Lines D in openConversations) D.Draw(theSpriteBatch, camera.Location, camera.Scale);
             theSpriteBatch.End();
@@ -321,6 +324,8 @@ namespace StoneCircle
             Vector2 tempPlayer = (player.Position - camera.Location) * camera.Scale + camera.screenadjust;
             tempPlayer.X /= 1366; tempPlayer.Y /= 768;
             statusShader.Parameters["health"].SetValue(player.CurrentLife / player.TotalLife * .707f);
+            statusShader.Parameters["fatigue"].SetValue(player.CurrentFatigue / player.TotalFatigue * .707f);
+           
             lightSourceShader.Parameters["Position"].SetValue(LPosition);
             lightSourceShader.Parameters["index"].SetValue(lights.Count);
             lightSourceShader.Parameters["player"].SetValue(tempPlayer);

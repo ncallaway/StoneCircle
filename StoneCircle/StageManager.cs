@@ -106,13 +106,13 @@ namespace StoneCircle
             // Stages["region1"].AddActor(Lantern, new Vector2( 600, 650));
 
 
-            stages["region1"].AddTrigger(new Trigger("Bandage", new TriggerANDCondition(new TriggerPlayerBoxCondition(new BoundingBox(new Vector3(600, 400, 0), new Vector3(601, 1200, 1)), gameManager.Player), new TriggerActorHasProperty(gameManager.Player, "Bleeding")), true, true));
+           // stages["region1"].AddTrigger(new Trigger("Bandage", new TriggerANDCondition(new TriggerPlayerBoxCondition(new BoundingBox(new Vector3(600, 400, 0), new Vector3(601, 1200, 1)), gameManager.Player), new TriggerActorHasProperty(gameManager.Player, "Bleeding")), true, true));
             SerialEVENTGroup Bandage = new SerialEVENTGroup("Bandage");
             Bandage.AddEVENT(new EVENTDialogueTimed("I'm losing a lot of blood... I'll need to bandage myself if I don't want to bleed to death", gameManager.Player, stages["region1"]));
             Bandage.AddEVENT(new EVENTDialogueTimed("Hold RT and press Y. Don't move until you've finished bandaging.", gameManager.Player, stages["region1"]));
             Bandage.AddEVENT(new EVENTActorAddItem(gameManager.Player, new Lantern(gameManager.Player)));
             stages["region1"].AddEVENT("Bandage", Bandage);
-            stages["region1"].AddTrigger(new Trigger("region2trans", new TriggerPlayerBoxCondition(new BoundingBox(new Vector3(300, 1200, 0), new Vector3(2000, 1201, 0)), gameManager.Player), true, false));
+          //  stages["region1"].AddTrigger(new Trigger("region2trans", new TriggerPlayerBoxCondition(new BoundingBox(new Vector3(300, 1200, 0), new Vector3(2000, 1201, 0)), gameManager.Player), true, false));
             stages["region1"].AddEVENT("region2trans", new EVENTStageChange(this, "region2", new Vector2(100, 100)));
 
             stages["region1"].addLight("Light", new Vector2(-100, 600), 1200);
@@ -284,55 +284,55 @@ namespace StoneCircle
 
             stages["Village"].AMBStrength = 1f;
             SetProp CenterStone = new SetProp("CenterStone", "SarcenStone2", new Vector2(2000, 2000), gameManager);
-            stages["Village"].addActor("CenterStone", new SetProp("CenterStone", "SarcenStone2", new Vector2(2000, 2000), gameManager));
-            for (int i = 0; i < 72; i++) { stages["Village"].addActor("SarcenStone" + i, new SetProp("Sarcen" + i, "SarcenStoneSmall", 2000 * Vector2.One + 1900 * new Vector2((float)Math.Cos(10 * i), (float)Math.Sin(10 * i)), gameManager)); }
+            stages["Village"].addActor("CenterStone", new SetProp("CenterStone", "SarcenStone2", new Vector2(2000, 4000), gameManager));
+            for (int i = 0; i < 72; i++) { stages["Village"].addActor("SarcenStone" + i, new SetProp("Sarcen" + i, "SarcenStoneSmall", 2000 * (Vector2.One + Vector2.UnitY) + 1900 * new Vector2((float)Math.Cos(10 * i), 2* (float)Math.Sin(10 * i)), gameManager)); }
 
-            stages["Village"].addActor("Shack1", new SetProp("Shack1", "Shack", new Vector2(600, 2000), gameManager));
-            stages["Village"].addActor("Shack2", new SetProp("Shack2", "Shack", new Vector2(900, 2000), gameManager));
-            stages["Village"].addActor("Shack3", new SetProp("Shack3", "Shack", new Vector2(1200, 2000), gameManager));
-            stages["Village"].addActor("Shack4", new SetProp("Shack4", "Shack", new Vector2(300, 2000), gameManager));
-            stages["Village"].addActor("Shack5", new SetProp("Shack5", "Shack", new Vector2(3700, 2000), gameManager));
-            stages["Village"].addActor("Shack6", new SetProp("Shack6", "Shack", new Vector2(2800, 2000), gameManager));
-            stages["Village"].addActor("Shack7", new SetProp("Shack7", "Shack", new Vector2(3100, 2000), gameManager));
-            stages["Village"].addActor("Shack8", new SetProp("Shack8", "Shack", new Vector2(3400, 2000), gameManager));
+            stages["Village"].addActor("Shack1", new SetProp("Shack1", "Shack", new Vector2(600, 4000), gameManager));
+            stages["Village"].addActor("Shack2", new SetProp("Shack2", "Shack", new Vector2(900, 4000), gameManager));
+            stages["Village"].addActor("Shack3", new SetProp("Shack3", "Shack", new Vector2(1200, 4000), gameManager));
+            stages["Village"].addActor("Shack4", new SetProp("Shack4", "Shack", new Vector2(300,4000), gameManager));
+            stages["Village"].addActor("Shack5", new SetProp("Shack5", "Shack", new Vector2(3700, 4000), gameManager));
+            stages["Village"].addActor("Shack6", new SetProp("Shack6", "Shack", new Vector2(2800, 4000), gameManager));
+            stages["Village"].addActor("Shack7", new SetProp("Shack7", "Shack", new Vector2(3100, 4000), gameManager));
+            stages["Village"].addActor("Shack8", new SetProp("Shack8", "Shack", new Vector2(3400, 4000), gameManager));
 
-            stages["Village"].addActor("Shack11", new SetProp("Shack11", "Shack", new Vector2(700, 1700), gameManager));
-            stages["Village"].addActor("Shack12", new SetProp("Shack12", "Shack", new Vector2(1000, 1700), gameManager));
-            stages["Village"].addActor("Shack13", new SetProp("Shack13", "Shack", new Vector2(1300, 1700), gameManager));
-            stages["Village"].addActor("Shack14", new SetProp("Shack14", "Shack", new Vector2(400, 1700), gameManager));
-            stages["Village"].addActor("Shack15", new SetProp("Shack15", "Shack", new Vector2(3600, 1700), gameManager));
-            stages["Village"].addActor("Shack16", new SetProp("Shack16", "Shack", new Vector2(2700, 1700), gameManager));
-            stages["Village"].addActor("Shack17", new SetProp("Shack17", "Shack", new Vector2(3000, 1700), gameManager));
-            stages["Village"].addActor("Shack18", new SetProp("Shack18", "Shack", new Vector2(3300, 1700), gameManager));
+            stages["Village"].addActor("Shack11", new SetProp("Shack11", "Shack", new Vector2(700, 3400), gameManager));
+            stages["Village"].addActor("Shack12", new SetProp("Shack12", "Shack", new Vector2(1000, 3400), gameManager));
+            stages["Village"].addActor("Shack13", new SetProp("Shack13", "Shack", new Vector2(1300, 3400), gameManager));
+            stages["Village"].addActor("Shack14", new SetProp("Shack14", "Shack", new Vector2(400, 3400), gameManager));
+            stages["Village"].addActor("Shack15", new SetProp("Shack15", "Shack", new Vector2(3600, 3400), gameManager));
+            stages["Village"].addActor("Shack16", new SetProp("Shack16", "Shack", new Vector2(2700, 3400), gameManager));
+            stages["Village"].addActor("Shack17", new SetProp("Shack17", "Shack", new Vector2(3000, 3400), gameManager));
+            stages["Village"].addActor("Shack18", new SetProp("Shack18", "Shack", new Vector2(3300, 3400), gameManager));
 
-            stages["Village"].addActor("Shack21", new SetProp("Shack21", "Shack", new Vector2(700, 2300), gameManager));
-            stages["Village"].addActor("Shack22", new SetProp("Shack22", "Shack", new Vector2(1000, 2300), gameManager));
-            stages["Village"].addActor("Shack23", new SetProp("Shack23", "Shack", new Vector2(1300, 2300), gameManager));
-            stages["Village"].addActor("Shack24", new SetProp("Shack24", "Shack", new Vector2(400, 2300), gameManager));
-            stages["Village"].addActor("Shack25", new SetProp("Shack25", "Shack", new Vector2(3600, 2300), gameManager));
-            stages["Village"].addActor("Shack26", new SetProp("Shack26", "Shack", new Vector2(2700, 2300), gameManager));
-            stages["Village"].addActor("Shack27", new SetProp("Shack27", "Shack", new Vector2(3000, 2300), gameManager));
-            stages["Village"].addActor("Shack28", new SetProp("Shack28", "Shack", new Vector2(3300, 2300), gameManager));
-
-
-            stages["Village"].addActor("Shack31", new SetProp("Shack31", "Shack", new Vector2(900, 2600), gameManager));
-            stages["Village"].addActor("Shack32", new SetProp("Shack32", "Shack", new Vector2(1200, 2600), gameManager));
-            stages["Village"].addActor("Shack33", new SetProp("Shack33", "Shack", new Vector2(1500, 2600), gameManager));
-            stages["Village"].addActor("Shack34", new SetProp("Shack34", "Shack", new Vector2(600, 2600), gameManager));
-            stages["Village"].addActor("Shack35", new SetProp("Shack35", "Shack", new Vector2(3400, 2600), gameManager));
-            stages["Village"].addActor("Shack36", new SetProp("Shack36", "Shack", new Vector2(2500, 2600), gameManager));
-            stages["Village"].addActor("Shack37", new SetProp("Shack37", "Shack", new Vector2(2800, 2600), gameManager));
-            stages["Village"].addActor("Shack38", new SetProp("Shack38", "Shack", new Vector2(3100, 2600), gameManager));
+            stages["Village"].addActor("Shack21", new SetProp("Shack21", "Shack", new Vector2(700, 4600), gameManager));
+            stages["Village"].addActor("Shack22", new SetProp("Shack22", "Shack", new Vector2(1000, 4600), gameManager));
+            stages["Village"].addActor("Shack23", new SetProp("Shack23", "Shack", new Vector2(1300, 4600), gameManager));
+            stages["Village"].addActor("Shack24", new SetProp("Shack24", "Shack", new Vector2(400, 4600), gameManager));
+            stages["Village"].addActor("Shack25", new SetProp("Shack25", "Shack", new Vector2(3600, 4600), gameManager));
+            stages["Village"].addActor("Shack26", new SetProp("Shack26", "Shack", new Vector2(2700, 4600), gameManager));
+            stages["Village"].addActor("Shack27", new SetProp("Shack27", "Shack", new Vector2(3000, 4600), gameManager));
+            stages["Village"].addActor("Shack28", new SetProp("Shack28", "Shack", new Vector2(3300, 4600), gameManager));
 
 
-            stages["Village"].addActor("Shack41", new SetProp("Shack41", "Shack", new Vector2(900, 1400), gameManager));
-            stages["Village"].addActor("Shack42", new SetProp("Shack42", "Shack", new Vector2(1200, 1400), gameManager));
-            stages["Village"].addActor("Shack43", new SetProp("Shack43", "Shack", new Vector2(1500, 1400), gameManager));
-            stages["Village"].addActor("Shack44", new SetProp("Shack44", "Shack", new Vector2(600, 1400), gameManager));
-            stages["Village"].addActor("Shack45", new SetProp("Shack45", "Shack", new Vector2(3400, 1400), gameManager));
-            stages["Village"].addActor("Shack46", new SetProp("Shack46", "Shack", new Vector2(2500, 1400), gameManager));
-            stages["Village"].addActor("Shack47", new SetProp("Shack47", "Shack", new Vector2(2800, 1400), gameManager));
-            stages["Village"].addActor("Shack48", new SetProp("Shack48", "Shack", new Vector2(3100, 1400), gameManager));
+            stages["Village"].addActor("Shack31", new SetProp("Shack31", "Shack", new Vector2(900, 5200), gameManager));
+            stages["Village"].addActor("Shack32", new SetProp("Shack32", "Shack", new Vector2(1200, 5200), gameManager));
+            stages["Village"].addActor("Shack33", new SetProp("Shack33", "Shack", new Vector2(1500, 5200), gameManager));
+            stages["Village"].addActor("Shack34", new SetProp("Shack34", "Shack", new Vector2(600, 5200), gameManager));
+            stages["Village"].addActor("Shack35", new SetProp("Shack35", "Shack", new Vector2(3400, 5200), gameManager));
+            stages["Village"].addActor("Shack36", new SetProp("Shack36", "Shack", new Vector2(2500, 5200), gameManager));
+            stages["Village"].addActor("Shack37", new SetProp("Shack37", "Shack", new Vector2(2800, 5200), gameManager));
+            stages["Village"].addActor("Shack38", new SetProp("Shack38", "Shack", new Vector2(3100, 5200), gameManager));
+
+
+            stages["Village"].addActor("Shack41", new SetProp("Shack41", "Shack", new Vector2(900, 2800), gameManager));
+            stages["Village"].addActor("Shack42", new SetProp("Shack42", "Shack", new Vector2(1200, 2800), gameManager));
+            stages["Village"].addActor("Shack43", new SetProp("Shack43", "Shack", new Vector2(1500, 2800), gameManager));
+            stages["Village"].addActor("Shack44", new SetProp("Shack44", "Shack", new Vector2(600, 2800), gameManager));
+            stages["Village"].addActor("Shack45", new SetProp("Shack45", "Shack", new Vector2(3400, 2800), gameManager));
+            stages["Village"].addActor("Shack46", new SetProp("Shack46", "Shack", new Vector2(2500, 2800), gameManager));
+            stages["Village"].addActor("Shack47", new SetProp("Shack47", "Shack", new Vector2(2800, 2800), gameManager));
+            stages["Village"].addActor("Shack48", new SetProp("Shack48", "Shack", new Vector2(3100, 2800), gameManager));
             stages["Village"].AMBColor = new Vector3(.5f, .5f, 1f);
             //  Follower Rhett = new Follower("Follower", new Vector2(2000, 4000), stages["Village"], gameManager);
 
@@ -355,7 +355,7 @@ namespace StoneCircle
             VillageIntro.AddEVENT(new EVENTMoveActor(Rhett, new Vector2(2200, 2000), stages["Village"]));
             VillageIntro.AddEVENT(new EVENTMoveActor(Rhett, new Vector2(2200, 1000), stages["Village"]));
 
-            stages["Village"].AddTrigger(new Trigger("KingDies", new TriggerPlayerBoxCondition(new BoundingBox(new Vector3(1600, 400, 0), new Vector3(2400, 1200, 10)), gameManager.Player), true, true));
+          //  stages["Village"].AddTrigger(new Trigger("KingDies", new TriggerPlayerBoxCondition(new BoundingBox(new Vector3(1600, 400, 0), new Vector3(2400, 1200, 10)), gameManager.Player), true, true));
 
             SerialEVENTGroup KingDies = new SerialEVENTGroup("KingDies");
             ParallelEVENTGroup PD1 = new ParallelEVENTGroup();
@@ -389,9 +389,9 @@ namespace StoneCircle
             KingDies.AddEVENT(KD2A);
             stages["Village"].AddEVENT(KingDies);
 
-            stages["Village"].AddTrigger(new Trigger("MeetElysia",
-                new TriggerANDCondition(new TriggerStateCondition(this, "KingsDead"),
-                    new TriggerPlayerBoxCondition(new BoundingBox(new Vector3(1700, 1700, 0), new Vector3(2300, 2300, 10)), gameManager.Player)), true, true));
+           // stages["Village"].AddTrigger(new Trigger("MeetElysia",
+                //new TriggerANDCondition(new TriggerStateCondition(this, "KingsDead"),
+                    //new TriggerPlayerBoxCondition(new BoundingBox(new Vector3(1700, 1700, 0), new Vector3(2300, 2300, 10)), gameManager.Player)), true, true));
             SerialEVENTGroup MeetElysia = new SerialEVENTGroup("MeetElysia");
             MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Elysia? Where's the old lady?", gameManager.Player, stages["Village"]));
             MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Hi Eimar, it's nice to see you too.", Elysia, stages["Village"]));

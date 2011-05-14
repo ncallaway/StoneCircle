@@ -89,13 +89,12 @@ namespace StoneCircle
 
 
             Vector3 update = (float)t.ElapsedGameTime.TotalSeconds * Actor.Speed *  new Vector3(Actor.Facing, 0);
-            BoundingBox CheckBox = Actor.GetBounds(update);
+            CollisionCylinder CheckBox = Actor.GetBounds(update);
             bool legal = true;
 
             foreach (Actor y in targets)
             {
-                if ((CheckBox.Intersects(y.Bounds) && !Actor.Equals(y))) //Collision Detection. Ideally reduces movement to outside collision bounds.
-                { legal = false; }
+                if(Actor!=y) update -= CheckBox.Intersection(y.Bounds);
             }
 
 
@@ -188,7 +187,7 @@ namespace StoneCircle
             }
 
 
-            BoundingBox CheckBox = Actor.GetBounds(update);
+            CollisionCylinder CheckBox = Actor.GetBounds(update);
             bool legal = true;
 
             foreach (Actor y in targets)
@@ -284,7 +283,7 @@ namespace StoneCircle
 
 
             Vector3 update = (float)t.ElapsedGameTime.TotalSeconds * Actor.Speed *2.5f * new Vector3(direction, updateZ);
-            BoundingBox CheckBox = Actor.GetBounds(update);
+            CollisionCylinder CheckBox = Actor.GetBounds(update);
             bool legal = true;
 
             foreach (Actor y in targets)
@@ -347,7 +346,7 @@ namespace StoneCircle
 
 
             Vector3 update = (float)t.ElapsedGameTime.TotalSeconds * Actor.Speed * 2.5f * new Vector3(Actor.Facing, 0);
-            BoundingBox CheckBox = Actor.GetBounds(update);
+            CollisionCylinder CheckBox = Actor.GetBounds(update);
             bool legal = true;
 
             foreach (Actor y in targets)
@@ -544,7 +543,7 @@ namespace StoneCircle
             }
 
          Vector3 update = (float)t.ElapsedGameTime.TotalSeconds * Actor.Speed *updateAmount * new Vector3(direction, 0);
-            BoundingBox CheckBox = Actor.GetBounds(update);
+            CollisionCylinder CheckBox = Actor.GetBounds(update);
             bool legal = true;
 
             foreach (Actor y in targets)
@@ -633,7 +632,7 @@ namespace StoneCircle
             }
 
          Vector3 update = (float)t.ElapsedGameTime.TotalSeconds * Actor.Speed * new Vector3(direction* updateAmount, updateZ);
-            BoundingBox CheckBox = Actor.GetBounds(update);
+            CollisionCylinder CheckBox = Actor.GetBounds(update);
             bool legal = true;
 
             foreach (Actor y in targets)

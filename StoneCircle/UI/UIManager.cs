@@ -38,19 +38,11 @@ namespace UserMenus
             this.gameManager = gameManager;
             contentManager = gameManager.ContentManager;
 
-            player = gameManager.Player;
-
-        //    mainMenu = new Menu(gameManager, "Wallpaper", "Text", "");
-
-          //  mainMenu.AddMenuItem(new ChangeLevelItem("Court", gameManager.StageManager, this, "New Game"));
-            pauseMenu1 = new RingMenu(gameManager);
-            pauseMenu1.AddMenuItem(new ChangeLevelItem("region1", gameManager.StageManager, this, "Region 1"));
-            pauseMenu1.AddMenuItem(new ChangeLevelItem("region2", gameManager.StageManager, this, "Region 2"));
-        }
+            }
 
 
         public void Initialize()
-        {         
+        {
            
             pauseMenu1.Initialize();
         }
@@ -59,7 +51,14 @@ namespace UserMenus
         public void Load(ContentManager CM)
         {
             font = CM.Load<SpriteFont>("Fonts/Text");
+            mainMenu = new Menu(gameManager, "Wallpaper", "Text", "Main Menu");
+            mainMenu.AddMenuItem(new ChangeLevelItem("Village", gameManager.StageManager, this, "New Game"));
+
+            pauseMenu1 = new RingMenu(gameManager);
+            pauseMenu1.AddMenuItem(new ChangeLevelItem("region1", gameManager.StageManager, this, "Region 1"));
+            pauseMenu1.AddMenuItem(new ChangeLevelItem("region2", gameManager.StageManager, this, "Region 2"));
             pauseMenu1.Load(CM);
+
         }
 
 

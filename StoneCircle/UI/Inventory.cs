@@ -58,11 +58,11 @@ namespace UserMenus{
         public override void Draw(SpriteBatch batch)
         {
             batch.Draw(image, new Rectangle((int)player.Position.X - (int)player.parent.camera.Location.X + 683 - 75, (int)player.Position.Y - (int)player.parent.camera.Location.Y - 90 + 384, 150, 60), new Rectangle(0, 0, 80, 80), Color.White, 0f, Vector2.Zero, SpriteEffects.None, .1f);
-            if (current != null)              
-               batch.DrawString(font, current.Id, new Vector2((int)player.Position.X - 50 - (int)player.parent.camera.Location.X + 683, (int)player.Position.Y - (int)player.parent.camera.Location.Y - 80 + 384), Color.Black);
+           // if (current != null)              
+              // batch.DrawString(font, current.Id, new Vector2((int)player.Position.X - 50 - (int)player.parent.camera.Location.X + 683, (int)player.Position.Y - (int)player.parent.camera.Location.Y - 80 + 384), Color.Black);
 
 
-            else batch.DrawString(font, "Empty", new Vector2((int)player.Position.X - 50 - (int)player.parent.camera.Location.X + 683, (int)player.Position.Y - (int)player.parent.camera.Location.Y - 80 + 384), Color.Black);
+          //  else batch.DrawString(font, "Empty", new Vector2((int)player.Position.X - 50 - (int)player.parent.camera.Location.X + 683, (int)player.Position.Y - (int)player.parent.camera.Location.Y - 80 + 384), Color.Black);
             
             int dFplayer = 360;
             if (menuitems.Count > 0) dFplayer = 360 / menuitems.Count;
@@ -70,9 +70,14 @@ namespace UserMenus{
             foreach (MenuItem x in menuitems)
             {
                 int i = menuitems.IndexOf(x);
-                if (x != current) x.Draw(batch, font, (int)player.Position.X - (int)player.parent.camera.Location.X + 683 + (int)(150 * Math.Sin(MathHelper.ToRadians(i * dFplayer))), (int)player.Position.Y - (int)player.parent.camera.Location.Y - player.ImageHeight / 3 + 384 - (int)(150 * Math.Cos(MathHelper.ToRadians(i * dFplayer))));
-                else x.Draw(batch, font, (int)player.Position.X - (int)player.parent.camera.Location.X + 683 + (int)(150 * Math.Sin(MathHelper.ToRadians(i * dFplayer))), (int)player.Position.Y - (int)player.parent.camera.Location.Y - player.ImageHeight / 3 + 384 - (int)(150 * Math.Cos(MathHelper.ToRadians(i * dFplayer))), Color.Gold);
-            
+                if (x != current) x.DrawIcon(batch, font, (int)player.Position.X - (int)player.parent.camera.Location.X + 683 + (int)(150 * Math.Sin(MathHelper.ToRadians(i * dFplayer))), (int)player.Position.Y - (int)player.parent.camera.Location.Y - player.ImageHeight / 3 + 384 - (int)(150 * Math.Cos(MathHelper.ToRadians(i * dFplayer))));
+                else
+                {
+                    x.DrawIcon(batch, font, (int)player.Position.X - (int)player.parent.camera.Location.X + 683 + (int)(150 * Math.Sin(MathHelper.ToRadians(i * dFplayer))), (int)player.Position.Y - (int)player.parent.camera.Location.Y - player.ImageHeight / 3 + 384 - (int)(150 * Math.Cos(MathHelper.ToRadians(i * dFplayer))), Color.Gold);
+                    batch.DrawString(font, current.Id, new Vector2((int)player.Position.X - 50 - (int)player.parent.camera.Location.X + 683, (int)player.Position.Y - (int)player.parent.camera.Location.Y - 80 + 384), Color.Black);
+
+
+                }
             }
 
         }
