@@ -52,7 +52,7 @@ namespace UserMenus
         {
             font = CM.Load<SpriteFont>("Fonts/Text");
             mainMenu = new Menu(gameManager, "Wallpaper", "Text", "Main Menu");
-            mainMenu.AddMenuItem(new ChangeLevelItem("Village", gameManager.StageManager, this, "New Game"));
+            mainMenu.AddMenuItem(new ChangeLevelItem("Court", gameManager.StageManager, this, "New Game"));
 
             pauseMenu1 = new RingMenu(gameManager);
             pauseMenu1.AddMenuItem(new ChangeLevelItem("region1", gameManager.StageManager, this, "Region 1"));

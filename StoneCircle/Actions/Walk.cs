@@ -63,10 +63,11 @@ namespace StoneCircle
             AvailableLow.LStickAction = "Walking";
             AvailableLow.NoButton = "Standing";
             AvailableLow.XButton = "UseItem";
+            AvailableLow.BButton = "High Horizontal Swing";
             AvailableLow.AButton = "Interact";
             AvailableHigh.AButton = "Jump";
             AvailableHigh.LStickAction = "Running";
-            AvailableLow.BButton = "Fall Down";
+           // AvailableLow.BButton = "Fall Down";
             fatigue = +.1f;
             maxFrame = 18;
 
@@ -453,7 +454,7 @@ namespace StoneCircle
         public FallBackward()
         {
             maxFrame = 14;
-            id = "Fall Down";
+            id = "Fall Backward";
         }
 
 

@@ -41,6 +41,7 @@ namespace StoneCircle
             learnAction(new Dash());
             learnAction(new DashJump());
             learnAction(new BandageSelf(this));
+            learnAction(new HighHorizontal(this));
 
             currentLife = 25;
             currentFatigue = 100;

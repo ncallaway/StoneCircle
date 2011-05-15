@@ -121,9 +121,12 @@ namespace StoneCircle
     }
 
 
-    class Sword : Item
+    class Weapon : Item
     {
-          public Sword(Actor Owner)
+
+
+
+          public Weapon(Actor Owner)
         {
             owner = Owner;
             name = "Sword";

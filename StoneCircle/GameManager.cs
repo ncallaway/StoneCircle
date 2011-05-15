@@ -69,7 +69,7 @@ namespace StoneCircle
         public void LoadContent()
         {
             UIManager.Load(ContentManager);
-           // StageManager.SetStage("Village");
+           // StageManager.SetStage("Court");
             UIManager.OpenMenu(UIManager.MainMenu);
         }
 
