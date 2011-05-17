@@ -349,18 +349,44 @@ namespace StoneCircle
     public class EVENTCameraDeactivate : EVENT
     {
 
-        Camera camera;
+        Stage cameraContainer;
 
-        internal EVENTCameraDeactivate(Camera camera)
-        { this.camera = camera; }
+        internal EVENTCameraDeactivate(Stage cameraContainer)
+        { this.cameraContainer = cameraContainer; }
 
         public EVENTCameraDeactivate(uint objectId) : base(objectId) { }
 
 
         public override void Start()
         {
-            camera.Active = false;
+            cameraContainer.camera.Active = false;
             ready = true;
+        }
+
+        public override List<ISaveable> GetSaveableRefs(SaveType type)
+        {
+            List<ISaveable> parentRefs = Saver.ConstructSaveableList(base.GetSaveableRefs(type));
+            parentRefs.Add(cameraContainer);
+            return parentRefs;
+        }
+
+        public override void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        {
+            base.Save(writer, type, objectTable);
+            writer.Write(objectTable[cameraContainer]);
+        }
+
+        private uint camContainerId;
+        public override void Load(BinaryReader reader, SaveType type)
+        {
+            base.Load(reader, type);
+            camContainerId = reader.ReadUInt32();
+        }
+
+        public override void Inflate(Dictionary<uint, ISaveable> objectTable)
+        {
+            base.Inflate(objectTable);
+            cameraContainer = (Stage)objectTable[camContainerId];
         }
 
     }
@@ -368,17 +394,43 @@ namespace StoneCircle
     public class EVENTCameraReactivate : EVENT
     {
 
-        Camera camera;
+        Stage cameraContainer;
 
-        internal EVENTCameraReactivate(Camera camera)
-        { this.camera = camera; }
+        internal EVENTCameraReactivate(Stage cameraContainer)
+        { this.cameraContainer = cameraContainer; }
 
         public EVENTCameraReactivate(uint objectId) : base(objectId) { }
 
         public override void Start()
         {
-            camera.Active = true;
+            cameraContainer.camera.Active = true;
             ready = true;
+        }
+
+        public override List<ISaveable> GetSaveableRefs(SaveType type)
+        {
+            List<ISaveable> parentRefs = Saver.ConstructSaveableList(base.GetSaveableRefs(type));
+            parentRefs.Add(cameraContainer);
+            return parentRefs;
+        }
+
+        public override void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        {
+            base.Save(writer, type, objectTable);
+            writer.Write(objectTable[cameraContainer]);
+        }
+
+        private uint camContainerId;
+        public override void Load(BinaryReader reader, SaveType type)
+        {
+            base.Load(reader, type);
+            camContainerId = reader.ReadUInt32();
+        }
+
+        public override void Inflate(Dictionary<uint, ISaveable> objectTable)
+        {
+            base.Inflate(objectTable);
+            cameraContainer = (Stage)objectTable[camContainerId];
         }
 
     }
@@ -822,6 +874,40 @@ namespace StoneCircle
             etime += t.ElapsedGameTime.Milliseconds;
             ready = (etime >= time);
             return ready;
+        }
+
+        public override List<ISaveable> GetSaveableRefs(SaveType type)
+        {
+            List<ISaveable> parentRefs = Saver.ConstructSaveableList(base.GetSaveableRefs(type));
+            parentRefs.Add(stage);
+            return parentRefs;
+        }
+
+        public override void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        {
+            base.Save(writer, type, objectTable);
+            writer.Write(objectTable[stage]);
+            Saver.SaveVector3(color, writer);
+            writer.Write(strength);
+            writer.Write(time);
+            writer.Write(etime);
+        }
+
+        private uint stageId;
+        public override void Load(BinaryReader reader, SaveType type)
+        {
+            base.Load(reader, type);
+            stageId = reader.ReadUInt32();
+            color = Loader.LoadVector3(reader);
+            strength = reader.ReadSingle();
+            time = reader.ReadSingle();
+            etime = reader.ReadSingle();
+        }
+
+        public override void Inflate(Dictionary<uint, ISaveable> objectTable)
+        {
+            base.Inflate(objectTable);
+            stage = (Stage)objectTable[stageId];
         }
 
 
