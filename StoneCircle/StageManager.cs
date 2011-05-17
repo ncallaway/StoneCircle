@@ -499,6 +499,10 @@ namespace StoneCircle
 
         public void SetStage(String Next, Vector2 startingPosition)
         {
+            SetStage(Next, startingPosition, false);
+        }
+
+        public void SetStage(String Next, Vector2 startingPosition, bool movePlayer) {
             if (openStage != null)
             {
                 openStage.RemovePlayer();
@@ -507,7 +511,15 @@ namespace StoneCircle
             }
 
             Stage nextStage = stages[Next];
-            nextStage.addPlayer(gameManager.Player, startingPosition);
+
+            if (movePlayer)
+            {
+                nextStage.addPlayer(gameManager.Player);
+            }
+            else
+            {
+                nextStage.addPlayer(gameManager.Player, startingPosition);
+            }
 
             nextStage.setCamera();
             nextStage.Load(contentManager);
@@ -591,7 +603,7 @@ namespace StoneCircle
             this.gameManager = manager;
             contentManager = gameManager.ContentManager;
 
-            SetStage(openStage.Id);
+            SetStage(openStage.Id, manager.Player.Position, true);
         }
 
         public List<ISaveable> GetSaveableRefs(SaveType type)

@@ -222,6 +222,12 @@ namespace StoneCircle
         {
             player = Player;
             player.Location = new Vector3(starting.X, starting.Y, 1);
+            addPlayer(Player);
+        }
+
+        public void addPlayer(Player Player)
+        {
+            player = Player;
             player.parent = this;
             exists.Add("Player", player);
         }
@@ -367,9 +373,10 @@ namespace StoneCircle
             writer.Write(MaxX);
             writer.Write(MaxY);
             writer.Write(AMBStrength);
-            writer.Write(AMBColor.X);
-            writer.Write(AMBColor.Y);
-            writer.Write(AMBColor.Z);
+            Saver.SaveVector3(AMBColor, writer);
+
+            writer.Write(regionsWide);
+            writer.Write(regionsHigh);
 
             List<ISaveable> eventsList = new List<ISaveable>();
             foreach (KeyValuePair<String, EVENT> pair in events) {
@@ -405,7 +412,10 @@ namespace StoneCircle
             MaxX = reader.ReadInt32();
             MaxY = reader.ReadInt32();
             AMBStrength = reader.ReadSingle();
-            AMBColor = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+            AMBColor = Loader.LoadVector3(reader);
+
+            regionsWide = reader.ReadInt32();
+            regionsHigh = reader.ReadInt32();
 
             inflatables = new StageInflatables();
 

@@ -370,15 +370,14 @@ namespace StoneCircle
         {
             writer.Write(name);
             writer.Write(asset_Name);
-            writer.Write(Location.X);
-            writer.Write(Location.Y);
-            writer.Write(Location.Z);
+            
             writer.Write(Active);
             writer.Write(Interacting); // bool
             Saver.SaveStringList(properties, writer);
             writer.Write(currentBeatTimer); // single
             writer.Write(currentBeatTime); // single
 
+            Saver.SaveVector3(Location, writer);
             Saver.SaveVector2(RenderPosition, writer);
             Saver.SaveVector2(facing, writer);
 
@@ -399,13 +398,13 @@ namespace StoneCircle
         {
             name = reader.ReadString();
             asset_Name = reader.ReadString();
-            Location = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
             Active = reader.ReadBoolean();
             Interacting = reader.ReadBoolean();
             properties = Loader.LoadStringList(reader);
             currentBeatTimer = reader.ReadSingle();
             currentBeatTime = reader.ReadSingle();
 
+            Location = Loader.LoadVector3(reader);
             RenderPosition = Loader.LoadVector2(reader);
             facing = Loader.LoadVector2(reader);
 
