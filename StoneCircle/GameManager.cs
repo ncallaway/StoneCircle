@@ -36,7 +36,7 @@ namespace StoneCircle
         internal ContentManager ContentManager { get { return contentManager; } }
         public  StageManager StageManager { get { return stageManager; } }
 
-        internal Player Player { get { return player; } set { player = value; } }
+        internal Player Player { get { return player; } }
         internal Camera Camera { get { return camera; } }
 
         private Player player;
@@ -96,6 +96,8 @@ namespace StoneCircle
             Loader.LoadResponse response = Loader.Load(reader, SaveType.FULL);
 
             stageManager = (StageManager)response.root;
+            player = stageManager.GetLoadingPlayer();
+
             foreach (ISaveable saveable in response.objects)
             {
                 if (saveable == stageManager)
@@ -131,7 +133,7 @@ namespace StoneCircle
                 }
             }
 
-            if (Player.Input.IsLeftBumperNewlyPressed()&& false)
+            if (Player.Input.IsLeftBumperNewlyPressed())
             {
 #if XBOX
                 /* Request the container */
@@ -145,7 +147,7 @@ namespace StoneCircle
                 
             }
 
-            if (Player.Input.IsRightBumperNewlyPressed() && false)
+            if (Player.Input.IsRightBumperNewlyPressed())
             {
 #if XBOX
                 loadRequested = true;

@@ -253,6 +253,24 @@ namespace StoneCircle
             SM.SetCondition(StateCondition);
             ready = true;
         }
+
+        public override void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        {
+            base.Save(writer, type, objectTable);
+            Saver.SaveString(StateCondition, writer);
+        }
+
+        public override void Load(BinaryReader reader, SaveType type)
+        {
+            base.Load(reader, type);
+            StateCondition = Loader.LoadString(reader);
+        }
+
+        public override void FinishLoad(GameManager manager)
+        {
+            base.FinishLoad(manager);
+            SM = manager.StageManager;
+        }
     }
 
     class EVENTPlayerDeactivate : EVENT
@@ -415,6 +433,60 @@ namespace StoneCircle
             if (etime > TEXTTIME) { ready = true; actor.parent.StopLine(line); }
             return ready;
         }
+
+        public override void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        {
+            base.Save(writer, type, objectTable);
+            writer.Write(objectTable[line]);
+            writer.Write(objectTable[actor]);
+            writer.Write(etime);
+            writer.Write(time);
+
+        }
+
+        public override List<ISaveable> GetSaveableRefs(SaveType type)
+        {
+            List<ISaveable> parentRefs =  base.GetSaveableRefs(type);
+            if (parentRefs == null)
+            {
+                parentRefs = new List<ISaveable>();
+            }
+            parentRefs.Add(line);
+            parentRefs.Add(actor);
+
+            return parentRefs;
+        }
+
+        private DialogInflatables inflatables;
+        public override void Load(BinaryReader reader, SaveType type)
+        {
+            base.Load(reader, type);
+            inflatables = new DialogInflatables();
+            inflatables.lineId = reader.ReadUInt32();
+            inflatables.actorId = reader.ReadUInt32();
+            etime = reader.ReadSingle();
+            time = reader.ReadSingle();
+        }
+
+        public override void Inflate(Dictionary<uint, ISaveable> objectTable)
+        {
+            base.Inflate(objectTable);
+            line = (Lines)objectTable[inflatables.lineId];
+            actor = (Actor)objectTable[inflatables.actorId];
+        }
+
+        public override void FinishLoad(GameManager manager)
+        {
+            base.FinishLoad(manager);
+            actor.parent.StartLine(line);
+        }
+
+        private class DialogInflatables
+        {
+            public uint lineId;
+            public uint actorId;
+        }
+
     }
 
     public class EVENTDialogueConfirmed : EVENT
@@ -564,7 +636,6 @@ namespace StoneCircle
             actor.Facing /= actor.Facing.Length();
 
             actor.SetAction("Walking");
-
         }
 
         public override bool Update(GameTime t)
@@ -573,6 +644,48 @@ namespace StoneCircle
             if ((destination - actor.Position).LengthSquared() < 50f) ready = true;
             return ready;
         }
+
+        public override void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        {
+            base.Save(writer, type, objectTable);
+            writer.Write(objectTable[actor]);
+            writer.Write(destination.X); writer.Write(destination.Y);
+            writer.Write(objectTable[Stage]);
+        }
+
+        public override List<ISaveable> GetSaveableRefs(SaveType type)
+        {
+            List<ISaveable> parentRef = Saver.ConstructSaveableList(base.GetSaveableRefs(type));
+            parentRef.Add(actor);
+            parentRef.Add(Stage);
+            return parentRef;
+        }
+
+        private DialogInflatables inflatables;
+        public override void Load(BinaryReader reader, SaveType type)
+        {
+            base.Load(reader, type);
+            inflatables = new DialogInflatables();
+            inflatables.actorId = reader.ReadUInt32();
+            destination = new Vector2(reader.ReadSingle(), reader.ReadSingle());
+            inflatables.stageId = reader.ReadUInt32();
+        }
+
+        public override void Inflate(Dictionary<uint, ISaveable> objectTable)
+        {
+            base.Inflate(objectTable);
+            actor = (Actor)objectTable[inflatables.actorId];
+            Stage = (Stage)objectTable[inflatables.stageId];
+        }
+
+        private class DialogInflatables
+        {
+            public uint actorId;
+            public uint stageId;
+        }
+        //Actor actor;
+        //Vector2 destination;
+        //Stage Stage;
 
 
 
@@ -990,7 +1103,25 @@ namespace StoneCircle
             ready = false;
         }
 
+        public override void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        {
+            base.Save(writer, type, objectTable);
+            Saver.SaveString(nextEvent, writer);
+            writer.Write(objectTable[stage]);
+        }
+
+        private uint stageId;
+        public override void Load(BinaryReader reader, SaveType type)
+        {
+            base.Load(reader, type);
+            nextEvent = Loader.LoadString(reader);
+            stageId = reader.ReadUInt32();
+        }
+
+        public override void Inflate(Dictionary<uint, ISaveable> objectTable)
+        {
+            base.Inflate(objectTable);
+            stage = (Stage) objectTable[stageId];
+        }
     }
-
-
 }

@@ -6,6 +6,8 @@ using System.Reflection;
 
 using System.IO;
 
+using Microsoft.Xna.Framework;
+
 namespace StoneCircle.Persistence
 {
     static class Loader
@@ -100,6 +102,21 @@ namespace StoneCircle.Persistence
                 return reader.ReadString();
 
             return null;
+        }
+
+        public static Color LoadColor(BinaryReader reader)
+        {
+            return new Color(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+        }
+
+        public static Vector2 LoadVector2(BinaryReader reader)
+        {
+            return new Vector2(reader.ReadSingle(), reader.ReadSingle());
+        }
+
+        public static Vector3 LoadVector3(BinaryReader reader)
+        {
+            return new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
         }
 
         public static List<String> LoadStringList(BinaryReader reader)

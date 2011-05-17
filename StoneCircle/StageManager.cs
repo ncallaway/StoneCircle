@@ -581,10 +581,13 @@ namespace StoneCircle
             }
         }
 
+        internal Player GetLoadingPlayer()
+        {
+            return this.loadingPlayer;
+        }
+
         public void FinishLoad(GameManager manager)
         {
-            manager.Player = loadingPlayer;
-
             this.gameManager = manager;
             contentManager = gameManager.ContentManager;
 

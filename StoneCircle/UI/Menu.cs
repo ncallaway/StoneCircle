@@ -190,6 +190,9 @@ namespace UserMenus
             parent = manager.UIManager;
             player = manager.Player;
             font = parent.Font;
+
+            fontName = "Text";
+            imageName = "BlankIcon";
             
             current_index = 0;
             x_position = 400;
