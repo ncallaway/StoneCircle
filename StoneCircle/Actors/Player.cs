@@ -30,6 +30,8 @@ namespace StoneCircle
             speed = 125;
             this.Input = Input;
             learnAction(new Interact());
+         //   defaultAction = knownActions["Standing"];
+           // SetAction("Standing");
             Location = new Vector3(starting.X, starting.Y, 0);
             name = Id;
             inventoryMenu = new Inventory(this, gameManager);
@@ -43,9 +45,15 @@ namespace StoneCircle
             learnAction(new BandageSelf(this));
             learnAction(new HighHorizontal(this));
 
-            currentLife = 25;
+            radius = 20;
+            currentLife = 100;
             currentFatigue = 100;
-        }     
+        }
+
+        public override void UpdateFacing(Vector2 newFacing)
+        {
+            if (Input.LStickPosition().LengthSquared() > .2f) base.UpdateFacing(Input.LStickPosition());
+        }
 
         public override void loadImage(ContentManager theContentManager)
         {
@@ -62,9 +70,6 @@ namespace StoneCircle
         public override String ChooseAction(GameTime t, Dictionary<String, Actor>.ValueCollection targets)
         {
             Input.Update();
-
-            Location.Z = Math.Max(Location.Z - 2, 0);
-            if( Input.LStickPosition().LengthSquared() >.2f)Facing = Input.LStickPosition();
             if (Input.IsRightTriggerHeld())
             {
                 if (Input.IsAButtonNewlyPressed() && current_Action.AvailableHigh.AButton != null) return current_Action.AvailableHigh.AButton;
@@ -89,6 +94,10 @@ namespace StoneCircle
 
         public override void Update(GameTime t, Dictionary<String,Actor>.ValueCollection targets) // Updates position, vestigial remnants of player update. 
         {
+
+            updateVector = Vector3.Zero;
+            if (Location.Z < 0) Location.Z = 0;
+            if (Location.Z > 0) updateVector += Vector3.UnitZ * -2;
             if (Bleeding && currentLife > 0)
             {
                 currentBeatTime -= t.ElapsedGameTime.Milliseconds;
@@ -108,12 +117,14 @@ namespace StoneCircle
             if (Input.IsRightBumperNewlyPressed()) { gameManager.UIManager.OpenMenu(inventoryMenu); if(currentItem!=null) currentItem.OnUnequipItem(); }
 
             if (current_Action != null) current_Action.Update(t, targets);
+            Move();
             SetAction(ChooseAction(t, targets));
         }
 
         public override void Draw(SpriteBatch theSpriteBatch, Vector2 camera_pos, float camera_scale, float intensity, SpriteFont font)
         {
             if(inventoryOpen) inventoryMenu.Draw(theSpriteBatch);
+            theSpriteBatch.DrawString(font, "" + UpdateVector, 100* Vector2.One, Color.White);
            base.Draw(theSpriteBatch, camera_pos, camera_scale, intensity, font);
         }
 

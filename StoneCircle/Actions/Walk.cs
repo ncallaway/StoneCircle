@@ -27,7 +27,7 @@ namespace StoneCircle
         {
             UpdateFrame(t);
             switch (frame)
-            {
+            {   
                 case 0: Actor.ImageXindex = 0; break;
 
                 case 114: Actor.ImageXindex = 1;
@@ -45,7 +45,20 @@ namespace StoneCircle
                 case 122: Actor.ImageXindex = 1; break;
             }
 
+            Actor.UpdateFacing(Vector2.UnitX);
+            Vector3 update = Vector3.Zero;
+            CollisionCylinder CheckBox = Actor.GetBounds(update);
+            foreach (Actor y in targets)
+            {
+                if (Actor != y)
+                {
+                   Vector3 adjust = (CheckBox.Intersection(y.Bounds));
+                    update -= adjust;
+                }
+            }
 
+
+            Actor.AdjustUpdateVector(update);
 
 
         }
@@ -88,19 +101,21 @@ namespace StoneCircle
       
             }
 
-
+            Actor.UpdateFacing(Vector2.UnitY);
             Vector3 update = (float)t.ElapsedGameTime.TotalSeconds * Actor.Speed *  new Vector3(Actor.Facing, 0);
             CollisionCylinder CheckBox = Actor.GetBounds(update);
-            bool legal = true;
 
             foreach (Actor y in targets)
             {
-                if(Actor!=y) update -= CheckBox.Intersection(y.Bounds);
+                if (Actor != y)
+                {
+                    Vector3 adjust= (CheckBox.Intersection(y.Bounds));
+                    update -= adjust;
+                }
             }
 
-
-            if (legal) Actor.Move(update);
-            
+             
+            Actor.AdjustUpdateVector(update);      
 
         }
 
@@ -191,16 +206,19 @@ namespace StoneCircle
             CollisionCylinder CheckBox = Actor.GetBounds(update);
             bool legal = true;
 
+            Actor.UpdateVector = update;
             foreach (Actor y in targets)
             {
-                if ((CheckBox.Intersects(y.Bounds) && !Actor.Equals(y))) //Collision Detection. Ideally reduces movement to outside collision bounds.
-                { legal = false; }
+                if (Actor != y)
+                {
+                    Vector3 adjust = (CheckBox.Intersection(y.Bounds));
+                    update -= adjust;
+                }
             }
 
 
-            if (legal) Actor.Move(update);
-
-
+            Actor.AdjustUpdateVector(update); 
+            
         }
 
 
@@ -236,7 +254,7 @@ namespace StoneCircle
                     AvailableHigh.LStickAction = null;
                     Actor.ImageXindex = 0; Actor.ImageYindex = 0;
                     updateZ = 7;
-                    direction = Actor.Facing;
+                    Actor.UpdateFacing(Vector2.UnitX);
                     break;
                 case 1:
                     fatigue = 0f;
@@ -283,19 +301,22 @@ namespace StoneCircle
             }
 
 
-            Vector3 update = (float)t.ElapsedGameTime.TotalSeconds * Actor.Speed *2.5f * new Vector3(direction, updateZ);
+            Vector3 update = (float)t.ElapsedGameTime.TotalSeconds * Actor.Speed *2.5f * new Vector3(Actor.Facing, updateZ);
             CollisionCylinder CheckBox = Actor.GetBounds(update);
             bool legal = true;
 
+
             foreach (Actor y in targets)
             {
-                if ((CheckBox.Intersects(y.Bounds) && !Actor.Equals(y))) //Collision Detection. Ideally reduces movement to outside collision bounds.
-                { legal = false; }
+                if (Actor != y)
+                {
+                   // Vector3 adjust = (CheckBox.Intersection(y.Bounds));
+                    //update -= adjust;
+                }
             }
 
 
-            if (legal) Actor.Move(update);
-
+            Actor.AdjustUpdateVector(update); 
         }
 
 
@@ -345,19 +366,24 @@ namespace StoneCircle
 
             }
 
-
+            Actor.UpdateFacing(Vector2.UnitX);
             Vector3 update = (float)t.ElapsedGameTime.TotalSeconds * Actor.Speed * 2.5f * new Vector3(Actor.Facing, 0);
             CollisionCylinder CheckBox = Actor.GetBounds(update);
             bool legal = true;
 
+
             foreach (Actor y in targets)
             {
-                if ((CheckBox.Intersects(y.Bounds) && !Actor.Equals(y))) //Collision Detection. Ideally reduces movement to outside collision bounds.
-                { legal = false; }
+                if (Actor != y)
+                {
+                    Vector3 adjust = (CheckBox.Intersection(y.Bounds));
+                    update -= adjust;
+                }
             }
 
 
-            if (legal) Actor.Move(update);
+            Actor.AdjustUpdateVector(update); 
+
 
 
         }
@@ -485,15 +511,7 @@ namespace StoneCircle
 
     }
 
-
-
-
-
-
-
-
-
-
+    
 
     class Dash : Actionstate
     {
@@ -517,9 +535,7 @@ namespace StoneCircle
                 case 0:
                     updateAmount = 6f;
                     fatigue = -.5f;
-                    direction = Actor.Facing;
-
-
+                    Actor.UpdateFacing(direction);
                     AvailableHigh.LStickAction = null;
                     AvailableLow.LStickAction = null;
                     AvailableHigh.NoButton = null;
@@ -543,19 +559,17 @@ namespace StoneCircle
 
             }
 
+            
          Vector3 update = (float)t.ElapsedGameTime.TotalSeconds * Actor.Speed *updateAmount * new Vector3(direction, 0);
             CollisionCylinder CheckBox = Actor.GetBounds(update);
             bool legal = true;
 
             foreach (Actor y in targets)
             {
-                if ((CheckBox.Intersects(y.Bounds) && !Actor.Equals(y))) //Collision Detection. Ideally reduces movement to outside collision bounds.
-                { legal = false; }
+                Actor.UpdateVector += (CheckBox.Intersection(y.Bounds)); //Collision Detection. Ideally reduces movement to outside collision bounds.
             }
 
-
-            if (legal) Actor.Move(update);
-
+            
         }
 
     }
@@ -603,7 +617,7 @@ namespace StoneCircle
                 case 0:
                     updateAmount = 0f;
                     fatigue = -1f;
-                    direction = Actor.Facing;
+                    Actor.UpdateFacing(Vector2.Zero);
 
                     AvailableHigh.LStickAction = null;
                     AvailableLow.LStickAction = null;
@@ -636,15 +650,16 @@ namespace StoneCircle
             CollisionCylinder CheckBox = Actor.GetBounds(update);
             bool legal = true;
 
+
             foreach (Actor y in targets)
             {
-                if ((CheckBox.Intersects(y.Bounds) && !Actor.Equals(y))) //Collision Detection. Ideally reduces movement to outside collision bounds.
-                { legal = false; }
+                Vector3 adjust = (CheckBox.Intersection(y.Bounds));
+                update -= adjust;
             }
 
 
-            if (legal) Actor.Move(update);
-
+            Actor.AdjustUpdateVector(update); 
+            
         }
 
     }

@@ -7,15 +7,27 @@ using Microsoft.Xna.Framework;
 
 namespace StoneCircle
 {
-   
-    class CollisionCylinder 
+    abstract class CollisionStructure
     {
-        Vector3 location;
+        protected Vector3 location;
         public Vector3 Location { get { return location; } set { location = value; } }
-        float radius, height;
+        protected float radius, height;
+        public float LocationZ { get { return location.Z; } set { location.Z = value; } }
         internal float Radius { get { return radius; } set { radius = value; } }
         internal float Height { get { return height; } set { height = value; } }
-      
+
+
+        public virtual bool Intersects(CollisionStructure CS)
+        {
+            return false;
+        }
+
+    }
+
+    class CollisionCylinder : CollisionStructure
+    {
+
+
         public CollisionCylinder(Vector3 location, float radius, float height)
         {
 
@@ -26,7 +38,7 @@ namespace StoneCircle
         }
 
 
-        public bool Intersects(CollisionCylinder target)
+        public bool IntersectsType(CollisionCylinder target)
         {
             Vector3 difference = location - target.location;
             float distance = difference.X * difference.X + difference.Y * difference.Y;
@@ -36,36 +48,44 @@ namespace StoneCircle
 
         }
 
+        public bool IntersectsType(CollisionArc target)
+        {
+            return target.IntersectsType(this);
+
+        }
+
+        public Vector3 Intersection(CollisionArc target)
+        {
+            return -target.Intersection(this);
+        }
+
         public Vector3 Intersection(CollisionCylinder target)
         {
             Vector3 difference = location - target.location;
             float distance = difference.X * difference.X + difference.Y * difference.Y;
-            if (distance < radius * radius || distance < target.Radius * target.Radius)
+
+            if ((distance < (radius + target.Radius) * (radius + target.Radius)))
             {
-                if (target.location.Z < location.Z)
+
+                if ((target.LocationZ + target.Height) > LocationZ - 10 && location.Z > target.LocationZ)
                 {
-                    if (target.location.Z + target.Height < location.Z) return Vector3.Zero;
-                    else return new Vector3(0, 0, location.Z - target.Height - target.location.Z);
+                    return new Vector3(0, 0, location.Z - target.Height - target.location.Z);
                 }
+                else if (location.Z + Height > target.LocationZ && location.Z < target.LocationZ)
+                    return new Vector3(0, 0, target.location.Z - Height - location.Z);
+
+
+
                 else
                 {
-                    if (location.Z + Height < target.location.Z) return Vector3.Zero;
-                    else return new Vector3(0, 0, target.location.Z - Height - location.Z);
+                    difference.Z = 0;
+                    difference.Normalize();
+                    return difference * (float)(Math.Sqrt(distance) - radius - target.Radius);
                 }
-
             }
-            else if (distance < (radius + target.Radius) * (radius + target.Radius))
-            {
-                difference.Z = 0;
-                difference.Normalize();
-                return difference * (float)(Math.Sqrt(distance) - radius - target.Radius);
 
-
-            }
 
             else return Vector3.Zero;
-
-
 
         }
 
@@ -78,10 +98,11 @@ namespace StoneCircle
     class CollisionArc
     {
         Vector3 location;
-        public Vector3 Location { get { return location; } }
+        public Vector3 Location { get { return location; } set { location = value; } }
+        public float LocationZ { get { return location.Z; } set { location.Z = value; } }
         float radius, height;
-        internal float Radius { get { return radius; }  set { radius = value; } }
-        internal float Height { get { return height; }  set { height = value; } }
+        internal float Radius { get { return radius; } set { radius = value; } }
+        internal float Height { get { return height; } set { height = value; } }
         private float centerAngle;
         public float CenterAngle { get { return centerAngle; } set { centerAngle = value; } }
 
@@ -94,63 +115,82 @@ namespace StoneCircle
             this.location = location;
             this.radius = radius;
             this.height = height;
-
+            centerAngle = centralAngle;
+            this.angleWidth = AngleWidth;
         }
 
 
 
 
-        public bool Intersects(CollisionCylinder target)
+        public bool IntersectsType(CollisionCylinder target)
         {
             Vector3 difference = location - target.Location;
             float distance = difference.X * difference.X + difference.Y * difference.Y;
-            if ((distance < radius * radius || distance < target.Radius * target.Radius) && (difference.Z < target.Height || difference.Z > -height)) 
+            if ((distance < (radius + target.Radius) * (radius + target.Radius)) && (difference.Z < target.Height || difference.Z > -height))
             {
-             float angle = (float)Math.Atan2(difference.Y, difference.X);
-   
-                return (angle < centerAngle + angleWidth/2 && angle > centerAngle - angleWidth/2);
-            }            else return false;
+                float angle = (float)Math.Atan2(-difference.Y, -difference.X);
+
+                return (angle < centerAngle + angleWidth / 2 && angle > centerAngle - angleWidth / 2);
+            }
+            else return false;
 
 
+        }
+
+        public bool IntersectsType(CollisionArc target)
+        {
+            Vector3 difference = location - target.Location;
+            float distance = difference.X * difference.X + difference.Y * difference.Y;
+            if ((distance < radius * radius || distance < target.Radius * target.Radius) && (difference.Z > target.Height || difference.Z < -height))
+            {
+                float angle = (float)Math.Atan2(-difference.Y, -difference.X);
+
+                return (angle < centerAngle + angleWidth / 2 && angle > centerAngle - angleWidth / 2);
+            }
+            else return false;
+
+
+
+        }
+
+        private float mod(float target)
+        {
+            return(float)( (target + 2 *  Math.PI) % Math.PI);
         }
 
         public Vector3 Intersection(CollisionCylinder target)
         {
             Vector3 difference = location - target.Location;
             float distance = difference.X * difference.X + difference.Y * difference.Y;
-            if (distance < radius * radius || distance < target.Radius * target.Radius)
-            {
-                float angle = (float)Math.Atan2(difference.Y, difference.X);
-   
-                if (target.Location.Z < location.Z)
+
+            float angle = (float)Math.Atan2(-difference.Y, -difference.X);
+            if ((distance < (radius + target.Radius) * (radius + target.Radius))&&          
+                (angle > centerAngle + AngleWidth / 2 && angle < centerAngle - AngleWidth / 2))
                 {
-                    if (target.Location.Z + target.Height < location.Z) return Vector3.Zero;
-                    else return new Vector3(0, 0, location.Z - target.Height - target.Location.Z);
+                    if ((target.LocationZ + target.Height) > LocationZ - 10 && location.Z > target.LocationZ)
+                    {
+                        return new Vector3(0, 0, location.Z - target.Height - target.Location.Z);
+                    }
+                    else if (location.Z + Height > target.LocationZ && location.Z < target.LocationZ)
+                        return new Vector3(0, 0, target.LocationZ - Height - location.Z);
+
+
+
+                    else
+                    {
+                        difference.Z = 0;
+                        difference.Normalize();
+                        return difference * (float)(Math.Sqrt(distance) - radius - target.Radius);
+                    }
                 }
-                else
-                {
-                    if (location.Z + Height < target.Location.Z) return Vector3.Zero;
-                    else return new Vector3(0, 0, target.Location.Z - Height - location.Z);
-                }
-
-            }
-            else if (distance < (radius + target.Radius) * (radius + target.Radius))
-            {
-                difference.Z = 0;
-                difference.Normalize();
-                return difference * (float)(Math.Sqrt(distance) - radius - target.Radius);
-
-
-            }
+            
 
             else return Vector3.Zero;
 
-
-
         }
-
-
-
-
     }
 }
+
+
+
+        

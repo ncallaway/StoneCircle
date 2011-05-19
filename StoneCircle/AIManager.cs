@@ -13,9 +13,6 @@ namespace StoneCircle
 
       }
 
-    
-
-
     class AICondition
     {
         protected Actor actor;
@@ -143,14 +140,7 @@ namespace StoneCircle
         }
 
     }
-
-
-
-
-
-
-
-
+    
     class AIAction
     {
         protected Actor actor;
@@ -208,5 +198,99 @@ namespace StoneCircle
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    class AIManager
+    {
+        public Dictionary<String, AIProfile> Profiles = new Dictionary<String, AIProfile>();
+
+        public AIManager()
+        { 
+             
+        
+        }
+
+    }
+
+
+
+    class AIProfile
+    {
+        public Dictionary<String, int> ActionPriorities = new Dictionary<string, int>();
+
+        public AIProfile() { }
+
+        public virtual Vector2 UpdateFacing(Vector3 location)
+        {
+            return Vector2.Zero;
+        }
+        
+    }
+
+
+    class AIPMoveToActor: AIProfile
+    {
+        public Actor target;
+
+        public AIPMoveToActor(Actor target)
+        {
+            this.target = target;
+            ActionPriorities.Add("Walking", 15);
+        }
+
+        public override Vector2 UpdateFacing(Vector3 location)
+        {
+            return new Vector2 (location.X - target.Location.Y, location.Y - target.Location.Y);
+        }
+
+
+
+    }
+
+    class AIPFullRandom : AIProfile
+    {
+        public AIPFullRandom()
+        {
+            ActionPriorities.Add("Walking", 1);
+            ActionPriorities.Add("Standing", 1);
+            ActionPriorities.Add("Running", 1);
+            ActionPriorities.Add("Stand Up", 1);
+            ActionPriorities.Add("Fall Backward", 1);
+            ActionPriorities.Add("Fall Forward", 1);
+            ActionPriorities.Add("Jumping", 1);
+            ActionPriorities.Add("Limping", 1);
+            ActionPriorities.Add("HighBlock", 1);
+            ActionPriorities.Add("MidBlock", 1);
+            ActionPriorities.Add("LowBlock", 1);
+            ActionPriorities.Add("HighHorizontalSlash", 1);
+            ActionPriorities.Add("Thrust", 1);
+            ActionPriorities.Add("LowHorizontalSlash", 1);
+            ActionPriorities.Add("HorizontalSlash", 1);
+            ActionPriorities.Add("Dash", 1);
+
+        }
+
+        public override Vector2 UpdateFacing(Vector3 location)
+        {
+          return Vector2.UnitX;
+        }
+
+    }
 
 }

@@ -123,7 +123,7 @@ namespace StoneCircle
 
 
             Stage Court = new Stage("Court", this);
-            SerialEVENTGroup Intro = new SerialEVENTGroup("Introduction");
+            SerialEVENTGroup Intro = new SerialEVENTGroup("Int");
             Character villagerA = new Character("VillagerA", "Actor2", new Vector2(600, 600), gameManager);
             Character villagerB = new Character("VillagerB", "Actor2", new Vector2(1000, 600), gameManager);
             Character Aide = new Character("Aide", "Actor2", new Vector2(800, 300), gameManager);

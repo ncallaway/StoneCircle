@@ -37,7 +37,7 @@ namespace StoneCircle
         public Actor Actor;
 
         protected int frame;
-        public int Frame { get { return frame; } }
+        public int Frame { get { return frame; } set { frame = value; } }
         protected int maxFrame;
         private float time;
         public ActionList AvailableLow;
@@ -99,39 +99,35 @@ namespace StoneCircle
 
 
 
-
-    class UpperDefense : Actionstate { }
-
-    class LowerDefense : Actionstate { }
-
     class Attack : Actionstate
-    {
+    {   
         protected Item weapon;
-       // protected CollisionArc HitBox;
-        protected CollisionCylinder HitBox;
+        protected CollisionArc hitBox;
+        public CollisionArc HitBox { get { return hitBox;}}
         protected float attackLength;
+        protected Vector2 direction;
     }
 
     class HighHorizontal : Attack
     {
+        private float knockback;
 
         public HighHorizontal(Actor Actor)
         {
             id = "High Horizontal Swing";
             //weapon = Weapon;
             maxFrame = 10;
-            attackLength = 15;
+            attackLength = 35;
             AvailableLow.LStickAction = null;
             AvailableHigh.LStickAction = null;
             AvailableLow.YButton = null;
             AvailableHigh.YButton = null;
             AvailableHigh.NoButton = null;
             AvailableLow.NoButton = null;
-            this.Actor = Actor;
-            //HitBox = new CollisionArc(new Vector3(Actor.Location.X, Actor.Location.Y, 0), Actor.ImageWidth / 2 + attackLength, 200f,
-                  // (float)Math.Atan2(Actor.Facing.Y, Actor.Facing.X), (float)Math.PI / 20);
-           HitBox = new CollisionCylinder(new Vector3(Actor.Location.X, Actor.Location.Y, 0), Actor.ImageWidth / 2 + attackLength, 200f);
-            HitBox.Radius = 0;
+            knockback = 15;
+           hitBox = new CollisionArc( Vector3.Zero, 0f, 40f,
+                   0f, (float)Math.PI / 6);
+            hitBox.Radius = 0;
         }
 
         public override void Update(GameTime t, Dictionary<string, Actor>.ValueCollection targets)
@@ -140,25 +136,35 @@ namespace StoneCircle
 
             switch (frame)
             {    case 0:   AvailableLow.LStickAction = null;
-    AvailableHigh.LStickAction = null;
-    AvailableLow.YButton = null;
-    AvailableHigh.YButton = null;
+                    AvailableHigh.LStickAction = null;
+                    AvailableLow.YButton = null;
+                    AvailableHigh.YButton = null;
                     AvailableHigh.NoButton = null;
                     AvailableLow.NoButton = null;
+                    direction = Actor.Facing;
                     break;
-            case 5: HitBox.Location = Actor.Location;  HitBox.Radius = Actor.ImageWidth / 2 + attackLength + 500; break;
-                case 6: HitBox.Radius = 0; break;
-                case 9: AvailableHigh.NoButton = "Standing";
+            case 5: hitBox.Location = Actor.Location; hitBox.Radius = Actor.Radius + attackLength + 5; hitBox.CenterAngle = (float)Math.Atan2(Actor.Facing.Y, Actor.Facing.X); break;
+
+            case 4: hitBox.Location = Actor.Location; hitBox.Radius = Actor.Radius + attackLength; hitBox.CenterAngle = (float)Math.Atan2(Actor.Facing.Y, Actor.Facing.X); break;
+            case 6: hitBox.Radius = 0; break;
+                case 9: 
+                    AvailableHigh.NoButton = "Standing";
                     AvailableLow.NoButton = "Standing";
                     break;
             }
 
+            Actor.UpdateFacing(direction);
+
             foreach (Actor y in targets)
             {
-                if ((HitBox.Intersects(y.Bounds) && !Actor.Equals(y))) //Collision Detection. Ideally reduces movement to outside collision bounds.
+                if ((HitBox.IntersectsType(y.Bounds) && Actor != y)) //Collision Detection. Ideally reduces movement to outside collision bounds.
                 {
-                    y.SetAction("Fall Forward");
-                    y.Move(new Vector3(100, 100, 25));
+                    // Combat TestGoes Here::
+                    y.AttackResponse(this);
+                    y.UpdateVector -= (Actor.Location - y.Location);
+                    y.Move();
+
+                    Actor.SetAction("MidBlock");
                 }
 
             }
@@ -177,5 +183,127 @@ namespace StoneCircle
 
 
     }
+
+    class HighBlock : Actionstate
+    {
+        Vector2 direction;
+
+        public HighBlock()
+        {
+            id = "HighBlock";
+            maxFrame = 15;
+
+        }
+
+        public override void Update(GameTime t, Dictionary<string, Actor>.ValueCollection targets)
+        {
+            UpdateFrame(t);
+
+            switch (frame)
+            {
+                case 0: Actor.ImageXindex = 1;
+                    AvailableHigh.NoButton = null;
+                    AvailableLow.NoButton = null;
+                    direction = Actor.Facing;
+
+                    Actor.UpdateFacing(Vector2.One);
+                    break;
+
+
+
+                case 14: AvailableHigh.NoButton = "Standing";
+                    AvailableLow.NoButton = "Standing";
+                    break;
+
+
+
+            }
+
+            Actor.UpdateFacing(direction);
+            
+        }
+    }
+
+
+
+    class MidBlock : Actionstate
+    {
+        public MidBlock()
+        {
+            id = "MidBlock";
+            maxFrame = 35;
+
+            AvailableHigh.NoButton = "";
+            AvailableLow.NoButton = "";
+
+        }
+
+        public override void Update(GameTime t, Dictionary<string, Actor>.ValueCollection targets)
+        {
+            UpdateFrame(t);
+
+            AvailableHigh.NoButton = "";
+            AvailableLow.NoButton = "";
+            switch (frame)
+            {
+                case 0: Actor.ImageXindex = 1;
+
+                    Actor.UpdateFacing(Vector2.One);
+                    break;
+                case 10: break;
+
+
+                case 34: AvailableHigh.NoButton = "Standing";
+                    AvailableLow.NoButton = "Standing";
+                    break;
+                default: break;
+
+
+            }
+
+        }
+    }
+
+
+
+    class LowBlock : Actionstate
+    {
+        public LowBlock()
+        {
+            id = "LowBlock";
+            maxFrame = 15;
+
+        }
+
+        public override void Update(GameTime t, Dictionary<string, Actor>.ValueCollection targets)
+        {
+            UpdateFrame(t);
+
+            switch (frame)
+            {
+                case 0: Actor.ImageXindex = 1;
+                    AvailableHigh.NoButton = null;
+                    AvailableLow.NoButton = null;
+                    Actor.UpdateFacing(Vector2.One);
+                    break;
+
+
+
+                case 14: AvailableHigh.NoButton = "Standing";
+                    AvailableLow.NoButton = "Standing";
+                    break;
+
+
+
+            }
+            
+        }
+
+
+
+
+    }
+
+
 
 }

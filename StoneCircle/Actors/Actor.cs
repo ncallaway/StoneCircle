@@ -42,6 +42,8 @@ namespace StoneCircle
         public bool Active;
         public bool Interacting;
 
+        private AIProfile currentProfile;
+
 
         //Here is the inventory
         protected Inventory inventoryMenu;
@@ -51,24 +53,33 @@ namespace StoneCircle
         public Item CurrentItem { get { return currentItem; } set { currentItem = value; } }
         protected bool inventoryOpen;
 
-
-        List<Trigger> personalTriggers = new List<Trigger>();
-        List<EVENT> personalEvents = new List<EVENT>();
-
         protected float defaultBeatTimer = 1000;
         protected float currentBeatTimer;
         protected float currentBeatTime;
 
+        protected CollisionCylinder lowerRegion;
+        protected CollisionCylinder midRegion;
+        protected CollisionCylinder upperRegion;
+
+        protected float awarenessWidth;
+        protected float awarenessRange;
+
+        protected float pGravity;
 
 
         // These variables represent the location and position of the actor. 
         protected Vector2 origin;
         public Vector3 Location;
         public Vector2 Position { get { return new Vector2(Location.X, (Location.Y - Location.Z) / 2); } }
+        protected float radius;
+        public float Radius { get { return radius; } }
+        protected float height;
 
         public Vector2 RenderPosition;
         protected Vector2 facing;
         public Vector2 Facing { get { return facing; } set { facing = value; } }
+        protected Vector3 updateVector;
+        public Vector3 UpdateVector { get { return updateVector; } set { updateVector += value; } }
 
         protected Dictionary<String, Actionstate> knownActions = new Dictionary<String, Actionstate>();
         protected Actionstate current_Action;
@@ -90,7 +101,7 @@ namespace StoneCircle
         public List<AIOption> AIStance = new List<AIOption>();
 
 
-        public CollisionCylinder Bounds { get { return new CollisionCylinder(Location, 15, 60); } }
+        public CollisionCylinder Bounds { get { return new CollisionCylinder(Location, radius, height); } }
 
 
         public Stage parent;
@@ -105,29 +116,17 @@ namespace StoneCircle
             speed = 100;
             Location = Vector3.Zero;
             ImageXindex = 0; ImageYindex = 0;
-            learnAction(new Actionstate("Talking"));
-            learnAction(new Stand());
-            learnAction(new Walk());
-            learnAction(new Limp());
-            learnAction(new Jump());
-            learnAction(new Run());
-            learnAction(new UseItem());
-            learnAction(new Dead());
-            learnAction(new Unconcious());
-            learnAction(new FallForward());
-            learnAction(new StandUp());
-            learnAction(new Prone());
-            learnAction(new Rest());
-            defaultAction = knownActions["Standing"];
-            SetAction("Standing");
             totalLifeTime = 100;
             currentLife = totalLifeTime;
             totalFatigue = 100;
             currentFatigue = totalFatigue;
             currentBeatTimer = defaultBeatTimer;
             currentBeatTime = 0;
-          
+            awarenessWidth = 180;
+            height = 60;
+            radius = 20;
 
+            currentProfile = new AIPFullRandom();
             this.gameManager = gameManager;
             Active = true;
         }
@@ -139,21 +138,10 @@ namespace StoneCircle
             speed = 100;
             Location = new Vector3(starting.X, starting.Y, 0);
             name = Id;
-            learnAction(new Actionstate("Talking"));
-            learnAction(new Stand());
-            learnAction(new Walk());
-            learnAction(new Limp());
-            learnAction(new Jump());
-            learnAction(new Run());
-            learnAction(new UseItem());
-            learnAction(new Dead());
-            learnAction(new Unconcious());
-            learnAction(new FallForward());
-            learnAction(new StandUp());
-            learnAction(new Prone());
-            learnAction(new Rest());
-            defaultAction = knownActions["Standing"];
-            SetAction("Standing");
+            height = 60;
+            radius = 60;
+
+            currentProfile = new AIPFullRandom();
         }
 
         public Actor(String id, String asset_name, Vector2 starting, Stage Parent)  // Basic constructor.
@@ -193,6 +181,24 @@ namespace StoneCircle
 
         public virtual void SetAction(String nextAction)
         {
+            if (current_Action == null) current_Action = knownActions[nextAction];
+            if (nextAction != null && nextAction != current_Action.ID)
+            {
+                if (nextAction == "Walking" || nextAction == "Running")
+                {
+                    current_Action = knownActions[movement(nextAction)];
+                    //  current_Action.Reset();
+                }
+                else if (knownActions.ContainsKey(nextAction))
+                {
+                    current_Action = knownActions[nextAction];
+                    current_Action.Reset();
+                }
+            }
+        }
+
+        public virtual void SetAction(String nextAction, int frame)
+        {
             if (nextAction == "Walking" || nextAction == "Running")
             {
                 current_Action = knownActions[movement(nextAction)];
@@ -201,9 +207,10 @@ namespace StoneCircle
             else if (knownActions.ContainsKey(nextAction))
             {
                 current_Action = knownActions[nextAction];
-                current_Action.Reset();
+                current_Action.Frame = frame;
             }
         }
+
 
         public virtual void loadImage(ContentManager theContentManager) // This loads the image map of the actor and locates the origin.
         {
@@ -216,29 +223,39 @@ namespace StoneCircle
 
         }
 
+        public virtual void AttackResponse(Attack attack)
+        {
+
+        }
+
         protected virtual void heartBeat()
         {   //Random rand = new Random();
             currentLife--;
             currentBeatTimer *= .98f;
         }
 
-
-        public void StartBleeding()
-        { properties.Add("Bleeding"); }
-
-        public void StopBleeding() { properties.Remove("Bleeding"); }
-
         public virtual void Initialize()
         { }
 
         public virtual void UnInitialize() { }
 
+        public virtual void UpdateFacing(Vector2 newFacing)
+        {
+            newFacing.Normalize();
+            facing = newFacing;
+            if (Math.Abs(facing.X) > Math.Abs(facing.Y)) { if (facing.X > 0) ImageYindex = 0; else ImageYindex = 1; }
+            else { if (facing.Y > 0) ImageYindex = 2; else ImageYindex = 3; }
+        }
+
+
         public virtual void Draw(SpriteBatch theSpriteBatch, Vector2 camera_pos, float camera_scale, float intensity, SpriteFont font) // Draws the sprite and shadow of actor in relation to camera.
         {
-            if (Math.Abs(facing.X) > Math.Abs(facing.Y)) { if (facing.X > 0) ImageYindex = 0; else ImageYindex = 1; }
-              else { if (facing.Y > 0) ImageYindex = 2; else ImageYindex = 3; }
-            theSpriteBatch.Draw(image_map, screenadjust + (camera_scale * (Position - camera_pos)), new Rectangle(ImageXindex * ImageWidth, ImageYindex * ImageHeight, ImageWidth, ImageHeight), new Color(intensity, intensity, intensity, 1f), 0f, origin, camera_scale, SpriteEffects.None, .2f - Location.Y / 100000f);
-              theSpriteBatch.DrawString(font, current_Action.ID + "  " + current_Action.Frame, screenadjust + (camera_scale * (Position - camera_pos) - new Vector2(ImageWidth / 2, ImageHeight + 15)), Color.White);
+                theSpriteBatch.Draw(image_map, screenadjust + (camera_scale * (Position - camera_pos)), new Rectangle(ImageXindex * ImageWidth, ImageYindex * ImageHeight, ImageWidth, ImageHeight), new Color(intensity, intensity, intensity, 1f), 0f, origin, camera_scale, SpriteEffects.None, .2f - Location.Y / 100000f);
+                theSpriteBatch.DrawString(font, current_Action.ID + "  " + current_Action.Frame, screenadjust + (camera_scale * (Position - camera_pos) - new Vector2(ImageWidth / 2, ImageHeight + 15)), Color.White);
+                theSpriteBatch.DrawString(font, "" + Math.Atan2(Facing.Y, Facing.X), screenadjust + (camera_scale * (Position - camera_pos) - new Vector2(ImageWidth / 2, ImageHeight - 5)), Color.White);
+                theSpriteBatch.DrawString(font, "" + Location, screenadjust + (camera_scale * (Position - camera_pos) - new Vector2(ImageWidth / 2, ImageHeight - 25)), Color.White);
+            
+
         }
 
 
@@ -252,8 +269,9 @@ namespace StoneCircle
 
         public virtual CollisionCylinder GetBounds(Vector3 update)// Returns the bounding box of a moving actor for collision detection.
         {
-            return new CollisionCylinder(Location + update, ImageWidth/2, 60);
+            return new CollisionCylinder(Location + update, radius, height);
         }
+
 
         public virtual void ApplyAction(Actionstate affected, Actor affector)
         {
@@ -277,6 +295,11 @@ namespace StoneCircle
 
         public virtual void Update(GameTime t, Dictionary<String, Actor>.ValueCollection targets) // Updates position, vestigial remnants of player update. 
         {
+            updateVector = Vector3.Zero;
+            if (Location.Z < 0) { Location.Z = 0; pGravity = 0; }
+            if (Location.Z > 0) {pGravity += 1;
+                updateVector += pGravity * -2 * Vector3.UnitZ;
+            }
             Interacting = false;
 
             if (Bleeding && currentLife > 0)
@@ -295,7 +318,9 @@ namespace StoneCircle
 
 
             current_Action.Update(t, targets);
+            Move();
             SetAction(ChooseAction(t, targets));
+
         }
 
         protected virtual String movement(String input)
@@ -307,22 +332,60 @@ namespace StoneCircle
         public virtual String ChooseAction(GameTime t, Dictionary<String, Actor>.ValueCollection actor_list)
         {
 
-            foreach (AIOption AIO in AIStance)
+            List<String> actionList = new List<String>();
+
+            if(current_Action.AvailableHigh.AButton != null && knownActions.ContainsKey(current_Action.AvailableHigh.AButton))actionList.Add(current_Action.AvailableHigh.AButton);
+            if (current_Action.AvailableHigh.BButton != null && knownActions.ContainsKey(current_Action.AvailableHigh.BButton)) actionList.Add(current_Action.AvailableHigh.BButton);
+            if (current_Action.AvailableHigh.YButton != null && knownActions.ContainsKey(current_Action.AvailableHigh.YButton)) actionList.Add(current_Action.AvailableHigh.XButton);
+            if (current_Action.AvailableHigh.XButton != null && knownActions.ContainsKey(current_Action.AvailableHigh.XButton)) actionList.Add(current_Action.AvailableHigh.YButton);
+            if (current_Action.AvailableHigh.NoButton != null && knownActions.ContainsKey(current_Action.AvailableHigh.NoButton)) actionList.Add(current_Action.AvailableHigh.NoButton);
+            if (current_Action.AvailableHigh.LStickAction != null && knownActions.ContainsKey(current_Action.AvailableHigh.LStickAction)) actionList.Add(current_Action.AvailableHigh.LStickAction);
+
+            if (current_Action.AvailableHigh.AButton != null && knownActions.ContainsKey(current_Action.AvailableHigh.AButton)) actionList.Add(current_Action.AvailableLow.AButton);
+            if (current_Action.AvailableHigh.BButton != null && knownActions.ContainsKey(current_Action.AvailableHigh.BButton)) actionList.Add(current_Action.AvailableLow.BButton);
+            if (current_Action.AvailableHigh.XButton != null && knownActions.ContainsKey(current_Action.AvailableHigh.XButton)) actionList.Add(current_Action.AvailableLow.XButton);
+            if (current_Action.AvailableHigh.YButton != null && knownActions.ContainsKey(current_Action.AvailableHigh.YButton)) actionList.Add(current_Action.AvailableLow.YButton);
+            if (current_Action.AvailableHigh.NoButton != null && knownActions.ContainsKey(current_Action.AvailableHigh.NoButton)) actionList.Add(current_Action.AvailableLow.NoButton);
+            if (current_Action.AvailableHigh.LStickAction != null && knownActions.ContainsKey(current_Action.AvailableHigh.LStickAction)) actionList.Add(current_Action.AvailableLow.LStickAction);
+
+            int totalSum = 0;
+
+            if (actionList.Count == 0) return current_Action.ID;
+
+            foreach(String Action in actionList)
             {
-                if (AIO.condition.Condition) return AIO.action.ActionReturn();
+              if(Action != null && currentProfile.ActionPriorities.ContainsKey(Action)) totalSum += currentProfile.ActionPriorities[Action];
+               
+
+            }
+            Random actRand = new Random();
+
+            int index = 0; 
+            int selector = actRand.Next(totalSum);
+
+            while(selector > 0)
+            {
+                if(actionList[index] != null && currentProfile.ActionPriorities.ContainsKey(actionList[index])) selector -= currentProfile.ActionPriorities[actionList[index]];
+                if(selector >0) index ++;
 
             }
 
-
-            return "";
+            if (current_Action.ID == actionList[index]) return "";
+            return actionList[index];
         }
 
         public virtual void ActionUpdate(GameTime t, Dictionary<String, Actor>.ValueCollection actor_list)
         { current_Action.Update(t, actor_list); }
 
-        public virtual void Move(Vector3 update) // Changes location of actor.
+        public virtual void Move() // Changes location of actor.
         {
-            Location += update;
+            Location += UpdateVector;
+        }
+
+        public virtual void AdjustUpdateVector(Vector3 adjustment)
+        {
+
+            UpdateVector += adjustment;
         }
 
 
@@ -441,17 +504,55 @@ namespace StoneCircle
 
     class Character : Actor
     {
-        public Character(GameManager gameManager) : base(gameManager) { }
+        public Character(GameManager gameManager)
+            : base(gameManager)
+        {
+            speed = 100;
+            learnAction(new Actionstate("Talking"));
+            learnAction(new Stand());
+            learnAction(new Walk());
+            learnAction(new Limp());
+            learnAction(new Jump());
+            learnAction(new Run());
+            learnAction(new UseItem());
+            learnAction(new Dead());
+            learnAction(new Unconcious());
+            learnAction(new FallForward());
+            learnAction(new StandUp());
+            learnAction(new Prone());
+            learnAction(new Rest());
+            learnAction(new HighBlock());
+            learnAction(new LowBlock());
+            learnAction(new MidBlock());
+
+            defaultAction = knownActions["Standing"];
+            SetAction("Standing");
+        }
         public Character(String Id, String asset_name, Vector2 starting,  GameManager gameManager)
             : base(gameManager)  // Basic constructor.
         {
             
             asset_Name = asset_name;
             speed = 100;
-            Location = new Vector3(starting.X, starting.Y, 0);
-            name = Id;
+            Location = new Vector3(starting.X, starting.Y, 1);
+            name = Id; learnAction(new Actionstate("Talking"));
+            learnAction(new Stand());
+            learnAction(new Walk());
+            learnAction(new Limp());
+            learnAction(new UseItem());
+            learnAction(new Dead());
+            learnAction(new Unconcious());
+            learnAction(new FallForward());
+            learnAction(new StandUp());
+            learnAction(new Prone());
+            learnAction(new Rest());
+            learnAction(new HighBlock());
+            learnAction(new LowBlock());
+            learnAction(new MidBlock());
+
             defaultAction = knownActions["Standing"];
             SetAction("Standing");
+            Active = true;
         }
 
         public Character(uint objectId) : base(objectId) { }
@@ -464,6 +565,49 @@ namespace StoneCircle
             origin = new Vector2(ImageWidth / 2, ImageHeight - ImageWidth / 3);
 
         }
+
+        public override void AttackResponse(Attack attack)
+        {
+            Vector3 diff = attack.Actor.Location - Location;
+            float attackAngle = (float)Math.Atan2(diff.Y, diff.X);
+            float lowerBound = (float)Math.Atan2(Facing.Y, Facing.X) - MathHelper.ToRadians(awarenessWidth/2);
+            float upperBound = (float)Math.Atan2(Facing.Y, Facing.X) + MathHelper.ToRadians(awarenessWidth / 2);
+            if (upperBound > Math.PI && attackAngle < 0) attackAngle += 2 * (float)Math.PI;
+            if (upperBound < -Math.PI && attackAngle > 0) attackAngle -= 2 * (float)Math.PI;
+            if (attackAngle < upperBound && attackAngle > lowerBound) SetAction("MidBlock");
+            else AddProperty("Bleeding");
+            
+        }
+
+        public override void Update(GameTime t, Dictionary<string, Actor>.ValueCollection targets)
+        {
+            updateVector = Vector3.Zero;
+            if (Location.Z < 0) Location.Z = 0;
+            if (Location.Z > 2) updateVector += Vector3.UnitZ * -2;
+
+            Interacting = false;
+
+            if (Bleeding && currentLife > 0)
+            {
+                currentBeatTime -= t.ElapsedGameTime.Milliseconds;
+                if (currentBeatTime < 0)
+                {
+                    heartBeat();
+                    currentBeatTime = currentBeatTimer;
+                }
+            }
+
+            if (currentLife <= 0) SetAction("Dead");
+            if (currentFatigue <= 0) SetAction("Unconcious");
+            if (currentFatigue < totalFatigue) currentFatigue += .33f;
+
+
+            current_Action.Update(t, targets);
+            Move();
+            SetAction(ChooseAction(t, targets));
+
+        }
+
 
 
     }
@@ -481,8 +625,20 @@ namespace StoneCircle
             speed = 100;
             Location = new Vector3(starting.X, starting.Y, 0);
             name = Id;
+            learnAction( new Actionstate("Standing"));
             defaultAction = knownActions["Standing"];
             SetAction("Standing");
+
+        }
+
+        public override void Update(GameTime t, Dictionary<string, Actor>.ValueCollection targets)
+        {
+            updateVector = Vector3.Zero;
+            if (Location.Z < 0) Location.Z = 0;
+            if (Location.Z > 2) updateVector += Vector3.UnitZ * -2;
+
+            Interacting = false;
+            
         }
 
         public override void loadImage(ContentManager theContentManager) // This loads the image map of the actor and locates the origin.
@@ -493,6 +649,9 @@ namespace StoneCircle
             
             origin = new Vector2(ImageWidth / 2, ImageHeight - ImageWidth / 3);
         }
+
+
+
     }
 
 }

@@ -113,14 +113,7 @@ technique Colored_2_0
 	}
 }
 
-technique Colored
-{
-	pass Pass0
-	{   
-		VertexShader = compile vs_1_1 ColoredVS();
-		PixelShader  = compile ps_1_1 ColoredPS();
-	}
-}
+
 
 // Technique: VerticalEdge
 
@@ -165,14 +158,6 @@ technique VerticalEdge_2_0
 	}
 }
 
-technique VerticalEdge
-{
-	pass Pass0
-	{   
-		VertexShader = compile vs_1_1 VerticalEdgeVS();
-		PixelShader  = compile ps_1_1 VerticalEdgePS();
-	}
-}
 
 //------- Technique: Textured --------
 VertexToPixel TexturedVS( float4 inPos : POSITION, float3 inNormal: NORMAL, float2 inTexCoords: TEXCOORD0)
@@ -182,7 +167,7 @@ VertexToPixel TexturedVS( float4 inPos : POSITION, float3 inNormal: NORMAL, floa
 	float4x4 preWorldViewProjection = mul (xWorld, preViewProjection);
     
 	//Output.Position = mul(inPos, preWorldViewProjection);	
-	Output.Position = inTexCoords;
+	Output.Position = inPos;
 	Output.TextureCoords = inTexCoords;
 	
 	float3 Normal = normalize(mul(normalize(inNormal), xWorld));	

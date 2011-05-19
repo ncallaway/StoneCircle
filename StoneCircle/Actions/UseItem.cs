@@ -104,7 +104,7 @@ namespace StoneCircle
 
 
                 case 119:
-                    actor.StopBleeding();
+                    actor.RemoveProperty("Bleeding");
                     AvailableHigh.NoButton = "Standing";
                     AvailableLow.NoButton = "Standing";
                     break;        

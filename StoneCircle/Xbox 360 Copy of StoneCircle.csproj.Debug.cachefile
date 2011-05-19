@@ -1,8 +1,4 @@
-Content\Characters\Actor2.xnb
-Content\Characters\body1.xnb
-Content\Characters\Eimar Character Sheet - Full.xnb
-Content\Characters\male_select.xnb
-Content\Characters\PlayerSheet.xnb
+Content\Fonts\Text.xnb
 Content\Levels\Cairn_0_0IMG.xnb
 Content\Levels\Court_0_0IMG.xnb
 Content\Levels\Village_0_0IMG.xnb
@@ -15,18 +11,23 @@ Content\UI Images\DialogueBox.xnb
 Content\UI Images\ThoughtBox.xnb
 Content\UI Images\ThumbsDownIcon.xnb
 Content\UI Images\ThumbsUpIcon.xnb
-Content\UI Images\Wallpaper.xnb
 Content\RedScreenOfDeath.xnb
 Content\texturePallette.xnb
-Content\Fonts\Text.xnb
+Content\UI Images\Wallpaper.xnb
+Content\Characters\Actor2.xnb
+Content\Characters\body1.xnb
+Content\Characters\Eimar Character Sheet - Full.xnb
+Content\Characters\male_select.xnb
+Content\Characters\PlayerSheet.xnb
+Content\Shaders\StatusShader.xnb
 Content\Shaders\Effect1.xnb
 Content\Shaders\TerrainMapper.xnb
 Content\Sound Effects\beep.xnb
 Content\Sound Effects\heartbeat.xnb
 Content\Sound Effects\misc012.xnb
+Content\Sound Effects\fire.xnb
 Content\Sound Effects\misc065.xnb
 Content\Sound Effects\nature004.xnb
 Content\Sound Effects\nature014.xnb
 Content\Sound Effects\nature021.xnb
-Content\Sound Effects\fire.xnb
-Content\Shaders\StatusShader.xnb
+Content\Shaders\LightEffects.xnb
