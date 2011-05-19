@@ -429,52 +429,68 @@ namespace StoneCircle
 
 
 
-
         public virtual void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
         {
             writer.Write(name);
             writer.Write(asset_Name);
-            writer.Write(Location.X);
-            writer.Write(Location.Y);
-            writer.Write(Location.Z);
+            
             writer.Write(Active);
             writer.Write(Interacting); // bool
             Saver.SaveStringList(properties, writer);
             writer.Write(currentBeatTimer); // single
             writer.Write(currentBeatTime); // single
-            writer.Write(RenderPosition.X); writer.Write(RenderPosition.Y); // single, // single
-            writer.Write(facing.X); writer.Write(facing.Y); // single, // single
+
+            Saver.SaveVector3(Location, writer);
+            Saver.SaveVector2(RenderPosition, writer);
+            Saver.SaveVector2(facing, writer);
+
+            writer.Write(speed); // single
             writer.Write(totalLifeTime); // single
             writer.Write(currentLife); // single
         
             writer.Write(totalFatigue); // single
             writer.Write(currentFatigue); // single
-            writer.Write(objectTable[parent]);
+            writer.Write(parent != null);
+            if (parent != null)
+            {
+                writer.Write(objectTable[parent]);
+            }
         }
 
         public virtual void Load(BinaryReader reader, SaveType type)
         {
             name = reader.ReadString();
             asset_Name = reader.ReadString();
-            Location = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
             Active = reader.ReadBoolean();
             Interacting = reader.ReadBoolean();
             properties = Loader.LoadStringList(reader);
             currentBeatTimer = reader.ReadSingle();
             currentBeatTime = reader.ReadSingle();
-            RenderPosition = new Vector2(reader.ReadSingle(), reader.ReadSingle());
-            facing = new Vector2(reader.ReadSingle(), reader.ReadSingle());
+
+            Location = Loader.LoadVector3(reader);
+            RenderPosition = Loader.LoadVector2(reader);
+            facing = Loader.LoadVector2(reader);
+
+            speed = reader.ReadInt32();
             totalLifeTime = reader.ReadSingle();
             currentLife = reader.ReadSingle();
             totalFatigue = reader.ReadSingle();
             currentFatigue = reader.ReadSingle();
-           stageId = reader.ReadUInt32();
+            loadStage = reader.ReadBoolean();
+            if (loadStage)
+            {
+                stageId = reader.ReadUInt32();
+            }
         }
 
         private uint stageId;
+        private bool loadStage;
         public virtual void Inflate(Dictionary<uint, ISaveable> objectTable)
         {
-            parent = (Stage)objectTable[stageId];
+            if (loadStage)
+            {
+                parent = (Stage)objectTable[stageId];
+            }
         }
 
         public virtual void FinishLoad(GameManager manager)
@@ -615,7 +631,7 @@ namespace StoneCircle
 
     class SetProp : Actor
     {
-
+        public SetProp(uint objectId) : base(objectId) { }
         
         public SetProp(String Id, String asset_name, Vector2 starting,  GameManager gameManager)
             : base(gameManager)  // Basic constructor.

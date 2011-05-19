@@ -253,6 +253,24 @@ namespace StoneCircle
             SM.SetCondition(StateCondition);
             ready = true;
         }
+
+        public override void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        {
+            base.Save(writer, type, objectTable);
+            Saver.SaveString(StateCondition, writer);
+        }
+
+        public override void Load(BinaryReader reader, SaveType type)
+        {
+            base.Load(reader, type);
+            StateCondition = Loader.LoadString(reader);
+        }
+
+        public override void FinishLoad(GameManager manager)
+        {
+            base.FinishLoad(manager);
+            SM = manager.StageManager;
+        }
     }
 
     class EVENTPlayerDeactivate : EVENT
@@ -331,18 +349,44 @@ namespace StoneCircle
     public class EVENTCameraDeactivate : EVENT
     {
 
-        Camera camera;
+        Stage cameraContainer;
 
-        internal EVENTCameraDeactivate(Camera camera)
-        { this.camera = camera; }
+        internal EVENTCameraDeactivate(Stage cameraContainer)
+        { this.cameraContainer = cameraContainer; }
 
         public EVENTCameraDeactivate(uint objectId) : base(objectId) { }
 
 
         public override void Start()
         {
-            camera.Active = false;
+            cameraContainer.camera.Active = false;
             ready = true;
+        }
+
+        public override List<ISaveable> GetSaveableRefs(SaveType type)
+        {
+            List<ISaveable> parentRefs = Saver.ConstructSaveableList(base.GetSaveableRefs(type));
+            parentRefs.Add(cameraContainer);
+            return parentRefs;
+        }
+
+        public override void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        {
+            base.Save(writer, type, objectTable);
+            writer.Write(objectTable[cameraContainer]);
+        }
+
+        private uint camContainerId;
+        public override void Load(BinaryReader reader, SaveType type)
+        {
+            base.Load(reader, type);
+            camContainerId = reader.ReadUInt32();
+        }
+
+        public override void Inflate(Dictionary<uint, ISaveable> objectTable)
+        {
+            base.Inflate(objectTable);
+            cameraContainer = (Stage)objectTable[camContainerId];
         }
 
     }
@@ -350,17 +394,43 @@ namespace StoneCircle
     public class EVENTCameraReactivate : EVENT
     {
 
-        Camera camera;
+        Stage cameraContainer;
 
-        internal EVENTCameraReactivate(Camera camera)
-        { this.camera = camera; }
+        internal EVENTCameraReactivate(Stage cameraContainer)
+        { this.cameraContainer = cameraContainer; }
 
         public EVENTCameraReactivate(uint objectId) : base(objectId) { }
 
         public override void Start()
         {
-            camera.Active = true;
+            cameraContainer.camera.Active = true;
             ready = true;
+        }
+
+        public override List<ISaveable> GetSaveableRefs(SaveType type)
+        {
+            List<ISaveable> parentRefs = Saver.ConstructSaveableList(base.GetSaveableRefs(type));
+            parentRefs.Add(cameraContainer);
+            return parentRefs;
+        }
+
+        public override void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        {
+            base.Save(writer, type, objectTable);
+            writer.Write(objectTable[cameraContainer]);
+        }
+
+        private uint camContainerId;
+        public override void Load(BinaryReader reader, SaveType type)
+        {
+            base.Load(reader, type);
+            camContainerId = reader.ReadUInt32();
+        }
+
+        public override void Inflate(Dictionary<uint, ISaveable> objectTable)
+        {
+            base.Inflate(objectTable);
+            cameraContainer = (Stage)objectTable[camContainerId];
         }
 
     }
@@ -415,6 +485,60 @@ namespace StoneCircle
             if (etime > TEXTTIME) { ready = true; actor.parent.StopLine(line); }
             return ready;
         }
+
+        public override void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        {
+            base.Save(writer, type, objectTable);
+            writer.Write(objectTable[line]);
+            writer.Write(objectTable[actor]);
+            writer.Write(etime);
+            writer.Write(time);
+
+        }
+
+        public override List<ISaveable> GetSaveableRefs(SaveType type)
+        {
+            List<ISaveable> parentRefs =  base.GetSaveableRefs(type);
+            if (parentRefs == null)
+            {
+                parentRefs = new List<ISaveable>();
+            }
+            parentRefs.Add(line);
+            parentRefs.Add(actor);
+
+            return parentRefs;
+        }
+
+        private DialogInflatables inflatables;
+        public override void Load(BinaryReader reader, SaveType type)
+        {
+            base.Load(reader, type);
+            inflatables = new DialogInflatables();
+            inflatables.lineId = reader.ReadUInt32();
+            inflatables.actorId = reader.ReadUInt32();
+            etime = reader.ReadSingle();
+            time = reader.ReadSingle();
+        }
+
+        public override void Inflate(Dictionary<uint, ISaveable> objectTable)
+        {
+            base.Inflate(objectTable);
+            line = (Lines)objectTable[inflatables.lineId];
+            actor = (Actor)objectTable[inflatables.actorId];
+        }
+
+        public override void FinishLoad(GameManager manager)
+        {
+            base.FinishLoad(manager);
+            actor.parent.StartLine(line);
+        }
+
+        private class DialogInflatables
+        {
+            public uint lineId;
+            public uint actorId;
+        }
+
     }
 
     public class EVENTDialogueConfirmed : EVENT
@@ -564,7 +688,6 @@ namespace StoneCircle
             actor.Facing /= actor.Facing.Length();
 
             actor.SetAction("Walking");
-
         }
 
         public override bool Update(GameTime t)
@@ -573,6 +696,48 @@ namespace StoneCircle
             if ((destination - actor.Position).LengthSquared() < 50f) ready = true;
             return ready;
         }
+
+        public override void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        {
+            base.Save(writer, type, objectTable);
+            writer.Write(objectTable[actor]);
+            writer.Write(destination.X); writer.Write(destination.Y);
+            writer.Write(objectTable[Stage]);
+        }
+
+        public override List<ISaveable> GetSaveableRefs(SaveType type)
+        {
+            List<ISaveable> parentRef = Saver.ConstructSaveableList(base.GetSaveableRefs(type));
+            parentRef.Add(actor);
+            parentRef.Add(Stage);
+            return parentRef;
+        }
+
+        private DialogInflatables inflatables;
+        public override void Load(BinaryReader reader, SaveType type)
+        {
+            base.Load(reader, type);
+            inflatables = new DialogInflatables();
+            inflatables.actorId = reader.ReadUInt32();
+            destination = new Vector2(reader.ReadSingle(), reader.ReadSingle());
+            inflatables.stageId = reader.ReadUInt32();
+        }
+
+        public override void Inflate(Dictionary<uint, ISaveable> objectTable)
+        {
+            base.Inflate(objectTable);
+            actor = (Actor)objectTable[inflatables.actorId];
+            Stage = (Stage)objectTable[inflatables.stageId];
+        }
+
+        private class DialogInflatables
+        {
+            public uint actorId;
+            public uint stageId;
+        }
+        //Actor actor;
+        //Vector2 destination;
+        //Stage Stage;
 
 
 
@@ -709,6 +874,40 @@ namespace StoneCircle
             etime += t.ElapsedGameTime.Milliseconds;
             ready = (etime >= time);
             return ready;
+        }
+
+        public override List<ISaveable> GetSaveableRefs(SaveType type)
+        {
+            List<ISaveable> parentRefs = Saver.ConstructSaveableList(base.GetSaveableRefs(type));
+            parentRefs.Add(stage);
+            return parentRefs;
+        }
+
+        public override void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        {
+            base.Save(writer, type, objectTable);
+            writer.Write(objectTable[stage]);
+            Saver.SaveVector3(color, writer);
+            writer.Write(strength);
+            writer.Write(time);
+            writer.Write(etime);
+        }
+
+        private uint stageId;
+        public override void Load(BinaryReader reader, SaveType type)
+        {
+            base.Load(reader, type);
+            stageId = reader.ReadUInt32();
+            color = Loader.LoadVector3(reader);
+            strength = reader.ReadSingle();
+            time = reader.ReadSingle();
+            etime = reader.ReadSingle();
+        }
+
+        public override void Inflate(Dictionary<uint, ISaveable> objectTable)
+        {
+            base.Inflate(objectTable);
+            stage = (Stage)objectTable[stageId];
         }
 
 
@@ -990,7 +1189,25 @@ namespace StoneCircle
             ready = false;
         }
 
+        public override void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        {
+            base.Save(writer, type, objectTable);
+            Saver.SaveString(nextEvent, writer);
+            writer.Write(objectTable[stage]);
+        }
+
+        private uint stageId;
+        public override void Load(BinaryReader reader, SaveType type)
+        {
+            base.Load(reader, type);
+            nextEvent = Loader.LoadString(reader);
+            stageId = reader.ReadUInt32();
+        }
+
+        public override void Inflate(Dictionary<uint, ISaveable> objectTable)
+        {
+            base.Inflate(objectTable);
+            stage = (Stage) objectTable[stageId];
+        }
     }
-
-
 }

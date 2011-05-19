@@ -31,79 +31,86 @@ namespace StoneCircle
             public String BButton;
             public String LStickAction;
             public String NoButton;
-           
+
         }
 
         public Actor Actor;
 
         protected int frame;
+
         public int Frame { get { return frame; } set { frame = value; } }
+
         protected int maxFrame;
         private float time;
         public ActionList AvailableLow;
         public ActionList AvailableHigh;
-       
-       
-    public Actionstate()
-{
-    maxFrame = 3;
-    AvailableLow = new ActionList();
-    AvailableHigh = new ActionList();
-    fatigue = 0f;
-    AvailableLow.LStickAction = "Walking";
-    AvailableHigh.LStickAction = "Running";
-    AvailableLow.YButton = "Resting";
-    AvailableHigh.YButton = "Bandage Self";
-}
 
-    public Actionstate(string newId)
-    {
-        id = newId;
 
-        maxFrame = 3;
-        AvailableLow.LStickAction = "Walking";
-        AvailableHigh.LStickAction = "Running";
-        AvailableLow.YButton = "Resting";
-        AvailableHigh.YButton = "Bandage Self";
-        
+        public Actionstate()
+        {
+            maxFrame = 3;
+            AvailableLow = new ActionList();
+            AvailableHigh = new ActionList();
+            fatigue = 0f;
+            AvailableLow.LStickAction = "Walking";
+            AvailableHigh.LStickAction = "Running";
+            AvailableLow.YButton = "Resting";
+            AvailableHigh.YButton = "Bandage Self";
+        }
+
+        public Actionstate(string newId)
+        {
+            id = newId;
+
+            maxFrame = 3;
+            AvailableLow.LStickAction = "Walking";
+            AvailableHigh.LStickAction = "Running";
+            AvailableLow.YButton = "Resting";
+            AvailableHigh.YButton = "Bandage Self";
+
+        }
+
+
+        public virtual void Update(GameTime t)
+        {
+
+        }
+
+        public virtual void Reset()
+        {
+            frame = 0;
+            time = 0;
+        }
+
+        public virtual void Update(Actor actor) { }
+
+        public void UpdateFrame(GameTime t)
+        {
+            time += t.ElapsedGameTime.Milliseconds;
+            if (time >= 17) { frame++; time = 0; }
+            frame %= maxFrame;
+
+        }
+
+        public virtual void Update(GameTime t, Dictionary<String, Actor>.ValueCollection targets)
+        {
+
+        }
+
+
     }
 
 
-    public virtual void Update(GameTime t)
-    {
-        
-    }
-
-    public virtual void Reset()
-    {
-        frame = 0;
-        time = 0;
-    }
-
-    public virtual void Update(Actor actor){}
-
-    public void UpdateFrame(GameTime t)
-    {
-        time += t.ElapsedGameTime.Milliseconds;
-        if (time >= 17) { frame++; time = 0; }
-        frame %= maxFrame;
-    }
-
-    public virtual void Update(GameTime t, Dictionary<String, Actor>.ValueCollection targets)
-    {
-
-    }
 
 
-    }
 
 
 
     class Attack : Actionstate
-    {   
+    {
         protected Item weapon;
         protected CollisionArc hitBox;
-        public CollisionArc HitBox { get { return hitBox;}}
+        public CollisionArc HitBox { get { return hitBox; } }
         protected float attackLength;
         protected Vector2 direction;
     }
@@ -117,7 +124,7 @@ namespace StoneCircle
             id = "High Horizontal Swing";
             //weapon = Weapon;
             maxFrame = 10;
-            attackLength = 35;
+            attackLength = 45;
             AvailableLow.LStickAction = null;
             AvailableHigh.LStickAction = null;
             AvailableLow.YButton = null;
@@ -125,8 +132,8 @@ namespace StoneCircle
             AvailableHigh.NoButton = null;
             AvailableLow.NoButton = null;
             knockback = 15;
-           hitBox = new CollisionArc( Vector3.Zero, 0f, 40f,
-                   0f, (float)Math.PI / 6);
+            hitBox = new CollisionArc(Vector3.Zero, 0f, 40f,
+                    0f, (float)Math.PI / 4);
             hitBox.Radius = 0;
         }
 
@@ -135,7 +142,13 @@ namespace StoneCircle
             UpdateFrame(t);
 
             switch (frame)
-            {    case 0:   AvailableLow.LStickAction = null;
+            {
+                case 0: AvailableLow.LStickAction = null;
+
+                    AvailableHigh.LStickAction = null;
+                    AvailableLow.YButton = null;
+                    AvailableHigh.YButton = null;
+
                     AvailableHigh.LStickAction = null;
                     AvailableLow.YButton = null;
                     AvailableHigh.YButton = null;
@@ -143,11 +156,11 @@ namespace StoneCircle
                     AvailableLow.NoButton = null;
                     direction = Actor.Facing;
                     break;
-            case 5: hitBox.Location = Actor.Location; hitBox.Radius = Actor.Radius + attackLength + 5; hitBox.CenterAngle = (float)Math.Atan2(Actor.Facing.Y, Actor.Facing.X); break;
+                case 5: hitBox.Location = Actor.Location; hitBox.Radius = Actor.Radius + attackLength + 5; hitBox.CenterAngle = (float)Math.Atan2(Actor.Facing.Y, Actor.Facing.X); break;
 
-            case 4: hitBox.Location = Actor.Location; hitBox.Radius = Actor.Radius + attackLength; hitBox.CenterAngle = (float)Math.Atan2(Actor.Facing.Y, Actor.Facing.X); break;
-            case 6: hitBox.Radius = 0; break;
-                case 9: 
+                case 4: hitBox.Location = Actor.Location; hitBox.Radius = Actor.Radius + attackLength; hitBox.CenterAngle = (float)Math.Atan2(Actor.Facing.Y, Actor.Facing.X); break;
+                case 6: hitBox.Radius = 0; break;
+                case 9:
                     AvailableHigh.NoButton = "Standing";
                     AvailableLow.NoButton = "Standing";
                     break;
@@ -220,7 +233,7 @@ namespace StoneCircle
             }
 
             Actor.UpdateFacing(direction);
-            
+
         }
     }
 
@@ -296,14 +309,13 @@ namespace StoneCircle
 
 
             }
-            
+
         }
 
 
 
 
     }
-
 
 
 }

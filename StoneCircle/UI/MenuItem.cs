@@ -98,17 +98,17 @@ namespace UserMenus
         public virtual void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
         {
             Saver.SaveString(id, writer);
-            writer.Write(textColor.R);
-            writer.Write(textColor.G);
-            writer.Write(textColor.B);
-            writer.Write(textColor.A);
+            Saver.SaveColor(textColor, writer);
+            Saver.SaveColor(iconColor, writer);
+
             Saver.SaveString(iconName, writer);
         }
 
         public virtual void Load(BinaryReader reader, SaveType type)
         {
             id = Loader.LoadString(reader);
-            textColor = new Color(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+            textColor = Loader.LoadColor(reader);
+            iconColor = Loader.LoadColor(reader);
             iconName = Loader.LoadString(reader);
         }
 

@@ -203,7 +203,7 @@ namespace StoneCircle
             ParallelEVENTGroup CE2 = new ParallelEVENTGroup();
             CE2.AddEVENT(new EVENTMoveActor(Rhett, new Vector2(800, 1000), Court));
             // CE2.AddEVENT(new EVENTMoveActor(gameManager.Player, new Vector2(850, 1000), Court));
-            CE2.AddEVENT(new EVENTCameraDeactivate(gameManager.Camera));
+            CE2.AddEVENT(new EVENTCameraDeactivate(Court));
             CE2.AddEVENT(new EVENTChangeAmbient(Court, new Vector3(1.0f, 1.0f, .4f), .8f, 4000f));
             CourtEnding.AddEVENT(CE2);
             CourtEnding.AddEVENT(new EVENTStageChange(this, "Village", new Vector2(3000, 3000)));
@@ -350,7 +350,7 @@ namespace StoneCircle
             VillageIntro.AddEVENT(VI1);
             stages["Village"].AddEVENT(VillageIntro);
             VillageIntro.AddEVENT(new EVENTDialogueConfirmed("We're talking.... Oh No! The king's manor is on fire!", Rhett, stages["Village"]));
-            VillageIntro.AddEVENT(new EVENTCameraDeactivate(gameManager.Camera));
+            VillageIntro.AddEVENT(new EVENTCameraDeactivate(stages["Village"]));
             VillageIntro.AddEVENT(new EVENTMoveCamera(gameManager.Camera, new Vector2(800, 2000), 1000f));
             VillageIntro.AddEVENT(new EVENTMoveActor(Rhett, new Vector2(2200, 2000), stages["Village"]));
             VillageIntro.AddEVENT(new EVENTMoveActor(Rhett, new Vector2(2200, 1000), stages["Village"]));
@@ -499,6 +499,10 @@ namespace StoneCircle
 
         public void SetStage(String Next, Vector2 startingPosition)
         {
+            SetStage(Next, startingPosition, false);
+        }
+
+        public void SetStage(String Next, Vector2 startingPosition, bool movePlayer) {
             if (openStage != null)
             {
                 openStage.RemovePlayer();
@@ -507,7 +511,15 @@ namespace StoneCircle
             }
 
             Stage nextStage = stages[Next];
-            nextStage.addPlayer(gameManager.Player, startingPosition);
+
+            if (movePlayer)
+            {
+                nextStage.addPlayer(gameManager.Player);
+            }
+            else
+            {
+                nextStage.addPlayer(gameManager.Player, startingPosition);
+            }
 
             nextStage.setCamera();
             nextStage.Load(contentManager);
@@ -581,14 +593,17 @@ namespace StoneCircle
             }
         }
 
+        internal Player GetLoadingPlayer()
+        {
+            return this.loadingPlayer;
+        }
+
         public void FinishLoad(GameManager manager)
         {
-            manager.Player = loadingPlayer;
-
             this.gameManager = manager;
             contentManager = gameManager.ContentManager;
 
-            SetStage(openStage.Id);
+            SetStage(openStage.Id, manager.Player.Position, true);
         }
 
         public List<ISaveable> GetSaveableRefs(SaveType type)

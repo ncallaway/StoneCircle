@@ -66,15 +66,6 @@ technique Pretransformed_2_0
 	}
 }
 
-technique Pretransformed
-{
-	pass Pass0
-	{   
-		VertexShader = compile vs_1_1 PretransformedVS();
-		PixelShader  = compile ps_1_1 PretransformedPS();
-	}
-}
-
 //------- Technique: Colored --------
 
 VertexToPixel ColoredVS( float4 inPos : POSITION, float4 inColor: COLOR, float3 inNormal: NORMAL)

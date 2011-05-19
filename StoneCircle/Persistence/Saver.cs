@@ -5,6 +5,8 @@ using System.Text;
 
 using System.IO;
 
+using Microsoft.Xna.Framework;
+
 namespace StoneCircle.Persistence
 {
     static class Saver
@@ -166,6 +168,37 @@ namespace StoneCircle.Persistence
             writer.Write(s != null);
             if (s != null)
                 writer.Write(s);
+        }
+
+        public static void SaveColor(Color c, BinaryWriter writer)
+        {
+            writer.Write(c.R);
+            writer.Write(c.G);
+            writer.Write(c.B);
+            writer.Write(c.A);
+        }
+
+        public static void SaveVector2(Vector2 v, BinaryWriter writer)
+        {
+            writer.Write(v.X);
+            writer.Write(v.Y);
+        }
+
+        public static void SaveVector3(Vector3 v, BinaryWriter writer)
+        {
+            writer.Write(v.X);
+            writer.Write(v.Y);
+            writer.Write(v.Z);
+        }
+
+        public static List<ISaveable> ConstructSaveableList(List<ISaveable> reference)
+        {
+            if (reference != null) {
+                return reference;
+            }
+
+            reference = new List<ISaveable>();
+            return reference;
         }
     }
 }
