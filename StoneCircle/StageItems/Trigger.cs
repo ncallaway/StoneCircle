@@ -113,10 +113,10 @@ namespace StoneCircle
     class TriggerPlayerBoxCondition : TriggerCondition
     {
 
-        protected CollisionCylinder area;
+        protected CollisionBox area;
         protected Player player;
 
-        public TriggerPlayerBoxCondition(CollisionCylinder box, Player Player)
+        public TriggerPlayerBoxCondition(CollisionBox box, Player Player)
         {
             area = box;
             player = Player;
@@ -124,7 +124,7 @@ namespace StoneCircle
 
         public override bool CheckCondition()
         {
-            return area.Intersects(player.Bounds);
+            return area.IntersectsType(player.Bounds);
         }
 
     }

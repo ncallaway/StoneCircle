@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace StoneCircle
 {
-    class Tree:Actor
+    class Tree:SetProp
     {
         Actionstate burning = new Burning();
         ActorLightSource onFire;
@@ -25,6 +25,7 @@ namespace StoneCircle
             onFire = new ActorLightSource(this, 700f);
             ImageHeight = 194;
             ImageWidth = 162;
+            
         }
 
         public Tree(uint objectId) : base(objectId) { }

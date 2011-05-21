@@ -22,6 +22,7 @@ Content\Characters\PlayerSheet.xnb
 Content\Shaders\StatusShader.xnb
 Content\Shaders\Effect1.xnb
 Content\Shaders\TerrainMapper.xnb
+Content\Shaders\LightEffects.xnb
 Content\Sound Effects\beep.xnb
 Content\Sound Effects\heartbeat.xnb
 Content\Sound Effects\misc012.xnb
@@ -30,4 +31,3 @@ Content\Sound Effects\misc065.xnb
 Content\Sound Effects\nature004.xnb
 Content\Sound Effects\nature014.xnb
 Content\Sound Effects\nature021.xnb
-Content\Shaders\LightEffects.xnb

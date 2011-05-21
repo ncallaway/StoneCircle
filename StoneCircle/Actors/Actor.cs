@@ -251,9 +251,9 @@ namespace StoneCircle
         public virtual void Draw(SpriteBatch theSpriteBatch, Vector2 camera_pos, float camera_scale, float intensity, SpriteFont font) // Draws the sprite and shadow of actor in relation to camera.
         {
                 theSpriteBatch.Draw(image_map, screenadjust + (camera_scale * (Position - camera_pos)), new Rectangle(ImageXindex * ImageWidth, ImageYindex * ImageHeight, ImageWidth, ImageHeight), new Color(intensity, intensity, intensity, 1f), 0f, origin, camera_scale, SpriteEffects.None, .2f - Location.Y / 100000f);
-                theSpriteBatch.DrawString(font, current_Action.ID + "  " + current_Action.Frame, screenadjust + (camera_scale * (Position - camera_pos) - new Vector2(ImageWidth / 2, ImageHeight + 15)), Color.White);
-                theSpriteBatch.DrawString(font, "" + Math.Atan2(Facing.Y, Facing.X), screenadjust + (camera_scale * (Position - camera_pos) - new Vector2(ImageWidth / 2, ImageHeight - 5)), Color.White);
-                theSpriteBatch.DrawString(font, "" + Location, screenadjust + (camera_scale * (Position - camera_pos) - new Vector2(ImageWidth / 2, ImageHeight - 25)), Color.White);
+                //theSpriteBatch.DrawString(font, current_Action.ID + "  " + current_Action.Frame, screenadjust + (camera_scale * (Position - camera_pos) - new Vector2(ImageWidth / 2, ImageHeight + 15)), Color.White);
+                //theSpriteBatch.DrawString(font, "" + Math.Atan2(Facing.Y, Facing.X), screenadjust + (camera_scale * (Position - camera_pos) - new Vector2(ImageWidth / 2, ImageHeight - 5)), Color.White);
+                //theSpriteBatch.DrawString(font, "" + Location, screenadjust + (camera_scale * (Position - camera_pos) - new Vector2(ImageWidth / 2, ImageHeight - 25)), Color.White);
             
 
         }
@@ -645,6 +645,14 @@ namespace StoneCircle
             defaultAction = knownActions["Standing"];
             SetAction("Standing");
 
+        }
+
+        public SetProp(GameManager gameManager)
+            : base(gameManager)
+        {
+            learnAction(new Actionstate("Standing"));
+            defaultAction = knownActions["Standing"];
+            SetAction("Standing");
         }
 
         public override void Update(GameTime t, Dictionary<string, Actor>.ValueCollection targets)

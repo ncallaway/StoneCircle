@@ -393,10 +393,10 @@ namespace StoneCircle
             foreach (Actor x in exists.Values) // This will update all the actors, it makes sure that nobody leaves or moves through anybody else.
             {
                 if (x.Active) { x.Update(t, exists.Values); }
-                if ((int)x.Location.X < x.ImageWidth / 2) x.Location.X = x.ImageWidth / 2;
-                if ((int)x.Location.X > MaxX - x.ImageWidth / 2) x.Location.X = MaxX - x.ImageWidth / 2;
-                if ((int)x.Location.Y < x.ImageHeight) x.Location.Y = x.ImageHeight;
-                if ((int)x.Location.Y > MaxY) x.Location.Y = MaxY;
+                //if ((int)x.Location.X < x.ImageWidth / 2) x.Location.X = x.ImageWidth / 2;
+                //if ((int)x.Location.X > MaxX - x.ImageWidth / 2) x.Location.X = MaxX - x.ImageWidth / 2;
+                //if ((int)x.Location.Y < x.ImageHeight) x.Location.Y = x.ImageHeight;
+                //if ((int)x.Location.Y > MaxY) x.Location.Y = MaxY;
 
 
             }

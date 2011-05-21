@@ -572,7 +572,7 @@ namespace StoneCircle
 
         public override bool Update(GameTime t)
         {
-            if (stage.player.Input.IsAButtonNewlyPressed()) { ready = true; stage.StopLine(line); }
+            if (stage.input.IsAButtonNewlyPressed()) { ready = true; stage.StopLine(line); }
             return ready;
         }
 
@@ -1210,4 +1210,38 @@ namespace StoneCircle
             stage = (Stage) objectTable[stageId];
         }
     }
+
+    class EVENTStateConditionONEVENT : EVENT
+    {
+        String stateCondition;
+        StageManager SM;
+        EVENT targetEvent;
+
+
+        public EVENTStateConditionONEVENT(String SC, EVENT Target, StageManager sm)
+        {
+            stateCondition = SC;
+            SM = sm;
+            targetEvent = Target;
+
+
+        }
+
+
+        public override void Start()
+        {
+
+            if(SM.CheckCondition(stateCondition)) targetEvent.Start();
+            else ready = true;
+        }
+
+        public override bool Update(GameTime t)
+        {
+            ready = targetEvent.Update(t);
+            return ready;
+        }
+
+    }
+
+
 }

@@ -277,6 +277,7 @@ namespace UserMenus
     {
         StageManager SM;
         UIManager UI;
+        Vector2 TargetLocation;
 
         public enum LevelState
         {
@@ -287,20 +288,22 @@ namespace UserMenus
 
         }
 
-        public ChangeLevelItem(String targetName, StageManager sM, UIManager uI, String display)
+        public ChangeLevelItem(String targetName, Vector2 targetLocation, StageManager sM, UIManager uI, String display)
         {
             id = targetName;
             SM = sM;
             UI = uI;
             this.display = display;
+            TargetLocation = targetLocation;
 
         }
 
 
         public override void execute()
-        {
-            SM.SetStage(id);
+        {   
             UI.CloseMenu();
+            SM.SetStage(id,TargetLocation);
+          
         }
     }
 

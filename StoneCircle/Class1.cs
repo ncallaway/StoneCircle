@@ -189,6 +189,132 @@ namespace StoneCircle
 
         }
     }
+
+
+    class CollisionBox: CollisionStructure
+    {   
+        float depth;
+        float width;
+
+        public CollisionBox(Vector3 location, float radius, float height, float width)
+        {
+
+            this.location = location;
+            depth = radius;
+            this.height = height;
+            this.width = width;
+        }
+
+
+        public bool IntersectsType(CollisionCylinder target)
+        {
+            if(target.Location.X < location.X - width/2)
+            {
+
+                if(target.Location.Y < location.Y - depth/2)
+                {
+                    Vector3 difference = location - target.Location + new Vector3(-width/2, - depth/2, 0);
+                     float distance = difference.X * difference.X + difference.Y * difference.Y;
+                    return distance < target.Radius * target.Radius;
+            
+                }
+
+                else if ( target.Location.Y > location.Y + depth / 2){
+
+                    Vector3 difference = location - target.Location + new Vector3(-width/2, + depth/2, 0);
+                     float distance = difference.X * difference.X + difference.Y * difference.Y;
+                    return distance < target.Radius * target.Radius;
+
+
+                }
+
+                else return (target.Location.X > location.X - width/2 - target.Radius);
+
+            }
+            else if(target.Location.X > location.X + width/2)
+            {
+                 if(target.Location.Y < location.Y - depth/2)
+                {
+                    Vector3 difference = location - target.Location + new Vector3(-width/2, - depth/2, 0);
+                     float distance = difference.X * difference.X + difference.Y * difference.Y;
+                    return distance < target.Radius * target.Radius;
+            
+                }
+
+                else if ( target.Location.Y > location.Y + depth / 2){
+
+                    Vector3 difference = location - target.Location + new Vector3(-width/2, + depth/2, 0);
+                    float distance = difference.X * difference.X + difference.Y * difference.Y;
+                    return distance < target.Radius * target.Radius;
+
+
+                }
+
+                else return (target.Location.X < location.X + width/2 + target.Radius);
+                
+            }
+            else return (target.Location.Y < location.Y + depth/2 + target.Radius || target.Location.Y > Location.Y - depth/2 - target.Radius);
+
+                
+           
+
+        }
+
+        
+        public Vector3 Intersection(CollisionCylinder target)
+        {
+            if (target.Location.X < location.X - width / 2)
+            {
+
+                if (target.Location.Y < location.Y - depth / 2)
+                {
+                    Vector3 difference = location - target.Location + new Vector3(-width / 2, -depth / 2, 0);
+                    float distance = difference.X * difference.X + difference.Y * difference.Y;
+                    return difference;
+
+                }
+
+                else if (target.Location.Y > location.Y + depth / 2)
+                {
+
+                    Vector3 difference = location - target.Location + new Vector3(-width / 2, +depth / 2, 0);
+                    float distance = difference.X * difference.X + difference.Y * difference.Y;
+                    return difference;
+
+
+                }
+
+                else return (target.Location.X - location.X - width / 2 - target.Radius) * Vector3.UnitY;
+
+            }
+            else if (target.Location.X > location.X + width / 2)
+            {
+                if (target.Location.Y < location.Y - depth / 2)
+                {
+                    Vector3 difference = location - target.Location + new Vector3(-width / 2, -depth / 2, 0);
+                    float distance = difference.X * difference.X + difference.Y * difference.Y;
+                    return difference;
+
+                }
+
+                else if (target.Location.Y > location.Y + depth / 2)
+                {
+
+                    Vector3 difference = location - target.Location + new Vector3(-width / 2, +depth / 2, 0);
+                    float distance = difference.X * difference.X + difference.Y * difference.Y;
+                    return difference;
+
+
+                }
+
+                else return (target.Location.X - location.X - width / 2 - target.Radius) * Vector3.UnitY;
+
+            }
+            else return (target.Location.Y - location.Y + depth / 2 + target.Radius) * Vector3.UnitX;
+
+
+        }
+    }
 }
 
 
