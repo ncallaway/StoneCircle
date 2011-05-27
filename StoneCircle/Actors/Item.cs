@@ -95,7 +95,7 @@ namespace StoneCircle
         public Lantern(Actor Owner)
         {
             owner = Owner;
-            light = new ActorLightSource(Owner, 1000f);
+            light = new ActorLightSource(Owner, 700f);
             properties.Add("Fire");
             properties.Add("Light");
             name = "Lantern";

@@ -86,6 +86,7 @@ namespace StoneCircle
         
 
         Texture2D DeathScreen;
+        Texture2D LightMap;
 
         public Stage()
         {
@@ -172,7 +173,7 @@ namespace StoneCircle
 
                 player.loadImage(CM);
                 TerrainMapper = CM.Load<Effect>("Shaders/TerrainMapper");
-                lightSourceShader = CM.Load<Effect>("Shaders/LightEffects");
+                lightSourceShader = CM.Load<Effect>("Shaders/Effect1");
                 statusShader = CM.Load<Effect>("Shaders/StatusShader");
                 AM.Load(CM);
                 foreach (Actor x in exists.Values) x.loadImage(CM);
@@ -180,6 +181,7 @@ namespace StoneCircle
                 foreach (Lines D in openConversations) D.Load(CM);
                 openConversations.Clear();
                 DeathScreen = CM.Load<Texture2D>("RedScreenOfDeath");
+                LightMap = CM.Load<Texture2D>("LightMapBase");
                 regions = new Texture2D[regionsWide, regionsHigh];
                 for (int i = 0; i < regionsWide; i++)
                 {
@@ -282,7 +284,7 @@ namespace StoneCircle
         }
 
         public Actor GetActor(String actor)
-        {
+        {   
             return exists[actor];
         }
 
@@ -297,7 +299,7 @@ namespace StoneCircle
             frame ++;
 
 
-            device.SetRenderTarget(null);
+            device.SetRenderTarget(heightMap);
             device.Textures[1] = terrainPallette;
             theSpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.Opaque, null, null, null, TerrainMapper);
             
@@ -318,7 +320,7 @@ namespace StoneCircle
 
              
             Vector2 drawable = y.Position - camera.Location;
-            if (Math.Abs(drawable.X) < 1.5 * camera.screenadjust.X && Math.Abs(drawable.Y) < 1.5 * camera.screenadjust.Y)
+            if (Math.Abs(drawable.X) < 1.2 * camera.screenadjust.X && Math.Abs(drawable.Y) < 1.5 * camera.screenadjust.Y)
             {
                 y.Draw(theSpriteBatch, camera.Location, camera.Scale, 1f, font);
                 foreach (LightSource x in lights)
@@ -334,9 +336,13 @@ namespace StoneCircle
             theSpriteBatch.End();
             device.SetRenderTarget(null);
 
-           // lightSourceShader.Parameters["xTexture"].SetValue(heightMap);
-           // lightSourceShader.CurrentTechnique = lightSourceShader.Techniques["Textured_2_0"];            
-            //device.DrawUserPrimitives<VertexPositionTexture>(PrimitiveType.TriangleList, ScreenVertices, 0, 1);
+            
+
+            device.Textures[2] = LightMap;
+
+            theSpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque, null, null, null, lightSourceShader);
+            theSpriteBatch.Draw(heightMap, Vector2.Zero, Color.White);
+            theSpriteBatch.End();
 
             theSpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, statusShader);
             theSpriteBatch.Draw(DeathScreen, Vector2.Zero, Color.White);
@@ -346,7 +352,7 @@ namespace StoneCircle
             theSpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullCounterClockwise, null);
             foreach (Lines D in openConversations) D.Draw(theSpriteBatch, camera.Location, camera.Scale);
 
-            theSpriteBatch.DrawString(font, "" + frame, 200 * Vector2.One, Color.White);
+            theSpriteBatch.DrawString(font, "" + player.Location, 200 * Vector2.One, Color.White);
 
             theSpriteBatch.DrawString(font, "" + time, 200 * Vector2.One + 10 * Vector2.UnitY, Color.White);
             theSpriteBatch.End();
@@ -363,7 +369,7 @@ namespace StoneCircle
             {
                 l.Update(t);
                 Vector2 temp = camera.screenadjust + camera.Scale * (l.Location - camera.Location);
-                temp.X /= 1366; temp.Y /= 768;
+                temp.X /= 1366; temp.Y /= 768 * 2;
                 LPosition[lights.IndexOf(l)] = temp;
                 Radius[lights.IndexOf(l)] = l.Radius * camera.Scale;
             }
@@ -372,15 +378,14 @@ namespace StoneCircle
             statusShader.Parameters["health"].SetValue(player.CurrentLife / player.TotalLife * .707f);
             statusShader.Parameters["fatigue"].SetValue(player.CurrentFatigue / player.TotalFatigue * .707f);
            
-            //lightSourceShader.Parameters["Position"].SetValue(LPosition);
-            //lightSourceShader.Parameters["index"].SetValue(lights.Count);
-            //lightSourceShader.Parameters["player"].SetValue(tempPlayer);
-            //lightSourceShader.Parameters["Radius"].SetValue(Radius);
-            //lightSourceShader.Parameters["AMBColor"].SetValue(AMBColor);
-            //lightSourceShader.Parameters["AMBStrength"].SetValue(AMBStrength);
-            //lightSourceShader.Parameters["GLOColor"].SetValue(new Vector3(1f, .6f, -.1f));
-            //lightSourceShader.Parameters["fatigue"].SetValue(player.CurrentFatigue / player.TotalFatigue * .707f);
-
+            lightSourceShader.Parameters["Position"].SetValue(LPosition);
+            lightSourceShader.Parameters["index"].SetValue(lights.Count);
+             lightSourceShader.Parameters["Radius"].SetValue(Radius);
+            lightSourceShader.Parameters["AMBColor"].SetValue(AMBColor);
+            
+            lightSourceShader.Parameters["AMBStrength"].SetValue(AMBStrength);
+            lightSourceShader.Parameters["GLOColor"].SetValue(new Vector3(1f, .6f, -.1f));
+          
           
 
             input.Update();

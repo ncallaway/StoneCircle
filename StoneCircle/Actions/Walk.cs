@@ -101,7 +101,7 @@ namespace StoneCircle
       
             }
 
-            Actor.UpdateFacing(Vector2.UnitY);
+            Actor.UpdateFacing(Actor.Facing);
             Vector3 update = (float)t.ElapsedGameTime.TotalSeconds * Actor.Speed *  new Vector3(Actor.Facing, 0);
             CollisionCylinder CheckBox = Actor.GetBounds(update);
 

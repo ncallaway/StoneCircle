@@ -21,7 +21,7 @@ namespace StoneCircle
         protected Color color;
         public Vector3 LightColor {get{return color.ToVector3();}}
         public float Radius { get { return radius/1366; } }
-        public Vector2 Location { get { return new Vector2(location.X, location.Y); } }
+        public Vector2 Location { get { return new Vector2(location.X, location.Y/2); } }
         
         Effect light;
         private Stage parent;

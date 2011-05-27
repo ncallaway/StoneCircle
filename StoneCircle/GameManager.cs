@@ -68,8 +68,8 @@ namespace StoneCircle
 
         public void LoadContent()
         {
+            stageManager.LoadContent(contentManager);
             UIManager.Load(ContentManager);
-           // StageManager.SetStage("Court");
             UIManager.OpenMenu(UIManager.MainMenu);
         }
 
@@ -133,7 +133,7 @@ namespace StoneCircle
                 }
             }
 
-            if (Player.Input.IsLeftBumperNewlyPressed())
+            if (Player.Input.IsLeftBumperNewlyPressed()&& false)
             {
 #if XBOX
                 /* Request the container */
@@ -147,7 +147,7 @@ namespace StoneCircle
                 
             }
 
-            if (Player.Input.IsRightBumperNewlyPressed())
+            if (Player.Input.IsRightBumperNewlyPressed() &&  false)
             {
 #if XBOX
                 loadRequested = true;

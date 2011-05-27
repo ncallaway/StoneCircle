@@ -47,11 +47,11 @@ namespace StoneCircle
 
 
             Vector3 update = new Vector3(30 * Actor.Facing, 0);
-            CollisionCylinder CheckBox = Actor.GetBounds(update);
+            CollisionCylinder CheckBox = new CollisionCylinder(Actor.Location + update, 50f, 50f); 
 
                 foreach (Actor y in targets)
                 {
-                    if ((CheckBox.Intersects(y.Bounds) && !Actor.Equals(y))) //Collision Detection. Ideally reduces movement to outside collision bounds.
+                    if ((CheckBox.IntersectsType(y.Bounds) && !Actor.Equals(y))) //Collision Detection. Ideally reduces movement to outside collision bounds.
                     {
                         y.Interacting = true;
                        

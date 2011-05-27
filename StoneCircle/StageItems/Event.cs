@@ -102,7 +102,7 @@ namespace StoneCircle
         public override bool Update(GameTime t)
         {
             bool Ready = true;
-            foreach (EVENT E in EVENTs) if (!E.Ready) { E.Update(t); Ready = (Ready && E.Ready); }
+            foreach (EVENT E in EVENTs) if (!E.Ready) { E.Update(t);  Ready = (Ready && E.Ready); }
             return Ready;
         }
 
@@ -132,7 +132,8 @@ namespace StoneCircle
         }
 
         public override bool Update(GameTime t)
-        {
+        {   
+
             if (currentEVENT.Update(t))
             {
                 index++;
@@ -150,6 +151,7 @@ namespace StoneCircle
         public override void End()
         {
             foreach (EVENT E in EVENTs) E.End();
+            
         }
 
     }
@@ -285,7 +287,13 @@ namespace StoneCircle
         public override void Start()
         {
             player.Active = false;
+            //ready = true;
+        }
+
+        public override bool Update(GameTime t)
+        {
             ready = true;
+            return ready;
         }
 
     }
@@ -303,10 +311,14 @@ namespace StoneCircle
         public override void Start()
         {
             player.Active = true;
-            ready = true;
+           // ready = true;
         }
 
-
+        public override bool Update(GameTime t)
+        {
+            ready = true;
+            return ready;
+        }
 
     }
 
@@ -684,7 +696,8 @@ namespace StoneCircle
 
         public override void Start()
         {
-            actor.Facing = destination - actor.Position;
+            Vector2 test = new Vector2(destination.X - actor.Position.X, destination.Y - actor.Position.Y / 2);
+            actor.Facing = test;
             actor.Facing /= actor.Facing.Length();
 
             actor.SetAction("Walking");
@@ -743,6 +756,142 @@ namespace StoneCircle
 
     }
 
+    class EVENTWarpActor : EVENT
+    {
+        Actor actor;
+        Vector3 destination;
+        Stage Stage;
+
+        public EVENTWarpActor(Actor Actor, Vector3 Destination, Stage stage)
+        {
+            destination = Destination;
+            actor = Actor;
+            ready = false;
+            Stage = stage;
+        }
+
+        public EVENTWarpActor(uint objectId) : base(objectId) { }
+
+        public override void Start()
+        {
+            actor.Location = destination;
+            ready = true;
+
+        }
+
+        public override bool Update(GameTime t)
+        {
+            return ready;
+        }
+
+        public override void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        {
+            base.Save(writer, type, objectTable);
+            writer.Write(objectTable[actor]);
+            writer.Write(destination.X); writer.Write(destination.Y);
+            writer.Write(objectTable[Stage]);
+        }
+
+        public override List<ISaveable> GetSaveableRefs(SaveType type)
+        {
+            List<ISaveable> parentRef = Saver.ConstructSaveableList(base.GetSaveableRefs(type));
+            parentRef.Add(actor);
+            parentRef.Add(Stage);
+            return parentRef;
+        }
+
+        private DialogInflatables inflatables;
+        public override void Load(BinaryReader reader, SaveType type)
+        {
+            base.Load(reader, type);
+            inflatables = new DialogInflatables();
+            inflatables.actorId = reader.ReadUInt32();
+            destination = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+            inflatables.stageId = reader.ReadUInt32();
+        }
+
+        public override void Inflate(Dictionary<uint, ISaveable> objectTable)
+        {
+            base.Inflate(objectTable);
+            actor = (Actor)objectTable[inflatables.actorId];
+            Stage = (Stage)objectTable[inflatables.stageId];
+        }
+
+        private class DialogInflatables
+        {
+            public uint actorId;
+            public uint stageId;
+        }
+    }
+
+    class EVENTPartialWarpActor : EVENT
+    {
+        Actor actor;
+        Vector3 destination;
+        Stage Stage;
+
+        public EVENTPartialWarpActor(Actor Actor, Vector3 Destination, Stage stage)
+        {
+            destination = Destination;
+            actor = Actor;
+            ready = false;
+            Stage = stage;
+        }
+
+        public EVENTPartialWarpActor(uint objectId) : base(objectId) { }
+
+        public override void Start()
+        {
+            actor.Location += destination;
+            ready = true;
+
+        }
+
+        public override bool Update(GameTime t)
+        {
+            return ready;
+        }
+
+        public override void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        {
+            base.Save(writer, type, objectTable);
+            writer.Write(objectTable[actor]);
+            writer.Write(destination.X); writer.Write(destination.Y);
+            writer.Write(objectTable[Stage]);
+        }
+
+        public override List<ISaveable> GetSaveableRefs(SaveType type)
+        {
+            List<ISaveable> parentRef = Saver.ConstructSaveableList(base.GetSaveableRefs(type));
+            parentRef.Add(actor);
+            parentRef.Add(Stage);
+            return parentRef;
+        }
+
+        private DialogInflatables inflatables;
+        public override void Load(BinaryReader reader, SaveType type)
+        {
+            base.Load(reader, type);
+            inflatables = new DialogInflatables();
+            inflatables.actorId = reader.ReadUInt32();
+            destination = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+            inflatables.stageId = reader.ReadUInt32();
+        }
+
+        public override void Inflate(Dictionary<uint, ISaveable> objectTable)
+        {
+            base.Inflate(objectTable);
+            actor = (Actor)objectTable[inflatables.actorId];
+            Stage = (Stage)objectTable[inflatables.stageId];
+        }
+
+        private class DialogInflatables
+        {
+            public uint actorId;
+            public uint stageId;
+        }
+    }
+
     class EVENTStageChange : EVENT
     {
         StageManager SM;
@@ -787,21 +936,21 @@ namespace StoneCircle
 
     class EVENTSetCameraLocation : EVENT
     {
-        Camera camera;
+        Stage cameraContainer;
         Vector2 location;
 
         public EVENTSetCameraLocation(uint objectId) : base(objectId) { }
 
-        public EVENTSetCameraLocation(Camera Camera, Vector2 spot)
+        public EVENTSetCameraLocation(Stage CameraContainer, Vector2 spot)
         {
-            camera = Camera;
+            cameraContainer = CameraContainer;
             location = spot;
 
         }
 
         public override void Start()
         {
-            camera.Location = location;
+            cameraContainer.camera.Location = location;
             ready = true;
         }
     }
@@ -916,7 +1065,7 @@ namespace StoneCircle
 
     class EVENTMoveCamera : EVENT
     {
-        Camera camera;
+        Stage cameraContainer;
         Vector2 destination;
         Vector2 direction;
         float time;
@@ -924,20 +1073,20 @@ namespace StoneCircle
 
         public EVENTMoveCamera(uint objectId) : base(objectId) { }
 
-        public EVENTMoveCamera(Camera Camera, Vector2 Destination, float Time)
+        public EVENTMoveCamera(Stage CameraContainer, Vector2 Destination, float Time)
         {
-            camera = Camera;
+            cameraContainer = CameraContainer;
             destination = Destination;
             time = Time;
             etime = 0;
         }
 
-        public override void Start() { camera.Active = false; direction = destination - camera.Location; }
+        public override void Start() { cameraContainer.camera.Active = false; direction = destination - cameraContainer.camera.Location; }
 
         public override bool Update(GameTime t)
         {
             etime += t.ElapsedGameTime.Milliseconds;
-            camera.Pan(direction * (t.ElapsedGameTime.Milliseconds / time));
+            cameraContainer.camera.Pan(direction * (t.ElapsedGameTime.Milliseconds / time));
             ready = (etime >= time);
             return ready;
         }
@@ -1038,6 +1187,43 @@ namespace StoneCircle
 
     }
 
+    class EVENTActorEnterStage : EVENT
+    {
+
+        Stage stage;
+        String target;
+        StageManager SM;
+        Vector2 destination;
+
+
+
+        public EVENTActorEnterStage(Stage Stage, String Target, StageManager SM, Vector2 destination)
+        {
+            this.SM = SM;
+            stage = Stage;
+            target = Target;
+            this.destination = destination;
+
+        }
+
+        public EVENTActorEnterStage(uint objectId) : base(objectId) { }
+
+        public override void Start()
+        {
+            stage.AddActor(SM.MainCharacters[target], destination );
+            ready = true;
+        }
+
+        public override bool Update(GameTime t)
+        {
+            ready = true;
+            return ready;
+        }
+
+
+
+    }
+
     class EVENTActorAddItem : EVENT
     {
         Actor actor;
@@ -1105,6 +1291,30 @@ namespace StoneCircle
 
     }
 
+    class EVENTActorRemoveProperty : EVENT
+    {
+
+        Actor actor;
+        String property;
+
+        public EVENTActorRemoveProperty(Actor actor, String property)
+        {
+            this.actor = actor;
+            this.property = property;
+        }
+
+        public EVENTActorRemoveProperty(uint objectId) : base(objectId) { }
+
+        public override void Start()
+        {
+            actor.RemoveProperty(property);
+            ready = true;
+        }
+
+
+
+    }
+
     class EVENTOpenMenu : EVENT
     {
         UserMenus.Menu target;
@@ -1121,8 +1331,8 @@ namespace StoneCircle
 
         public override void Start()
         {
-            UIM.OpenMenu(target);
             ready = true;
+            UIM.OpenMenu(target);
         }
 
         public override void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
@@ -1243,5 +1453,39 @@ namespace StoneCircle
 
     }
 
+    class EVENTActorEquipItem : EVENT
+    {
+         Stage stage;
+        String target;
+        StageManager SM;
+        Item item;
+
+
+
+        public EVENTActorEquipItem(Stage Stage, String Target, StageManager SM, Item next)
+        {
+            this.SM = SM;
+            stage = Stage;
+            target = Target;
+            item = next;
+
+        }
+
+        public EVENTActorEquipItem(uint objectId) : base(objectId) { }
+
+        public override void Start()
+        {
+            Actor Target = stage.GetActor(target);
+            if (Target == null) Target = SM.MainCharacters[target];
+            if (Target.CurrentItem != null) Target.CurrentItem.OnUnequipItem();
+            Target.CurrentItem = item;
+            if (Target.CurrentItem != null) Target.CurrentItem.OnEquipItem();
+            ready = true;
+        }
+
+
+
+
+    }
 
 }

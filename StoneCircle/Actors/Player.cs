@@ -30,8 +30,6 @@ namespace StoneCircle
             speed = 125;
             this.Input = Input;
             learnAction(new Interact());
-         //   defaultAction = knownActions["Standing"];
-           // SetAction("Standing");
             Location = new Vector3(starting.X, starting.Y, 0);
             name = Id;
             inventoryMenu = new Inventory(this, gameManager);
@@ -69,7 +67,6 @@ namespace StoneCircle
 
         public override String ChooseAction(GameTime t, Dictionary<String, Actor>.ValueCollection targets)
         {
-            Input.Update();
             if (Input.IsRightTriggerHeld())
             {
                 if (Input.IsAButtonNewlyPressed() && current_Action.AvailableHigh.AButton != null) return current_Action.AvailableHigh.AButton;

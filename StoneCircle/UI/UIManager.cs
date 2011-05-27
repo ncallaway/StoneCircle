@@ -52,7 +52,8 @@ namespace UserMenus
         {
             font = CM.Load<SpriteFont>("Fonts/Text");
             mainMenu = new Menu(gameManager, "Wallpaper", "Text", "Main Menu");
-            mainMenu.AddMenuItem(new ChangeLevelItem("Village", 500 * Vector2.One,  gameManager.StageManager, this, "New Game"));
+            mainMenu.AddMenuItem(new ChangeLevelItem("Cairn of Dead Kings", new Vector2(2700, 5800),  gameManager.StageManager, this, "OT"));
+            mainMenu.AddMenuItem(new ChangeLevelItem("Village", new Vector2(900, 900) , gameManager.StageManager, this, "Village"));
 
             pauseMenu1 = new RingMenu(gameManager);
             pauseMenu1.AddMenuItem(new ChangeLevelItem("region1", 500 * Vector2.One, gameManager.StageManager, this, "Region 1"));

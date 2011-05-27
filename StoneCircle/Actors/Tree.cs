@@ -25,7 +25,30 @@ namespace StoneCircle
             onFire = new ActorLightSource(this, 700f);
             ImageHeight = 194;
             ImageWidth = 162;
+            radius = 40;
+            height = 300f;
             
+        }
+
+        public Tree(GameManager gameManager, Vector2 starting)
+            : base(gameManager)
+        {
+            name = "Tree";
+            asset_Name = "tree3";
+            Location = new Vector3(starting, 0);
+            
+            onFire = new ActorLightSource(this, 700f);
+            ImageHeight = 194;
+            ImageWidth = 162;
+            radius = 40;
+            height = 300f;
+            
+        }
+
+        public override void loadImage(ContentManager theContentManager)
+        {
+            base.loadImage(theContentManager);
+            origin = new Vector2(81, 164);
         }
 
         public Tree(uint objectId) : base(objectId) { }
@@ -58,6 +81,32 @@ namespace StoneCircle
 
             }
         }
+
+    }
+
+    class Shack : SetProp
+    {
+
+         public Shack(GameManager gameManager, Vector2 starting)
+            : base(gameManager)
+        {
+            name = "Shack";
+            asset_Name = "Shack";
+            Location = new Vector3(starting, 0);
+            
+            ImageHeight = 194;
+            ImageWidth = 162;
+            radius = 125;
+            height = 100f;
+            
+        }
+
+     public override void loadImage(ContentManager theContentManager)
+        {
+            base.loadImage(theContentManager);
+            origin = new Vector2(150, 200);
+        }
+
 
     }
 }

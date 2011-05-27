@@ -243,8 +243,8 @@ namespace StoneCircle
         {
             newFacing.Normalize();
             facing = newFacing;
-            if (Math.Abs(facing.X) > Math.Abs(facing.Y)) { if (facing.X > 0) ImageYindex = 0; else ImageYindex = 1; }
-            else { if (facing.Y > 0) ImageYindex = 2; else ImageYindex = 3; }
+            // if (Math.Abs(facing.X) > Math.Abs(facing.Y)) { if (facing.X > 0) ImageYindex = 0; else ImageYindex = 1; }
+           // else { if (facing.Y > 0) ImageYindex = 2; else ImageYindex = 3; }
         }
 
 
@@ -297,7 +297,7 @@ namespace StoneCircle
         {
             updateVector = Vector3.Zero;
             if (Location.Z < 0) { Location.Z = 0; pGravity = 0; }
-            if (Location.Z > 0) {pGravity += 1;
+            if (Location.Z > 0) {pGravity += 2;
                 updateVector += pGravity * -2 * Vector3.UnitZ;
             }
             Interacting = false;

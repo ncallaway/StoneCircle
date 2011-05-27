@@ -76,8 +76,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Levels\Cairn_0_0IMG.jpg">
-      <Name>Cairn_0_0IMG</Name>
+    <Compile Include="Levels\Cairn of Dead Kings_0_0IMG.jpg">
+      <Name>Cairn of Dead Kings_0_0IMG</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -249,6 +249,51 @@
   <ItemGroup>
     <Compile Include="Shaders\LightEffects.fx">
       <Name>LightEffects</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Levels\MainHouse_0_0IMG.png">
+      <Name>MainHouse_0_0IMG</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Set Props\Altar.png">
+      <Name>Altar</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Set Props\Manholecoverthing.png">
+      <Name>Manholecoverthing</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Set Props\StoneGateway.png">
+      <Name>StoneGateway</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Levels\Magic Forest_0_0IMG.jpg">
+      <Name>Magic Forest_0_0IMG</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="LightMapBase.jpg">
+      <Name>LightMapBase</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Shaders\Blender.fx">
+      <Name>Blender</Name>
       <Importer>EffectImporter</Importer>
       <Processor>EffectProcessor</Processor>
     </Compile>

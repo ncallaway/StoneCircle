@@ -4,11 +4,10 @@ sampler ScreenS = sampler_state
 {
 	Texture = <ScreenTexture>;	
 };
-float health;
-float fatigue;
+
+
 int index;
 float2 Position[2];
-float2 player;
 float Radius[2];
 float3 AMBColor;
 float AMBStrength;
@@ -35,15 +34,19 @@ float4 LightSource(float2 texCoord: TEXCOORD0) : COLOR0
 	
 	//color/=8;
 	
-	//color.rgb -= AMBStrength * AMBColor;
+	color.rgb -= AMBStrength * AMBColor;
 	
 	
 	for (int i =0; i<index; i++){
+	//float2 diff = Position[i] - texCoord;
+	//diff.y *= 2;
 	float dist = distance(Position[i], texCoord);
-	if ( dist < Radius[i])  color.rgb += (Radius[i]-dist) * 1.5 * GLOColor;
+	//float dist = distance(float2(0,0), diff);
+	
+	if ( dist < Radius[i])  color.rgb += (Radius[i]-dist) * 1.5 * float3(1.0f,1.0f,1.0f);
 	}
 	
-	float dist2 = distance(float2(.5, .5), texCoord);
+	//float dist2 = distance(float2(.5, .5), texCoord);
 	//if(dist2>health) color.rgb += (dist2-health) * (9 -((dist2 > (1-health/2))*3)) *float3(.3f,-.2f,-.2f);
 	//if(dist2>fatigue) color.rgb -= ((dist2-fatigue))*2*float3(1.0f, 1.0f, 1.0f);
 	

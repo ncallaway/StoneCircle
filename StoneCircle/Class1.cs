@@ -231,6 +231,10 @@ namespace StoneCircle
                 else return (target.Location.X > location.X - width/2 - target.Radius);
 
             }
+
+
+
+
             else if(target.Location.X > location.X + width/2)
             {
                  if(target.Location.Y < location.Y - depth/2)
@@ -249,11 +253,14 @@ namespace StoneCircle
 
 
                 }
-
                 else return (target.Location.X < location.X + width/2 + target.Radius);
                 
             }
-            else return (target.Location.Y < location.Y + depth/2 + target.Radius || target.Location.Y > Location.Y - depth/2 - target.Radius);
+
+
+
+
+            else return ((target.Location.Y < location.Y + depth / 2 + target.Radius && target.Location.Y > Location.Y) || (target.Location.Y < location.Y && target.Location.Y > Location.Y - depth / 2 - target.Radius));
 
                 
            
