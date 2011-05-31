@@ -26,7 +26,7 @@ namespace StoneCircle
         public Player(String Id, String asset_name, Vector2 starting, GameManager gameManager, InputController Input)
             : base(gameManager)
         {
-            asset_Name = "Eimar Character Sheet - Full";
+            asset_Name = "EimarSheet";
             speed = 125;
             this.Input = Input;
             learnAction(new Interact());

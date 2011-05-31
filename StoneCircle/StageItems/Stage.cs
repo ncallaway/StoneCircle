@@ -154,6 +154,13 @@ namespace StoneCircle
             CreateScreenRenderObject();
         }
 
+        public void adjustRegionCounts(int x, int y)
+        {
+            regionsWide = x;
+            regionsHigh = y;
+
+        }
+
         public void Initialize()
         {
             foreach (Actor A in exists.Values) A.Initialize();

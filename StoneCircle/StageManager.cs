@@ -68,7 +68,7 @@ namespace StoneCircle
 
 
 
-            Character Rhett = new Character("Rhett", "male_select", new Vector2(800, 800), gameManager);
+            Character Rhett = new Character("Rhett", "RhettSheet", new Vector2(800, 800), gameManager);
             mainCharacters.Add("Rhett", Rhett);
 
 
@@ -148,9 +148,9 @@ namespace StoneCircle
 
 
             SerialEVENTGroup VillageIntro = new SerialEVENTGroup("Introduction");
-            Character VillagerA = new Character("VillagerA", "Actor2", new Vector2(800, 950), gameManager);
-            Character villagerB = new Character("villagerB", "Actor2", new Vector2(1100, 1000), gameManager);
-            Character Aide = new Character("Aide", "Actor2", new Vector2(800, 300), gameManager);
+            Character VillagerA = new Character("VillagerA", "VillagerM", new Vector2(800, 950), gameManager);
+            Character villagerB = new Character("villagerB", "VillagerM", new Vector2(1100, 1000), gameManager);
+            Character Aide = new Character("Aide", "VillagerM", new Vector2(800, 300), gameManager);
             Village.AddActor(Rhett, new Vector2(970, 1300));
             Village.AddActor(Aide, new Vector2(870, 777));
 
@@ -218,14 +218,14 @@ namespace StoneCircle
             Village.AddEVENT("HurryUp", new EVENTDialogueTimed("I can't believe you're actually listening to this case.", Rhett, stages["Village"], 5000f));
 
 
-            Character positiveVilalger = new Character("PositiveVillager", "Actor2", new Vector2(800, 950), gameManager);
+            Character positiveVilalger = new Character("PositiveVillager", "VillagerM", new Vector2(800, 950), gameManager);
             Village.AddActor(positiveVilalger, new Vector2(1600, 550));
             SerialEVENTGroup PositiveVillager = new SerialEVENTGroup("PositiveVillager");
             Village.AddTrigger(new Trigger("PositiveVillager", new TriggerANDCondition(new TriggerNOTCondition(new TriggerStateCondition(this, "VerdictDecided")), new TriggerPlayerInteracting(stages["Village"].GetActor("PositiveVillager"))), true, false));
             PositiveVillager.AddEVENT(new EVENTDialogueTimed("Villager A should have been watch'n over 'is mare better.", positiveVilalger, Village));
             Village.AddEVENT(PositiveVillager);
 
-            Character Lumpy = new Character("LumpyD", "Actor2", new Vector2(800, 950), gameManager);
+            Character Lumpy = new Character("LumpyD", "VillagerM", new Vector2(800, 950), gameManager);
             Village.AddActor(Lumpy, new Vector2(630, 1550));
             SerialEVENTGroup LumpyD = new SerialEVENTGroup("LumpyD");
             Village.AddTrigger(new Trigger("LumpyD", new TriggerANDCondition(new TriggerNOTCondition(new TriggerStateCondition(this, "VerdictDecided")), new TriggerPlayerInteracting(stages["Village"].GetActor("LumpyD"))), true, false));
@@ -466,7 +466,7 @@ namespace StoneCircle
             KD1A.AddEVENT(new EVENTChangeAmbient(stages["MainHouse"], new Vector3(1.0f, 1.0f, 1.0f), 0, 10000f));
 
             PD1.AddEVENT(KD1A);
-            Character Elysia = new Character("Elysia", "male_select", new Vector2(2000, 3000), gameManager);
+            Character Elysia = new Character("Elysia", "ElysiaSheet", new Vector2(2000, 3000), gameManager);
             stages["MainHouse"].AddActor(Elysia, new Vector2(3500, 2000));
             PD1.AddEVENT(new EVENTMoveActor(Elysia, new Vector2(2300, 2200), stages["MainHouse"]));
             SerialEVENTGroup KD2A = new SerialEVENTGroup("KD2A");
@@ -525,7 +525,7 @@ namespace StoneCircle
             // at Sunset his spirit leaves his body and passes through the gate into the afterlife, joining the ancestors.
             stages.Add("Cairn of Dead Kings", new Stage("Cairn of Dead Kings", this));
 
-            stages["Cairn of Dead Kings"].AddActor(new Character("KingOfOld1", "Actor2", new Vector2(500, 500), gameManager), new Vector2(500, 500));
+            stages["Cairn of Dead Kings"].AddActor(new Character("KingOfOld1", "VillagerM", new Vector2(500, 500), gameManager), new Vector2(500, 500));
             SerialEVENTGroup King1Dialogue = new SerialEVENTGroup("King1Dialogue");
             //  King1Dialogue.AddEVENT(new EVENTPlayerDeactivate(gameManager.Player));
             King1Dialogue.AddEVENT(new EVENTDialogueConfirmed("You are the manifestation of the people's will. You live for their benefit.", stages["Cairn of Dead Kings"].GetActor("KingOfOld1"), stages["Cairn of Dead Kings"]));
@@ -533,7 +533,7 @@ namespace StoneCircle
             stages["Cairn of Dead Kings"].AddEVENT(King1Dialogue);
             stages["Cairn of Dead Kings"].AddTrigger(new Trigger("King1Dialogue", new TriggerPlayerInteracting(stages["Cairn of Dead Kings"].GetActor("KingOfOld1")), true, false));
 
-            stages["Cairn of Dead Kings"].AddActor(new Character("KingOfOld2", "Actor2", new Vector2(500, 500), gameManager), new Vector2(400, 600));
+            stages["Cairn of Dead Kings"].AddActor(new Character("KingOfOld2", "VillagerM", new Vector2(500, 500), gameManager), new Vector2(400, 600));
             SerialEVENTGroup King2Dialogue = new SerialEVENTGroup("King2Dialogue");
             //  King2Dialogue.AddEVENT(new EVENTPlayerDeactivate(gameManager.Player));
             King2Dialogue.AddEVENT(new EVENTDialogueConfirmed("You are the manifestation of the people's will. You live for their benefit.", stages["Cairn of Dead Kings"].GetActor("KingOfOld2"), stages["Cairn of Dead Kings"]));
@@ -542,7 +542,7 @@ namespace StoneCircle
             stages["Cairn of Dead Kings"].AddTrigger(new Trigger("King2Dialogue", new TriggerPlayerInteracting(stages["Cairn of Dead Kings"].GetActor("KingOfOld2")), true, false));
 
 
-            stages["Cairn of Dead Kings"].AddActor(new Character("KingOfOld3", "Actor2", new Vector2(2500, 500), gameManager), new Vector2(350, 800));
+            stages["Cairn of Dead Kings"].AddActor(new Character("KingOfOld3", "VillagerM", new Vector2(2500, 500), gameManager), new Vector2(350, 800));
             SerialEVENTGroup King3Dialogue = new SerialEVENTGroup("King3Dialogue");
             //  King3Dialogue.AddEVENT(new EVENTPlayerDeactivate(gameManager.Player));
             King3Dialogue.AddEVENT(new EVENTDialogueConfirmed("You are the manifestation of the people's will. You live for their benefit.", stages["Cairn of Dead Kings"].GetActor("KingOfOld3"), stages["Cairn of Dead Kings"]));
@@ -550,7 +550,7 @@ namespace StoneCircle
             stages["Cairn of Dead Kings"].AddEVENT(King3Dialogue);
             stages["Cairn of Dead Kings"].AddTrigger(new Trigger("King3Dialogue", new TriggerPlayerInteracting(stages["Cairn of Dead Kings"].GetActor("KingOfOld3")), true, false));
 
-            stages["Cairn of Dead Kings"].AddActor(new Character("KingOfOld4", "Actor2", new Vector2(500, 500), gameManager), new Vector2(400, 1000));
+            stages["Cairn of Dead Kings"].AddActor(new Character("KingOfOld4", "VillagerM", new Vector2(500, 500), gameManager), new Vector2(400, 1000));
             SerialEVENTGroup King4Dialogue = new SerialEVENTGroup("King4Dialogue");
             //  King4Dialogue.AddEVENT(new EVENTPlayerDeactivate(gameManager.Player));
             King4Dialogue.AddEVENT(new EVENTDialogueConfirmed("You are the manifestation of the people's will. You live for their benefit.", stages["Cairn of Dead Kings"].GetActor("KingOfOld4"), stages["Cairn of Dead Kings"]));
@@ -559,7 +559,7 @@ namespace StoneCircle
             stages["Cairn of Dead Kings"].AddTrigger(new Trigger("King4Dialogue", new TriggerPlayerInteracting(stages["Cairn of Dead Kings"].GetActor("KingOfOld4")), true, false));
 
 
-            stages["Cairn of Dead Kings"].AddActor(new Character("KingOfOld5", "Actor2", new Vector2(500, 500), gameManager), new Vector2(500, 1100));
+            stages["Cairn of Dead Kings"].AddActor(new Character("KingOfOld5", "VillagerM", new Vector2(500, 500), gameManager), new Vector2(500, 1100));
             SerialEVENTGroup King5Dialogue = new SerialEVENTGroup("King5Dialogue");
             //  King5Dialogue.AddEVENT(new EVENTPlayerDeactivate(gameManager.Player));
             King5Dialogue.AddEVENT(new EVENTDialogueConfirmed("You are the manifestation of the people's will. You live for their benefit.", stages["Cairn of Dead Kings"].GetActor("KingOfOld5"), stages["Cairn of Dead Kings"]));
@@ -619,91 +619,91 @@ namespace StoneCircle
 
 
 
-            stages["Cairn of Dead Kings"].AddActor(new Character("Villager2", "Actor2", new Vector2(500, 500), gameManager), new Vector2(1770, 2700));
+            stages["Cairn of Dead Kings"].AddActor(new Character("Villager2", "VillagerM", new Vector2(500, 500), gameManager), new Vector2(1770, 2700));
             stages["Cairn of Dead Kings"].AddEVENT("Villager2Dialogue", new EVENTDialogueTimed("Rest well, Rymar-King. We shall pass your name on throughout the ages.", stages["Cairn of Dead Kings"].GetActor("Villager2"), stages["Cairn of Dead Kings"]));
             stages["Cairn of Dead Kings"].AddTrigger(new Trigger("Villager2Dialogue", new TriggerPlayerInteracting(stages["Cairn of Dead Kings"].GetActor("Villager2")), true, false));
 
-            stages["Cairn of Dead Kings"].AddActor(new Character("Villager1", "Actor2", new Vector2(500, 500), gameManager), new Vector2(2185, 2850));
+            stages["Cairn of Dead Kings"].AddActor(new Character("Villager1", "VillagerM", new Vector2(500, 500), gameManager), new Vector2(2185, 2850));
             stages["Cairn of Dead Kings"].AddEVENT("Villager1Dialogue", new EVENTDialogueTimed("Rest well, Rymar-King. We shall pass your name on throughout the ages.", stages["Cairn of Dead Kings"].GetActor("Villager1"), stages["Cairn of Dead Kings"]));
             stages["Cairn of Dead Kings"].AddTrigger(new Trigger("Villager1Dialogue", new TriggerPlayerInteracting(stages["Cairn of Dead Kings"].GetActor("Villager1")), true, false));
 
-            stages["Cairn of Dead Kings"].AddActor(new Character("Villager3", "Actor2", new Vector2(500, 500), gameManager), new Vector2(1860, 2800));
+            stages["Cairn of Dead Kings"].AddActor(new Character("Villager3", "VillagerM", new Vector2(500, 500), gameManager), new Vector2(1860, 2800));
             stages["Cairn of Dead Kings"].AddEVENT("Villager3Dialogue", new EVENTDialogueTimed("Rest well, Rymar-King. We shall pass your name on throughout the ages.", stages["Cairn of Dead Kings"].GetActor("Villager3"), stages["Cairn of Dead Kings"]));
             stages["Cairn of Dead Kings"].AddTrigger(new Trigger("Villager3Dialogue", new TriggerPlayerInteracting(stages["Cairn of Dead Kings"].GetActor("Villager3")), true, false));
 
-            stages["Cairn of Dead Kings"].AddActor(new Character("Villager4", "Actor2", new Vector2(500, 500), gameManager), new Vector2(1880, 2850));
+            stages["Cairn of Dead Kings"].AddActor(new Character("Villager4", "VillagerM", new Vector2(500, 500), gameManager), new Vector2(1880, 2850));
             stages["Cairn of Dead Kings"].AddEVENT("Villager4Dialogue", new EVENTDialogueTimed("Rest well, Rymar-King. We shall pass your name on throughout the ages.", stages["Cairn of Dead Kings"].GetActor("Villager4"), stages["Cairn of Dead Kings"]));
             stages["Cairn of Dead Kings"].AddTrigger(new Trigger("Villager4Dialogue", new TriggerPlayerInteracting(stages["Cairn of Dead Kings"].GetActor("Villager4")), true, false));
 
-            stages["Cairn of Dead Kings"].AddActor(new Character("Villager5", "Actor2", new Vector2(500, 500), gameManager), new Vector2(1800, 2900));
+            stages["Cairn of Dead Kings"].AddActor(new Character("Villager5", "VillagerM", new Vector2(500, 500), gameManager), new Vector2(1800, 2900));
             stages["Cairn of Dead Kings"].AddEVENT("Villager5Dialogue", new EVENTDialogueTimed("Rest well, Rymar-King. We shall pass your name on throughout the ages.", stages["Cairn of Dead Kings"].GetActor("Villager5"), stages["Cairn of Dead Kings"]));
             stages["Cairn of Dead Kings"].AddTrigger(new Trigger("Villager5Dialogue", new TriggerPlayerInteracting(stages["Cairn of Dead Kings"].GetActor("Villager5")), true, false));
 
-            stages["Cairn of Dead Kings"].AddActor(new Character("Villager6", "Actor2", new Vector2(500, 500), gameManager), new Vector2(1850, 2920));
+            stages["Cairn of Dead Kings"].AddActor(new Character("Villager6", "VillagerM", new Vector2(500, 500), gameManager), new Vector2(1850, 2920));
             stages["Cairn of Dead Kings"].AddEVENT("Villager6Dialogue", new EVENTDialogueTimed("Rest well, Rymar-King. We shall pass your name on throughout the ages.", stages["Cairn of Dead Kings"].GetActor("Villager6"), stages["Cairn of Dead Kings"]));
             stages["Cairn of Dead Kings"].AddTrigger(new Trigger("Villager6Dialogue", new TriggerPlayerInteracting(stages["Cairn of Dead Kings"].GetActor("Villager6")), true, false));
 
-            stages["Cairn of Dead Kings"].AddActor(new Character("Villager7", "Actor2", new Vector2(500, 500), gameManager), new Vector2(1840, 2700));
+            stages["Cairn of Dead Kings"].AddActor(new Character("Villager7", "VillagerM", new Vector2(500, 500), gameManager), new Vector2(1840, 2700));
             stages["Cairn of Dead Kings"].AddEVENT("Villager7Dialogue", new EVENTDialogueTimed("Rest well, Rymar-King. We shall pass your name on throughout the ages.", stages["Cairn of Dead Kings"].GetActor("Villager7"), stages["Cairn of Dead Kings"]));
             stages["Cairn of Dead Kings"].AddTrigger(new Trigger("Villager7Dialogue", new TriggerPlayerInteracting(stages["Cairn of Dead Kings"].GetActor("Villager7")), true, false));
 
-            stages["Cairn of Dead Kings"].AddActor(new Character("Villager8", "Actor2", new Vector2(500, 500), gameManager), new Vector2(1890, 2700));
+            stages["Cairn of Dead Kings"].AddActor(new Character("Villager8", "VillagerM", new Vector2(500, 500), gameManager), new Vector2(1890, 2700));
             stages["Cairn of Dead Kings"].AddEVENT("Villager8Dialogue", new EVENTDialogueTimed("Rest well, Rymar-King. We shall pass your name on throughout the ages.", stages["Cairn of Dead Kings"].GetActor("Villager8"), stages["Cairn of Dead Kings"]));
             stages["Cairn of Dead Kings"].AddTrigger(new Trigger("Villager8Dialogue", new TriggerPlayerInteracting(stages["Cairn of Dead Kings"].GetActor("Villager8")), true, false));
 
-            stages["Cairn of Dead Kings"].AddActor(new Character("Villager9", "Actor2", new Vector2(500, 500), gameManager), new Vector2(1890, 2670));
+            stages["Cairn of Dead Kings"].AddActor(new Character("Villager9", "VillagerM", new Vector2(500, 500), gameManager), new Vector2(1890, 2670));
             stages["Cairn of Dead Kings"].AddEVENT("Villager9Dialogue", new EVENTDialogueTimed("Rest well, Rymar-King. We shall pass your name on throughout the ages.", stages["Cairn of Dead Kings"].GetActor("Villager9"), stages["Cairn of Dead Kings"]));
             stages["Cairn of Dead Kings"].AddTrigger(new Trigger("Villager9Dialogue", new TriggerPlayerInteracting(stages["Cairn of Dead Kings"].GetActor("Villager9")), true, false));
 
-            stages["Cairn of Dead Kings"].AddActor(new Character("Villager10", "Actor2", new Vector2(500, 500), gameManager), new Vector2(1890, 2720));
+            stages["Cairn of Dead Kings"].AddActor(new Character("Villager10", "VillagerM", new Vector2(500, 500), gameManager), new Vector2(1890, 2720));
             stages["Cairn of Dead Kings"].AddEVENT("Villager10Dialogue", new EVENTDialogueTimed("Rest well, Rymar-King. We shall pass your name on throughout the ages.", stages["Cairn of Dead Kings"].GetActor("Villager10"), stages["Cairn of Dead Kings"]));
             stages["Cairn of Dead Kings"].AddTrigger(new Trigger("Villager10Dialogue", new TriggerPlayerInteracting(stages["Cairn of Dead Kings"].GetActor("Villager10")), true, false));
 
-            stages["Cairn of Dead Kings"].AddActor(new Character("Villager11", "Actor2", new Vector2(500, 500), gameManager), new Vector2(1890, 2770));
+            stages["Cairn of Dead Kings"].AddActor(new Character("Villager11", "VillagerM", new Vector2(500, 500), gameManager), new Vector2(1890, 2770));
             stages["Cairn of Dead Kings"].AddEVENT("Villager11Dialogue", new EVENTDialogueTimed("Rest well, Rymar-King. We shall pass your name on throughout the ages.", stages["Cairn of Dead Kings"].GetActor("Villager11"), stages["Cairn of Dead Kings"]));
             stages["Cairn of Dead Kings"].AddTrigger(new Trigger("Villager11Dialogue", new TriggerPlayerInteracting(stages["Cairn of Dead Kings"].GetActor("Villager11")), true, false));
 
-            stages["Cairn of Dead Kings"].AddActor(new Character("Villager12", "Actor2", new Vector2(500, 500), gameManager), new Vector2(1940, 2820));
+            stages["Cairn of Dead Kings"].AddActor(new Character("Villager12", "VillagerM", new Vector2(500, 500), gameManager), new Vector2(1940, 2820));
             stages["Cairn of Dead Kings"].AddEVENT("Villager12Dialogue", new EVENTDialogueTimed("Rest well, Rymar-King. We shall pass your name on throughout the ages.", stages["Cairn of Dead Kings"].GetActor("Villager12"), stages["Cairn of Dead Kings"]));
             stages["Cairn of Dead Kings"].AddTrigger(new Trigger("Villager12Dialogue", new TriggerPlayerInteracting(stages["Cairn of Dead Kings"].GetActor("Villager12")), true, false));
 
-            stages["Cairn of Dead Kings"].AddActor(new Character("Villager13", "Actor2", new Vector2(500, 500), gameManager), new Vector2(1930, 2870));
+            stages["Cairn of Dead Kings"].AddActor(new Character("Villager13", "VillagerM", new Vector2(500, 500), gameManager), new Vector2(1930, 2870));
             stages["Cairn of Dead Kings"].AddEVENT("Villager13Dialogue", new EVENTDialogueTimed("Rest well, Rymar-King. We shall pass your name on throughout the ages.", stages["Cairn of Dead Kings"].GetActor("Villager13"), stages["Cairn of Dead Kings"]));
             stages["Cairn of Dead Kings"].AddTrigger(new Trigger("Villager13Dialogue", new TriggerPlayerInteracting(stages["Cairn of Dead Kings"].GetActor("Villager13")), true, false));
 
-            stages["Cairn of Dead Kings"].AddActor(new Character("Villager14", "Actor2", new Vector2(500, 500), gameManager), new Vector2(1840, 2920));
+            stages["Cairn of Dead Kings"].AddActor(new Character("Villager14", "VillagerM", new Vector2(500, 500), gameManager), new Vector2(1840, 2920));
             stages["Cairn of Dead Kings"].AddEVENT("Villager14Dialogue", new EVENTDialogueTimed("Rest well, Rymar-King. We shall pass your name on throughout the ages.", stages["Cairn of Dead Kings"].GetActor("Villager14"), stages["Cairn of Dead Kings"]));
             stages["Cairn of Dead Kings"].AddTrigger(new Trigger("Villager14Dialogue", new TriggerPlayerInteracting(stages["Cairn of Dead Kings"].GetActor("Villager14")), true, false));
 
-            stages["Cairn of Dead Kings"].AddActor(new Character("Villager21", "Actor2", new Vector2(500, 500), gameManager), new Vector2(1985, 2850));
+            stages["Cairn of Dead Kings"].AddActor(new Character("Villager21", "VillagerM", new Vector2(500, 500), gameManager), new Vector2(1985, 2850));
             stages["Cairn of Dead Kings"].AddEVENT("Villager21Dialogue", new EVENTDialogueTimed("Rest well, Rymar-King. We shall pass your name on throughout the ages.", stages["Cairn of Dead Kings"].GetActor("Villager21"), stages["Cairn of Dead Kings"]));
             stages["Cairn of Dead Kings"].AddTrigger(new Trigger("Villager21Dialogue", new TriggerPlayerInteracting(stages["Cairn of Dead Kings"].GetActor("Villager21")), true, false));
 
-            stages["Cairn of Dead Kings"].AddActor(new Character("Villager23", "Actor2", new Vector2(500, 500), gameManager), new Vector2(1960, 2800));
+            stages["Cairn of Dead Kings"].AddActor(new Character("Villager23", "VillagerM", new Vector2(500, 500), gameManager), new Vector2(1960, 2800));
             stages["Cairn of Dead Kings"].AddEVENT("Villager23Dialogue", new EVENTDialogueTimed("Rest well, Rymar-King. We shall pass your name on throughout the ages.", stages["Cairn of Dead Kings"].GetActor("Villager23"), stages["Cairn of Dead Kings"]));
             stages["Cairn of Dead Kings"].AddTrigger(new Trigger("Villager23Dialogue", new TriggerPlayerInteracting(stages["Cairn of Dead Kings"].GetActor("Villager23")), true, false));
 
-            stages["Cairn of Dead Kings"].AddActor(new Character("Villager24", "Actor2", new Vector2(500, 500), gameManager), new Vector2(1980, 2850));
+            stages["Cairn of Dead Kings"].AddActor(new Character("Villager24", "VillagerM", new Vector2(500, 500), gameManager), new Vector2(1980, 2850));
             stages["Cairn of Dead Kings"].AddEVENT("Villager24Dialogue", new EVENTDialogueTimed("Rest well, Rymar-King. We shall pass your name on throughout the ages.", stages["Cairn of Dead Kings"].GetActor("Villager24"), stages["Cairn of Dead Kings"]));
             stages["Cairn of Dead Kings"].AddTrigger(new Trigger("Villager24Dialogue", new TriggerPlayerInteracting(stages["Cairn of Dead Kings"].GetActor("Villager24")), true, false));
 
-            stages["Cairn of Dead Kings"].AddActor(new Character("Villager25", "Actor2", new Vector2(500, 500), gameManager), new Vector2(1900, 2900));
+            stages["Cairn of Dead Kings"].AddActor(new Character("Villager25", "VillagerM", new Vector2(500, 500), gameManager), new Vector2(1900, 2900));
             stages["Cairn of Dead Kings"].AddEVENT("Villager25Dialogue", new EVENTDialogueTimed("Rest well, Rymar-King. We shall pass your name on throughout the ages.", stages["Cairn of Dead Kings"].GetActor("Villager25"), stages["Cairn of Dead Kings"]));
             stages["Cairn of Dead Kings"].AddTrigger(new Trigger("Villager25Dialogue", new TriggerPlayerInteracting(stages["Cairn of Dead Kings"].GetActor("Villager25")), true, false));
 
-            stages["Cairn of Dead Kings"].AddActor(new Character("Villager26", "Actor2", new Vector2(500, 500), gameManager), new Vector2(1950, 2920));
+            stages["Cairn of Dead Kings"].AddActor(new Character("Villager26", "VillagerM", new Vector2(500, 500), gameManager), new Vector2(1950, 2920));
             stages["Cairn of Dead Kings"].AddEVENT("Villager26Dialogue", new EVENTDialogueTimed("Rest well, Rymar-King. We shall pass your name on throughout the ages.", stages["Cairn of Dead Kings"].GetActor("Villager26"), stages["Cairn of Dead Kings"]));
             stages["Cairn of Dead Kings"].AddTrigger(new Trigger("Villager26Dialogue", new TriggerPlayerInteracting(stages["Cairn of Dead Kings"].GetActor("Villager26")), true, false));
 
-            stages["Cairn of Dead Kings"].AddActor(new Character("Villager27", "Actor2", new Vector2(500, 500), gameManager), new Vector2(1940, 2700));
+            stages["Cairn of Dead Kings"].AddActor(new Character("Villager27", "VillagerM", new Vector2(500, 500), gameManager), new Vector2(1940, 2700));
             stages["Cairn of Dead Kings"].AddEVENT("Villager27Dialogue", new EVENTDialogueTimed("Rest well, Rymar-King. We shall pass your name on throughout the ages.", stages["Cairn of Dead Kings"].GetActor("Villager27"), stages["Cairn of Dead Kings"]));
             stages["Cairn of Dead Kings"].AddTrigger(new Trigger("Villager27Dialogue", new TriggerPlayerInteracting(stages["Cairn of Dead Kings"].GetActor("Villager27")), true, false));
 
-            stages["Cairn of Dead Kings"].AddActor(new Character("Villager28", "Actor2", new Vector2(500, 500), gameManager), new Vector2(1990, 2700));
+            stages["Cairn of Dead Kings"].AddActor(new Character("Villager28", "VillagerM", new Vector2(500, 500), gameManager), new Vector2(1990, 2700));
             stages["Cairn of Dead Kings"].AddEVENT("Villager28Dialogue", new EVENTDialogueTimed("Rest well, Rymar-King. We shall pass your name on throughout the ages.", stages["Cairn of Dead Kings"].GetActor("Villager28"), stages["Cairn of Dead Kings"]));
             stages["Cairn of Dead Kings"].AddTrigger(new Trigger("Villager28Dialogue", new TriggerPlayerInteracting(stages["Cairn of Dead Kings"].GetActor("Villager28")), true, false));
 
-            stages["Cairn of Dead Kings"].AddActor(new Character("Villager29", "Actor2", new Vector2(500, 500), gameManager), new Vector2(1990, 2670));
+            stages["Cairn of Dead Kings"].AddActor(new Character("Villager29", "VillagerM", new Vector2(500, 500), gameManager), new Vector2(1990, 2670));
             stages["Cairn of Dead Kings"].AddEVENT("Villager29Dialogue", new EVENTDialogueTimed("Rest well, Rymar-King. We shall pass your name on throughout the ages.", stages["Cairn of Dead Kings"].GetActor("Villager29"), stages["Cairn of Dead Kings"]));
             stages["Cairn of Dead Kings"].AddTrigger(new Trigger("Villager29Dialogue", new TriggerPlayerInteracting(stages["Cairn of Dead Kings"].GetActor("Villager29")), true, false));
 
@@ -752,7 +752,9 @@ namespace StoneCircle
 
             // This is the shack in the woods where Elysia lives. It also serves as the entrance to the ritual grounds.
 
-            stages.Add("Magic Forest", new Stage("Magic Forest", this));
+            stages.Add("Forest", new Stage("Forest", this));
+            stages["Forest"].adjustRegionCounts(2, 3);
+            stages["Forest"].AMBStrength = 0f;
             Random rand = new Random(1123);
             int x, y;
             for (int i = 0; i < 80; i++)
@@ -763,55 +765,187 @@ namespace StoneCircle
                     x = rand.Next(25, 125);
                     y = rand.Next(25, 125);
 
-                    stages["Magic Forest"].addActor("Tree" + i + "_" + j, new Tree(gameManager, 150 * new Vector2(i, 2 * j) + new Vector2(x, y)));
+                    stages["Forest"].addActor("Tree" + i + "_" + j, new Tree(gameManager, 150 * new Vector2(i, 2 * j) + 4096 * new Vector2(1,2)+ new Vector2(x, y)));
 
                 }
             }
 
 
 
-            stages["Magic Forest"].removeActor("Tree6_4");
-            stages["Magic Forest"].removeActor("Tree7_4");
-            stages["Magic Forest"].removeActor("Tree6_5");
-            stages["Magic Forest"].removeActor("Tree7_5");
-            stages["Magic Forest"].removeActor("Tree5_4");
-            stages["Magic Forest"].removeActor("Tree8_4");
-            stages["Magic Forest"].removeActor("Tree9_4");
-            stages["Magic Forest"].removeActor("Tree8_5");
+            stages["Forest"].removeActor("Tree6_4");
+            stages["Forest"].removeActor("Tree7_4");
+            stages["Forest"].removeActor("Tree6_5");
+            stages["Forest"].removeActor("Tree7_5");
+            stages["Forest"].removeActor("Tree5_4");
+            stages["Forest"].removeActor("Tree8_4");
+            stages["Forest"].removeActor("Tree9_4");
+            stages["Forest"].removeActor("Tree8_5");
 
-            for (int i = 0; i < 5; i++) stages["Magic Forest"].removeActor("Tree4_" + i);
-            for (int i = 9; i < 15; i++) stages["Magic Forest"].removeActor("Tree" + i +"_5");
+            for (int i = 0; i < 5; i++) stages["Forest"].removeActor("Tree4_" + i);
+            for (int i = 9; i < 15; i++) stages["Forest"].removeActor("Tree" + i +"_5");
 
-            stages["Magic Forest"].addActor("Elysia's Shack", new SetProp("Elysia's Shack", "Shack", new Vector2(1000, 1023), gameManager));
-            stages["Magic Forest"].addActor("Crone's Shack", new SetProp("Crone's Shack", "Shack", new Vector2(1330, 1120), gameManager));
+            stages["Forest"].addActor("Elysia's Shack", new SetProp("Elysia's Shack", "Shack", new Vector2(5096, 9215), gameManager));
+            stages["Forest"].addActor("Crone's Shack", new SetProp("Crone's Shack", "Shack", new Vector2(5426, 9412), gameManager));
 
-            stages["Magic Forest"].AddTrigger(new Trigger("Elysia", new TriggerPlayerInteracting(stages["Magic Forest"].GetActor("Elysia's Shack")), true, true));
+            stages["Forest"].AddTrigger(new Trigger("Elysia", new TriggerPlayerInteracting(stages["Forest"].GetActor("Elysia's Shack")), true, true));
 
 
             ParallelEVENTGroup ForestIntro = new ParallelEVENTGroup("Introduction");
             SerialEVENTGroup ConversationWithElysia = new SerialEVENTGroup("Elysia");
             ConversationWithElysia.AddEVENT(new EVENTPlayerDeactivate(gameManager.Player));
-            ConversationWithElysia.AddEVENT(new EVENTDialogueConfirmed("HEY!", gameManager.Player, stages["Magic Forest"]));
-            ConversationWithElysia.AddEVENT(new EVENTDialogueConfirmed("Wake up in there! It's an emergency.", gameManager.Player, stages["Magic Forest"]));
+            ConversationWithElysia.AddEVENT(new EVENTDialogueConfirmed("HEY!", gameManager.Player, stages["Forest"]));
+            ConversationWithElysia.AddEVENT(new EVENTDialogueConfirmed("Wake up in there! It's an emergency.", gameManager.Player, stages["Forest"]));
             ConversationWithElysia.AddEVENT(new EVENTDramaticPause(4000f));
-            ConversationWithElysia.AddEVENT(new EVENTDialogueConfirmed("HEY!", gameManager.Player, stages["Magic Forest"]));            
-            ConversationWithElysia.AddEVENT(new EVENTDialogueConfirmed("I'm awake already! Stop banging on my house!", stages["Magic Forest"].GetActor("Elysia's Shack"), stages["Magic Forest"]));
-            ConversationWithElysia.AddEVENT(new EVENTDialogueConfirmed("Well hurry it up! I don't have all night!", gameManager.Player, stages["Magic Forest"]));
-            ConversationWithElysia.AddEVENT(new EVENTDialogueConfirmed("I brought you into this world, Rhett, son-of-Arlan. Bang on my house again and I'll send you out again!", stages["Magic Forest"].GetActor("Elysia's Shack"), stages["Magic Forest"]));
-            ConversationWithElysia.AddEVENT(new EVENTDialogueConfirmed("'Brought me into this world?' Do you think I was born yesterday? Everyone knows you've only got a season on me. ", gameManager.Player, stages["Magic Forest"]));
-            ConversationWithElysia.AddEVENT(new EVENTActorEnterStage(stages["Magic Forest"], "Elysia", this, new Vector2(1050, 1050)));
-            ConversationWithElysia.AddEVENT(new EVENTDialogueConfirmed("Why are you here?", Elysia, stages["Magic Forest"]));
-            ConversationWithElysia.AddEVENT(new EVENTDialogueConfirmed("'Brought me into this world?' Do you think I was born yesterday? Everyone knows you've only got a season on me. ", gameManager.Player, stages["Magic Forest"]));
+            ConversationWithElysia.AddEVENT(new EVENTDialogueConfirmed("HEY!", gameManager.Player, stages["Forest"]));            
+            ConversationWithElysia.AddEVENT(new EVENTDialogueConfirmed("I'm awake already! Stop banging on my house!", stages["Forest"].GetActor("Elysia's Shack"), stages["Forest"]));
+            ConversationWithElysia.AddEVENT(new EVENTDialogueConfirmed("Well hurry it up! I don't have all night!", gameManager.Player, stages["Forest"]));
+            ConversationWithElysia.AddEVENT(new EVENTDialogueConfirmed("I brought you into this world, Rhett, son-of-Arlan. Bang on my house one more time and I'll send you out again!", stages["Forest"].GetActor("Elysia's Shack"), stages["Forest"]));
+            ConversationWithElysia.AddEVENT(new EVENTDialogueConfirmed("'Brought me into this world?' Do you think I was born yesterday? Everyone knows you've only got a season on me. ", gameManager.Player, stages["Forest"]));
+            ConversationWithElysia.AddEVENT(new EVENTActorEnterStage(stages["Forest"], "Elysia", this, new Vector2(5242, 9238)));
+            ConversationWithElysia.AddEVENT(new EVENTDialogueConfirmed("Why are you here?", Elysia, stages["Forest"]));
+            ConversationWithElysia.AddEVENT(new EVENTDialogueConfirmed("'Brought me into this world?' Do you think I was born yesterday? Everyone knows you've only got a season on me. ", gameManager.Player, stages["Forest"]));
             
-            stages["Magic Forest"].AddEVENT(ConversationWithElysia);
+            stages["Forest"].AddEVENT(ConversationWithElysia);
 
+
+
+
+            stages["Forest"].AMBStrength = .2f;
+
+            x = 0; y = 0;
+         
+
+           bool[,][] forestBox = new bool[20,20][];
+          for (int i = 0; i<20; i++)
+            {
+                for (int j = 0; j < 20; j++)
+                {
+                    forestBox[i, j] = new bool[4] { true, true, true, true };
+                }
+            }
+
+          List<Vector2> adjacentCells = new List<Vector2>();
+          List<Vector2> containedCells = new List<Vector2>();
+          List<Vector2> tempCells = new List<Vector2>();
+
+            containedCells.Add(new Vector2(14, 19));
+            adjacentCells.Add(new Vector2(14, 18));
+            adjacentCells.Add(new Vector2(13, 19));
+            adjacentCells.Add(new Vector2(15, 19));
+            forestBox[17, 19][3] = false;
+            
+
+
+            while (adjacentCells.Count > 0)
+            {
+                Vector2 next = adjacentCells[rand.Next(adjacentCells.Count)];
+                adjacentCells.Remove(next);
+                containedCells.Add(next);
+                tempCells.Clear();
+                if (containedCells.Contains(new Vector2(next.X - 1, next.Y))) tempCells.Add(new Vector2(next.X - 1, next.Y));
+                else if (next.X > 0) adjacentCells.Add(new Vector2(next.X-1, next.Y));
+                
+                if (containedCells.Contains(new Vector2(next.X , next.Y-1))) tempCells.Add(new Vector2(next.X, next.Y-1));
+                else if (next.Y > 0) adjacentCells.Add(new Vector2(next.X, next.Y-1));
+                
+                if (containedCells.Contains(new Vector2(next.X +1, next.Y))) tempCells.Add(new Vector2(next.X +1, next.Y));
+                else if (next.X < 19) adjacentCells.Add(new Vector2(next.X+1, next.Y));
+                
+                if (containedCells.Contains(new Vector2(next.X , next.Y+1))) tempCells.Add(new Vector2(next.X, next.Y+1));
+                else if (next.Y < 19) adjacentCells.Add(new Vector2(next.X, next.Y+1));
+
+                Vector2 check = next - tempCells[rand.Next(tempCells.Count)];
+                if (check == -Vector2.UnitX)
+                {
+                    forestBox[(int)next.X, (int)next.Y][3] = false;
+                    if (next.X < 19) forestBox[(int)next.X + 1, (int)next.Y][1] = false;
+
+                } else  if (check == Vector2.UnitX)
+                {
+                    forestBox[(int)next.X, (int)next.Y][1] = false;
+                    if (next.X > 0) forestBox[(int)next.X - 1, (int)next.Y][3] = false;
+
+                } else  if (check == -Vector2.UnitY)
+                {
+                    forestBox[(int)next.X, (int)next.Y][2] = false;
+                    if (next.Y < 19 ) forestBox[(int)next.X, (int)next.Y + 1][0] = false;
+
+                } else  if (check == Vector2.UnitY)
+                {
+                    forestBox[(int)next.X, (int)next.Y][0] = false ;
+                    if (next.Y > 0) forestBox[(int)next.X, (int)next.Y - 1][2] = false;
+
+                } 
+
+
+            }
+
+
+
+                    for (int i = 0; i < 20; i++)
+                    {
+                        for (int j = 0; j < 20; j++)
+                        {
+                            
+                              for (int k = rand.Next(1, 4); k > 0; k--)
+                    {
+                        x = rand.Next(50, 350);
+                        y = rand.Next(50, 350);
+
+                        stages["Forest"].addActor("Tree" + i + "_" + j + "R" + k, new Tree(gameManager, 400 * new Vector2(i, j) + new Vector2(x, y)));
+
+
+                    }
+
+                    stages["Forest"].addActor("Tree" + i + "_" + j +"NW", new Tree(gameManager, 400 * new Vector2(i,  j) + new Vector2(60, 60)));
+                    stages["Forest"].addActor("Tree" + i + "_" + j + "NE", new Tree(gameManager, 400 * new Vector2(i,  j) + new Vector2(340, 61)));
+                    stages["Forest"].addActor("Tree" + i + "_" + j + "SW", new Tree(gameManager, 400 * new Vector2(i,  j) + new Vector2(60, 340)));
+                    stages["Forest"].addActor("Tree" + i + "_" + j+ "SE", new Tree(gameManager, 400 * new Vector2(i,  j) + new Vector2(340, 341)));
+
+                    stages["Forest"].addActor("Tree" + i + "_" + j + "CP", new Tree(gameManager, 400 * new Vector2(i, j) + new Vector2(400, 400)));
+                   
+                            if (forestBox[i,j][1])
+                            {
+                                stages["Forest"].addActor("Tree" + i + "_" + j + "NMW", new Tree(gameManager, 400 * new Vector2(i, j) + new Vector2(50, 155)));
+                                stages["Forest"].addActor("Tree" + i + "_" + j + "NME", new Tree(gameManager, 400 * new Vector2(i,  j) + new Vector2(50, 250)));
+                            }
+                            if (forestBox[i, j][0])
+                            {
+                                stages["Forest"].addActor("Tree" + i + "_" + j + "WMN", new Tree(gameManager, 400 * new Vector2(i, j) + new Vector2(155, 62)));
+                                stages["Forest"].addActor("Tree" + i + "_" + j + "WMM", new Tree(gameManager, 400 * new Vector2(i, j) + new Vector2(250, 59)));
+                             }
+
+                            if (forestBox[i, j][2])
+                            {
+                                stages["Forest"].addActor("Tree" + i + "_" + j + "SWM", new Tree(gameManager, 400 * new Vector2(i,  j) + new Vector2(155, 341)));
+                                stages["Forest"].addActor("Tree" + i + "_" + j + "SMM", new Tree(gameManager, 400 * new Vector2(i, j) + new Vector2(250, 342)));
+                                stages["Forest"].addActor("Tree" + i + "_" + j + "SCP", new Tree(gameManager, 400 * new Vector2(i,  j) + new Vector2(200, 400)));
+                            }
+
+                            if (forestBox[i, j][3] )
+                            {
+                                stages["Forest"].addActor("Tree" + i + "_" + j + "EMN", new Tree(gameManager, 400 * new Vector2(i,  j) + new Vector2(354, 156)));
+                                stages["Forest"].addActor("Tree" + i + "_" + j + "EMM", new Tree(gameManager, 400 * new Vector2(i,  j) + new Vector2(340, 251)));
+                                stages["Forest"].addActor("Tree" + i + "_" + j + "EMS", new Tree(gameManager, 400 * new Vector2(i,  j) + new Vector2(400, 200)));
+                            }
+
+
+                        }
+                    }
+        
+                 
+                    }
+              
+
+
+             
 
             
 
 
 
 
-        }
+        
 
         /// <summary>
         /// Set a condition, so future calls to CheckCondition with the same name will

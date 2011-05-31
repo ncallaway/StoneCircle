@@ -10,7 +10,7 @@ sampler pallette : register(s1);
 float4 LightSource(float2 texCoord: TEXCOORD0) : COLOR0
 {
 	float4 tMap = tex2D(ScreenS, texCoord);
-	float2 newCoord = texCoord *4095%512/4096;
+	float2 newCoord = (texCoord *4095 + 1)%510/4096;
 	
 	float4 color = tex2D(pallette, float2(newCoord.x, newCoord.y));
 
