@@ -47,7 +47,7 @@ namespace StoneCircle
 
         internal Texture2D grassTexture;
 
-        private GameManager gameManager;
+        internal GameManager gameManager;
 
         public StageManager(uint id)
         {
@@ -309,6 +309,8 @@ namespace StoneCircle
             TalkToAide.AddEVENT(new EVENTOpenMenu(toVerdict, gameManager.UIManager));
 
             Village.AddEVENT(TalkToAide);
+            Village.AddTrigger(new Trigger("DonalExcite", new TriggerActorNearActor(VillagerA, gameManager.Player), true, false));
+            Village.AddEVENT("DonalExcite", new EVENTMoveActorToPlayer(VillagerA, Vector2.One, Village));
 
             SerialEVENTGroup QuestionDonal = new SerialEVENTGroup("QuestionDonal");
             Village.AddTrigger(new Trigger("QuestionDonal", new TriggerANDCondition(new TriggerNOTCondition(new TriggerStateCondition(this, "VerdictDecided")), new TriggerPlayerInteracting(stages["Village"].GetActor("VillagerA"))), true, false));

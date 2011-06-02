@@ -13,29 +13,37 @@ Content\UI Images\ThumbsUpIcon.xnb
 Content\RedScreenOfDeath.xnb
 Content\texturePallette.xnb
 Content\UI Images\Wallpaper.xnb
-Content\Characters\Actor2.xnb
-Content\Characters\body1.xnb
-Content\Characters\Eimar Character Sheet - Full.xnb
-Content\Characters\male_select.xnb
-Content\Characters\PlayerSheet.xnb
 Content\Shaders\StatusShader.xnb
 Content\Shaders\Effect1.xnb
 Content\Shaders\TerrainMapper.xnb
 Content\Shaders\LightEffects.xnb
-Content\Sound Effects\beep.xnb
 Content\Sound Effects\heartbeat.xnb
-Content\Sound Effects\misc012.xnb
-Content\Sound Effects\fire.xnb
-Content\Sound Effects\misc065.xnb
-Content\Sound Effects\nature004.xnb
-Content\Sound Effects\nature014.xnb
-Content\Sound Effects\nature021.xnb
 Content\Levels\Cairn of Dead Kings_0_0IMG.xnb
 Content\Levels\MainHouse_0_0IMG.xnb
 Content\Set Props\Altar.xnb
 Content\Set Props\Manholecoverthing.xnb
 Content\Set Props\StoneGateway.xnb
-Content\Levels\Magic Forest_0_0IMG.xnb
 Content\LightMapBase.xnb
 Content\Shaders\Blender.xnb
-Content\Levels\GVillage_0_0IMG.xnb
+Content\Levels\Forest_0_0IMG.xnb
+Content\Levels\Forest_1_0IMG.xnb
+Content\Levels\Forest_1_1IMG.xnb
+Content\Levels\Forest_0_1IMG.xnb
+Content\Levels\Forest_0_2IMG.xnb
+Content\Levels\Forest_1_2IMG.xnb
+Content\Characters\EimarSheet.xnb
+Content\Characters\ElysiaSheet.xnb
+Content\Characters\OldMan.xnb
+Content\Characters\OtherworldShade.xnb
+Content\Characters\RhettSheet.xnb
+Content\Characters\VillagerF.xnb
+Content\Characters\VillagerM.xnb
+Content\Sound Effects\crickets.xnb
+Content\Sound Effects\walking.xnb
+Content\Sound Effects\fire.xnb
+Content\Sound Effects\sword clash.xnb
+Content\Sound Effects\beep.xnb
+Content\Background Music\Village Theme.xnb
+Content\Background Music\Flight Through the Forest.xnb
+Content\Background Music\Etc.xnb
+Content\Background Music\Battle in the Otherworld.xnb

@@ -114,7 +114,7 @@ namespace StoneCircle
         {
             regionsWide = 1;
             regionsHigh = 1;
-
+            gameManager = SM.gameManager;
             this.objectId = IdFactory.GetNextId();
             this.id = id;
             position = new Vector2(0, 0);
@@ -396,7 +396,7 @@ namespace StoneCircle
           
 
             input.Update();
-            if (input.IsPauseMenuNewlyPressed()) gameManager.UIManager.Pause();
+            if (input.IsPauseMenuNewlyPressed())  gameManager.UIManager.Pause();
 
             List<EVENT> finishedEvents = new List<EVENT>();
             foreach (EVENT E in currentEvents) { if (E.Update(t)) finishedEvents.Add(E); }

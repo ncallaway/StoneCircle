@@ -199,6 +199,30 @@ namespace StoneCircle
 
 
     }
+
+
+    class TriggerActorNearActor : TriggerCondition
+    {
+        Actor actor;
+        Actor target;
+        float distance;
+
+        public TriggerActorNearActor(Actor Actor, Actor Target)
+        {
+            actor = Actor;
+            target = Target;
+            distance = 10000f;
+        }
+
+        public override bool CheckCondition()
+        {   float diffX = (target.Location.X- actor.Location.X);
+            float diffY = (target.Location.Y- actor.Location.Y);
+            return ( (diffX*diffX + diffY*diffY)<distance);
+        }
+
+
+    }
+
   class TriggerStateCondition : TriggerCondition
     {
         StageManager SM;

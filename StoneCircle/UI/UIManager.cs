@@ -56,8 +56,10 @@ namespace UserMenus
             mainMenu.AddMenuItem(new ChangeLevelItem("Village", new Vector2(2530, 3940) , gameManager.StageManager, this, "Village"));
 
             pauseMenu1 = new RingMenu(gameManager);
-            pauseMenu1.AddMenuItem(new ChangeLevelItem("region1", 500 * Vector2.One, gameManager.StageManager, this, "Region 1"));
-            pauseMenu1.AddMenuItem(new ChangeLevelItem("region2", 500 * Vector2.One, gameManager.StageManager, this, "Region 2"));
+            pauseMenu1.AddMenuItem(new ChangeLevelItem("Village", 500 * Vector2.One, gameManager.StageManager, this, "Region 1"));
+            pauseMenu1.AddMenuItem(new ChangeLevelItem("Forest", 500 * Vector2.One, gameManager.StageManager, this, "Region 2"));
+            pauseMenu1.AddMenuItem(new ChangeLevelItem("Cairn of Dead Kings", new Vector2(2700, 5800), gameManager.StageManager, this, "OT"));
+            pauseMenu1.AddMenuItem(new ChangeLevelItem("King's Hall", 1000* Vector2.One, gameManager.StageManager, this, "King's Hall"));
             pauseMenu1.Load(CM);
 
         }
