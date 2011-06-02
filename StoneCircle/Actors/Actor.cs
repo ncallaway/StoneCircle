@@ -243,8 +243,8 @@ namespace StoneCircle
         {
             newFacing.Normalize();
             facing = newFacing;
-            // if (Math.Abs(facing.X) > Math.Abs(facing.Y)) { if (facing.X > 0) ImageYindex = 0; else ImageYindex = 1; }
-           // else { if (facing.Y > 0) ImageYindex = 2; else ImageYindex = 3; }
+             if (Math.Abs(facing.X) > Math.Abs(facing.Y)) { if (facing.X > 0) ImageYindex = 0; else ImageYindex = 1; }
+            else { if (facing.Y > 0) ImageYindex = 2; else ImageYindex = 3; }
         }
 
 
@@ -252,10 +252,7 @@ namespace StoneCircle
         {
                 theSpriteBatch.Draw(image_map, screenadjust + (camera_scale * (Position - camera_pos)), new Rectangle(ImageXindex * ImageWidth, ImageYindex * ImageHeight, ImageWidth, ImageHeight), new Color(intensity, intensity, intensity, 1f), 0f, origin, camera_scale, SpriteEffects.None, .2f - Location.Y / 100000f);
                 theSpriteBatch.DrawString(font, name, screenadjust + (camera_scale * (Position - camera_pos) - new Vector2(ImageWidth / 2, ImageHeight + 15)), Color.White);
-                //theSpriteBatch.DrawString(font, "" + Math.Atan2(Facing.Y, Facing.X), screenadjust + (camera_scale * (Position - camera_pos) - new Vector2(ImageWidth / 2, ImageHeight - 5)), Color.White);
-                //theSpriteBatch.DrawString(font, "" + Location, screenadjust + (camera_scale * (Position - camera_pos) - new Vector2(ImageWidth / 2, ImageHeight - 25)), Color.White);
-            
-
+              
         }
 
 
@@ -375,7 +372,22 @@ namespace StoneCircle
         }
 
         public virtual void ActionUpdate(GameTime t, Dictionary<String, Actor>.ValueCollection actor_list)
-        { current_Action.Update(t, actor_list); }
+        {
+
+            updateVector = Vector3.Zero;
+            if (Location.Z < 0) { Location.Z = 0; pGravity = 0; }
+            if (Location.Z > 0)
+            {
+                pGravity += 2;
+                updateVector += pGravity * -2 * Vector3.UnitZ;
+            }
+            Interacting = false;
+
+            current_Action.Update(t, actor_list);
+            Move();
+        
+        
+        }
 
         public virtual void Move() // Changes location of actor.
         {

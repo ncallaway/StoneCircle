@@ -50,7 +50,8 @@ namespace StoneCircle
 
         public override void UpdateFacing(Vector2 newFacing)
         {
-            if (Input.LStickPosition().LengthSquared() > .2f) base.UpdateFacing(Input.LStickPosition());
+            if (Active && Input.LStickPosition().LengthSquared() > .2f) base.UpdateFacing(Input.LStickPosition());
+            else base.UpdateFacing(newFacing);
         }
 
         public override void loadImage(ContentManager theContentManager)

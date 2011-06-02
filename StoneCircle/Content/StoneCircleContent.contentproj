@@ -177,13 +177,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Characters\PlayerSheet.png">
-      <Name>PlayerSheet</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Shaders\LightEffects.fx">
       <Name>LightEffects</Name>
       <Importer>EffectImporter</Importer>

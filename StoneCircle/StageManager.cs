@@ -62,7 +62,7 @@ namespace StoneCircle
             contentManager = gameManager.ContentManager;
 
             stageTransitionMenu = new RingMenu(gameManager);
-            stageTransitionMenu.AddMenuItem(new ChangeLevelItem("MainHouse", new Vector2(2000, 4000), this, gameManager.UIManager, "Main House"));
+            stageTransitionMenu.AddMenuItem(new ChangeLevelItem("KingsHall", new Vector2(2000, 4000), this, gameManager.UIManager, "Main House"));
             stageTransitionMenu.AddMenuItem(new ChangeLevelItem("Cairn", new Vector2(1000, 1000), this, gameManager.UIManager, "Cairn of Dead Kings"));
             stageTransitionMenu.AddMenuItem(new ChangeLevelItem("Village", new Vector2(500, 500), this, gameManager.UIManager, "Small Village"));
 
@@ -82,66 +82,180 @@ namespace StoneCircle
             stages["Village"].AMBStrength = -.1f;
 
 
-            stages["Village"].addActor("House1", new Shack(gameManager, new Vector2(600, 600)));
-            stages["Village"].addActor("House2", new Shack(gameManager, new Vector2(400, 900)));
-            stages["Village"].addActor("House3", new Shack(gameManager,new Vector2(1400, 500)));
-            stages["Village"].addActor("House4", new Shack(gameManager, new Vector2(800, 1800)));
-            stages["Village"].addActor("House5", new Shack(gameManager, new Vector2(1400, 1200)));
-            stages["Village"].addActor("House6", new Shack(gameManager, new Vector2(1700, 900)));
+            //stages["Village"].addActor("House1", new Shack(gameManager, new Vector2(600, 600)));
+            //stages["Village"].addActor("House2", new Shack(gameManager, new Vector2(400, 900)));
+            //stages["Village"].addActor("House3", new Shack(gameManager,new Vector2(1400, 500)));
+            //stages["Village"].addActor("House4", new Shack(gameManager, new Vector2(800, 1800)));
+            //stages["Village"].addActor("House5", new Shack(gameManager, new Vector2(1400, 1200)));
+            //stages["Village"].addActor("House6", new Shack(gameManager, new Vector2(1700, 900)));
             
             
-            stages["Village"].addActor("Tree1", new Tree(new Vector2(550, 300), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree2", new Tree(new Vector2(550, 300), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree3", new Tree(new Vector2(500, 500), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree4", new Tree(new Vector2(450, 600), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree5", new Tree(new Vector2(600, 200), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree6", new Tree(new Vector2(675, 300), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree7", new Tree(new Vector2(770, 100), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree8", new Tree(new Vector2(900, 300), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree9", new Tree(new Vector2(1550, 300), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree10", new Tree(new Vector2(220, 700), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree11", new Tree(new Vector2(245, 1180), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree12", new Tree(new Vector2(235, 910), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree13", new Tree(new Vector2(245, 1050), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree14", new Tree(new Vector2(395, 1450), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree15", new Tree(new Vector2(1245, 1700), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree16", new Tree(new Vector2(1275, 1730), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree17", new Tree(new Vector2(1045, 370), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree18", new Tree(new Vector2(1845, 1480), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree19", new Tree(new Vector2(805, 1430), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree1", new Tree(new Vector2(550, 300), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree2", new Tree(new Vector2(550, 300), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree3", new Tree(new Vector2(500, 500), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree4", new Tree(new Vector2(450, 600), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree5", new Tree(new Vector2(600, 200), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree6", new Tree(new Vector2(675, 300), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree7", new Tree(new Vector2(770, 100), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree8", new Tree(new Vector2(900, 300), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree9", new Tree(new Vector2(1550, 300), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree10", new Tree(new Vector2(220, 700), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree11", new Tree(new Vector2(245, 1180), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree12", new Tree(new Vector2(235, 910), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree13", new Tree(new Vector2(245, 1050), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree14", new Tree(new Vector2(395, 1450), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree15", new Tree(new Vector2(1245, 1700), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree16", new Tree(new Vector2(1275, 1730), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree17", new Tree(new Vector2(1045, 370), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree18", new Tree(new Vector2(1845, 1480), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree19", new Tree(new Vector2(805, 1430), stages["Village"], gameManager));
 
-            stages["Village"].addActor("Tree20", new Tree(new Vector2(145, 380), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree21", new Tree(new Vector2(145, 580), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree22", new Tree(new Vector2(145, 780), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree23", new Tree(new Vector2(145, 980), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree24", new Tree(new Vector2(145, 1180), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree25", new Tree(new Vector2(145, 1380), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree26", new Tree(new Vector2(145, 1580), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree27", new Tree(new Vector2(145, 1780), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree28", new Tree(new Vector2(145, 1980), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree29", new Tree(new Vector2(145, 2180), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree20", new Tree(new Vector2(145, 380), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree21", new Tree(new Vector2(145, 580), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree22", new Tree(new Vector2(145, 780), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree23", new Tree(new Vector2(145, 980), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree24", new Tree(new Vector2(145, 1180), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree25", new Tree(new Vector2(145, 1380), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree26", new Tree(new Vector2(145, 1580), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree27", new Tree(new Vector2(145, 1780), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree28", new Tree(new Vector2(145, 1980), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree29", new Tree(new Vector2(145, 2180), stages["Village"], gameManager));
 
-            stages["Village"].addActor("Tree30", new Tree(new Vector2(95, 480), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree31", new Tree(new Vector2(95, 680), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree32", new Tree(new Vector2(95, 880), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree33", new Tree(new Vector2(95, 1080), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree34", new Tree(new Vector2(95, 1280), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree35", new Tree(new Vector2(95, 1480), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree36", new Tree(new Vector2(95, 1680), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree37", new Tree(new Vector2(95, 1880), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree38", new Tree(new Vector2(95, 2080), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree39", new Tree(new Vector2(95, 2280), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree30", new Tree(new Vector2(95, 480), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree31", new Tree(new Vector2(95, 680), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree32", new Tree(new Vector2(95, 880), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree33", new Tree(new Vector2(95, 1080), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree34", new Tree(new Vector2(95, 1280), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree35", new Tree(new Vector2(95, 1480), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree36", new Tree(new Vector2(95, 1680), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree37", new Tree(new Vector2(95, 1880), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree38", new Tree(new Vector2(95, 2080), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree39", new Tree(new Vector2(95, 2280), stages["Village"], gameManager));
 
-            stages["Village"].addActor("Tree40", new Tree(new Vector2(45, 381), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree41", new Tree(new Vector2(45, 581), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree42", new Tree(new Vector2(45, 781), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree43", new Tree(new Vector2(45, 981), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree44", new Tree(new Vector2(45, 1181), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree45", new Tree(new Vector2(45, 1381), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree46", new Tree(new Vector2(45, 1581), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree47", new Tree(new Vector2(45, 1781), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree48", new Tree(new Vector2(45, 1981), stages["Village"], gameManager));
-            stages["Village"].addActor("Tree49", new Tree(new Vector2(45, 2181), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree40", new Tree(new Vector2(45, 381), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree41", new Tree(new Vector2(45, 581), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree42", new Tree(new Vector2(45, 781), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree43", new Tree(new Vector2(45, 981), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree44", new Tree(new Vector2(45, 1181), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree45", new Tree(new Vector2(45, 1381), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree46", new Tree(new Vector2(45, 1581), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree47", new Tree(new Vector2(45, 1781), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree48", new Tree(new Vector2(45, 1981), stages["Village"], gameManager));
+            //stages["Village"].addActor("Tree49", new Tree(new Vector2(45, 2181), stages["Village"], gameManager));
+            
+            
+            Random random = new Random(55555);
+            int boxType, deviation, angle, houseX, houseY;
+            for(int i = 0; i< 10; i++)
+            {for (int j = 0; j < 19; j++)
+            {
+                boxType = random.Next(100);
+                if ((i == 4 && j < 7) || ( i ==5 && j >3 )||( j-i ==6 && i >2))  { }
+                else if (boxType < 1)
+                {
+                    stages["Village"].addActor("House" + i + "_" + j, new Shack(gameManager, 500* new Vector2(i,j) + new Vector2(100, 300)));
+           
+
+
+                } else if(boxType< 2) {
+                    stages["Village"].addActor("House" + i + "_" + j, new Shack(gameManager, 500* new Vector2(i,j) + new Vector2(300, 100)));
+           
+
+
+                } else if (boxType < 3)
+                {
+                    stages["Village"].addActor("House" + i + "_" + j, new Shack(gameManager, 500* new Vector2(i,j) + new Vector2(300, 300)));
+           
+
+
+                } else  if (boxType < 20)
+                {
+                    houseX = random.Next(200, 300);
+                    houseY = random.Next(200, 300);
+                    stages["Village"].addActor("House" + i + "_" + j, new Shack(gameManager, 500 * new Vector2(i, j) + new Vector2(houseX, houseY)));
+                    deviation = random.Next(150, 200);
+                    angle = random.Next(0, 180);
+                    stages["Village"].addActor("Tree" + i + "_" + j, new Tree(500 * new Vector2(i, j) + new Vector2(houseX, houseY) + deviation * new Vector2(-(float)Math.Cos(MathHelper.ToRadians(angle)), (float)-Math.Sin(MathHelper.ToRadians(angle))), stages["Village"], gameManager));
+                    deviation = random.Next(150, 200);
+                    angle = random.Next(0, 180);
+                    stages["Village"].addActor("Tree" + i + "_" + j + "b", new Tree(500 * new Vector2(i, j) + new Vector2(houseX, houseY) + deviation * new Vector2(-(float)Math.Cos(MathHelper.ToRadians(angle)), (float)Math.Sin(MathHelper.ToRadians(angle))), stages["Village"], gameManager));
+           
+
+
+                } else  if (boxType < 40)
+                {
+
+                    houseX = random.Next(300, 400);
+                    houseY = random.Next(300, 400);
+                    stages["Village"].addActor("House" + i + "_" + j, new Shack(gameManager, 500 * new Vector2(i, j) + new Vector2(houseX, houseY)));
+                    deviation = random.Next(150, 200);
+                    angle = random.Next(0, 90);
+                    stages["Village"].addActor("Tree" + i + "_" + j, new Tree(500 * new Vector2(i, j) + new Vector2(houseX, houseY) + deviation * new Vector2(-(float)Math.Cos(MathHelper.ToRadians(angle)), (float)-Math.Sin(MathHelper.ToRadians(angle))), stages["Village"], gameManager));
+           
+
+
+                } else  if (boxType < 60)
+                {
+                    houseX = random.Next(300, 400);
+                    houseY = random.Next(100, 200);
+                    stages["Village"].addActor("House" + i + "_" + j, new Shack(gameManager, 500 * new Vector2(i, j) + new Vector2(houseX, houseY)));
+                    deviation = random.Next(150, 200);
+                    angle = random.Next(0, 75);
+                    stages["Village"].addActor("Tree" + i + "_" + j, new Tree(500 * new Vector2(i, j) + new Vector2(houseX, houseY) + deviation * new Vector2(-(float)Math.Cos(MathHelper.ToRadians(angle)), (float)Math.Sin(MathHelper.ToRadians(angle))), stages["Village"], gameManager));
+           
+
+
+                } else  if (boxType < 70)
+                {
+                    houseX = random.Next(100, 200);
+                    houseY = random.Next(100, 200);
+                    stages["Village"].addActor("House" + i + "_" + j, new Shack(gameManager, 500 * new Vector2(i, j) + new Vector2(houseX, houseY)));
+                    deviation = random.Next(150, 200);
+                    angle = random.Next(0, 75);
+                    stages["Village"].addActor("Tree" + i + "_" + j, new Tree(500 * new Vector2(i, j) + new Vector2(houseX, houseY) + deviation * new Vector2((float)Math.Cos(MathHelper.ToRadians(angle)), (float)Math.Sin(MathHelper.ToRadians(angle))), stages["Village"], gameManager));
+           
+
+                } else if (boxType < 100)
+                {
+                    houseX = random.Next(100, 200);
+                    houseY = random.Next(300, 400);
+                    stages["Village"].addActor("House" + i + "_" + j, new Shack(gameManager, 500* new Vector2(i,j) + new Vector2(houseX, houseY)));
+                    deviation = random.Next(150, 200);
+                    angle = random.Next(0, 90);
+                    
+                    
+                    stages["Village"].addActor("Tree" + i + "_" + j, new Tree(500* new Vector2(i,j) + new Vector2(houseX, houseY) + deviation * new Vector2 ((float)Math.Cos(MathHelper.ToRadians(angle)),-(float) Math.Sin(MathHelper.ToRadians(angle))), stages["Village"], gameManager));
+           
+
+
+                }  else  if (boxType < 90)
+                {
+                    stages["Village"].addActor("House" + i + "_" + j, new Shack(gameManager, 500* new Vector2(i,j) + new Vector2(100, 300)));
+                    stages["Village"].addActor("Tree" + i + "_" + j, new Tree(500* new Vector2(i,j) + new Vector2( 250, 350), stages["Village"], gameManager));
+                    
+
+
+                }  else 
+                {
+                    stages["Village"].addActor("House" + i + "_" + j, new Shack(gameManager, 500* new Vector2(i,j) + new Vector2(100, 300)));
+                     stages["Village"].addActor("Tree" + i + "_" + j, new Tree(500* new Vector2(i,j) + new Vector2( 150, 150), stages["Village"], gameManager));
+           
+
+
+                }
+                
+
+            }
+          
+            }
+            for (int i = 0; i < 30; i++)
+            {
+
+                Village.AddActor(new Character("VillagerM_" + i, "VillagerM", Vector2.Zero, gameManager), new Vector2(random.Next(200, 4000), random.Next(200, 8000)));
+                Village.AddActor(new Character("VillagerF_" + i, "VillagerF", Vector2.Zero, gameManager), new Vector2(random.Next(200, 4000), random.Next(200, 8000)));
+
+            }
+
 
             //   stages["Village"].AddTrigger(new Trigger("LevelChange", new TriggerANDCondition(new TriggerNOTCondition( new TriggerPlayerBoxCondition(new CollisionBox(new Vector3( 1000,1000, 0), 2000f, 5000f, 2000f), gameManager.Player)), new TriggerNOTCondition(new TriggerStateCondition(this, "VerdictDelivered"))), true, true));
             //   stages["Village"].AddEVENT("LevelChange", new EVENTOpenMenu(stageTransitionMenu, gameManager.UIManager));
@@ -151,12 +265,12 @@ namespace StoneCircle
             Character VillagerA = new Character("VillagerA", "VillagerM", new Vector2(800, 950), gameManager);
             Character villagerB = new Character("villagerB", "VillagerM", new Vector2(1100, 1000), gameManager);
             Character Aide = new Character("Aide", "VillagerM", new Vector2(800, 300), gameManager);
-            Village.AddActor(Rhett, new Vector2(970, 1300));
-            Village.AddActor(Aide, new Vector2(870, 777));
+            Village.AddActor(Rhett, new Vector2(2570, 3900));
+            Village.AddActor(Aide, new Vector2(2870, 2777));
+            Village.AddActor(new SetProp("CenterStone", "SarcenStone2", Vector2.Zero, gameManager), new Vector2(2544, 2831));
+            Village.AddActor(VillagerA, new Vector2(2406, 3188));
 
-            Village.AddActor(VillagerA, new Vector2(800, 950));
-
-            Village.AddActor(villagerB, new Vector2(1100, 1000));
+            Village.AddActor(villagerB, new Vector2(2695, 3206));
 
             //Aide asks if a decision has been made.
             VillageIntro.AddEVENT(new EVENTPlayerDeactivate(gameManager.Player));
@@ -165,7 +279,7 @@ namespace StoneCircle
 
             SerialEVENTGroup SVI1 = new SerialEVENTGroup("SVI1");
 
-            AVI1.AddEVENT(new EVENTMoveActor(Rhett, new Vector2(970, 1300), stages["Village"]));
+            AVI1.AddEVENT(new EVENTMoveActorToPlayer(Rhett, new Vector2(2570, 3300), stages["Village"]));
             SVI1.AddEVENT(new EVENTDialogueConfirmed("Tell me, Eimar, why are we here again?", Rhett, stages["Village"]));
             SVI1.AddEVENT(new EVENTDialogueConfirmed("We're here to settle the cattle dispute between Donal and Marik. I thought you knew that.", gameManager.Player, stages["Village"]));
             SVI1.AddEVENT(new EVENTDialogueConfirmed("You misunderstand. Why are you, and by association, me, bothering with this?", Rhett, stages["Village"]));
@@ -173,7 +287,8 @@ namespace StoneCircle
             SVI1.AddEVENT(new EVENTDialogueConfirmed("It's a waste of time. No matter who you give the cow to, they'll be back in a few months fighting over grazing rights.", Rhett, stages["Village"]));
             SVI1.AddEVENT(new EVENTDialogueConfirmed("Rhett, the King asked me to. I can't turn him down. I'll have to do this someday anyways.", gameManager.Player, stages["Village"]));
             SVI1.AddEVENT(new EVENTDialogueConfirmed("Fine. Let's just get this over with.", Rhett, stages["Village"]));
-          //  AVI1.AddEVENT(new EVENTMoveActor(gameManager.Player, new Vector2(900, 1300), stages["Village"]));
+          //
+            AVI1.AddEVENT(new EVENTMoveActor(gameManager.Player, new Vector2(2900, 3300), stages["Village"]));
             AVI1.AddEVENT(SVI1);
             VillageIntro.AddEVENT(AVI1);
             VillageIntro.AddEVENT(new EVENTDialogueConfirmed("Milord, talk to me when you've made your decision.", Aide, stages["Village"]));
@@ -237,27 +352,27 @@ namespace StoneCircle
             SerialEVENTGroup Verdict = new SerialEVENTGroup("Verdict");
             Verdict.AddEVENT(new EVENTDialogueConfirmed("I have come to a decision.", gameManager.Player, Village));
             Verdict.AddEVENT(new EVENTDialogueConfirmed("And as the sole representative of Rymar-King, the Ambrosian, you agree to my judgement?", gameManager.Player, Village));
-            ParallelEVENTGroup MainHousersSayYes = new ParallelEVENTGroup();
-            MainHousersSayYes.AddEVENT(new EVENTDialogueConfirmed("Aye", VillagerA, Village));
-            MainHousersSayYes.AddEVENT(new EVENTDialogueConfirmed("Yes ser.", villagerB, Village));
-            Verdict.AddEVENT(MainHousersSayYes);
+            ParallelEVENTGroup KingsHallrsSayYes = new ParallelEVENTGroup();
+            KingsHallrsSayYes.AddEVENT(new EVENTDialogueConfirmed("Aye", VillagerA, Village));
+            KingsHallrsSayYes.AddEVENT(new EVENTDialogueConfirmed("Yes ser.", villagerB, Village));
+            Verdict.AddEVENT(KingsHallrsSayYes);
             Verdict.AddEVENT(new EVENTDialogueConfirmed("Very well then, here is my decision:", gameManager.Player, Village));
 
             Village.AddEVENT(Verdict);
             RingMenu VerdictMenu = new RingMenu(gameManager);
             VerdictMenu.AddMenuItem(new EventItem(Village, "VillagerA", "BlankIcon", "Give it to Marek.", gameManager.UIManager));
             VerdictMenu.AddMenuItem(new EventItem(Village, "VillagerB", "BlankIcon", "Give it to Donal.", gameManager.UIManager));
-            VerdictMenu.AddMenuItem(new EventItem(Village, "BothMainHousers", "BlankIcon", "Share the calf between the two.", gameManager.UIManager));
-            VerdictMenu.AddMenuItem(new EventItem(Village, "NeitherMainHouser", "BlankIcon", "It belongs to neither of you.", gameManager.UIManager));
+            VerdictMenu.AddMenuItem(new EventItem(Village, "BothKingsHallrs", "BlankIcon", "Share the calf between the two.", gameManager.UIManager));
+            VerdictMenu.AddMenuItem(new EventItem(Village, "NeitherKingsHallr", "BlankIcon", "It belongs to neither of you.", gameManager.UIManager));
             Verdict.AddEVENT(new EVENTOpenMenu(VerdictMenu, gameManager.UIManager));
 
             SerialEVENTGroup VillageEnding = new SerialEVENTGroup("VillageEnding");
             ParallelEVENTGroup CE1 = new ParallelEVENTGroup();
             CE1.AddEVENT(new EVENTDialogueTimed("All right everyone, shows over.", gameManager.Player, Village));
-           // CE1.AddEVENT(new EVENTMoveActor(Rhett, new Vector2(800, 500), Village));
-           // CE1.AddEVENT(new EVENTMoveActor(VillagerA, new Vector2(600, 1300), Village)); CE1.AddEVENT(new EVENTMoveActor(villagerB, new Vector2(1000, 1300), Village)); CE1.AddEVENT(new EVENTMoveActor(Aide, new Vector2(800, 100), Village));
+           CE1.AddEVENT(new EVENTMoveActor(Rhett, new Vector2(800, 500), Village));
+            CE1.AddEVENT(new EVENTMoveActor(VillagerA, new Vector2(600, 1300), Village)); CE1.AddEVENT(new EVENTMoveActor(villagerB, new Vector2(1000, 1300), Village)); CE1.AddEVENT(new EVENTMoveActor(Aide, new Vector2(800, 100), Village));
             VillageEnding.AddEVENT(CE1);
-           // VillageEnding.AddEVENT(new EVENTMoveActor(Rhett, new Vector2(800, 500), Village));
+            VillageEnding.AddEVENT(new EVENTMoveActor(Rhett, new Vector2(800, 500), Village));
             VillageEnding.AddEVENT(new EVENTStateConditionONEVENT("NeutralDecision", new EVENTDialogueConfirmed("That should stop 'em from bothering you with the small stuff, your mightyfullness.", Rhett, Village), this));
             VillageEnding.AddEVENT(new EVENTStateConditionONEVENT("NeutralDecision", new EVENTDialogueConfirmed("Don't call me that, Rhett. Besides, they're supposed to bring this stuff to me.", gameManager.Player, Village), this));
             VillageEnding.AddEVENT(new EVENTStateConditionONEVENT("NeutralDecision", new EVENTDialogueConfirmed("You remember last spring with Mickel and Jon. Do you want a repeat performance?", gameManager.Player, Village), this));
@@ -265,20 +380,20 @@ namespace StoneCircle
             VillageEnding.AddEVENT(new EVENTDialogueConfirmed("Anyway, now that you're done with this, what say we start tomorrow's festivities a bit early?", Rhett, Village));
             VillageEnding.AddEVENT(new EVENTDialogueConfirmed("I could drink to that.", gameManager.Player, Village));
             ParallelEVENTGroup CE2 = new ParallelEVENTGroup();
-           // CE2.AddEVENT(new EVENTMoveActor(Rhett, new Vector2(800, 1000), Village));
+            CE2.AddEVENT(new EVENTMoveActor(Rhett, new Vector2(800, 1000), Village));
             // CE2.AddEVENT(new EVENTMoveActor(gameManager.Player, new Vector2(850, 1000), Village));
             CE2.AddEVENT(new EVENTCameraDeactivate(Village));
             CE2.AddEVENT(new EVENTChangeAmbient(Village, new Vector3(1.0f, 1.0f, .4f), .8f, 4000f));
             VillageEnding.AddEVENT(CE2);
             VillageEnding.AddEVENT(new EVENTPlayerReactivate(gameManager.Player));
-            VillageEnding.AddEVENT(new EVENTStageChange(this, "MainHouse", new Vector2(2000, 6000)));
+            VillageEnding.AddEVENT(new EVENTStageChange(this, "KingsHall", new Vector2(2000, 6000)));
 
 
             SerialEVENTGroup villagerA = new SerialEVENTGroup("VillagerA");
             villagerA.AddEVENT(new EVENTDialogueConfirmed("As it stands now, the calf is already in the posession of Donal,", gameManager.Player, Village));
             villagerA.AddEVENT(new EVENTDialogueConfirmed("I see no reason to take it from him.", gameManager.Player, Village));
 
-            villagerA.AddEVENT(MainHousersSayYes);
+            villagerA.AddEVENT(KingsHallrsSayYes);
             villagerA.AddEVENT(new EVENTOpenEvent("VillageEnding", Village));
             Village.AddEVENT(villagerA);
             SerialEVENTGroup VillagerB = new SerialEVENTGroup("VillagerB");
@@ -287,25 +402,24 @@ namespace StoneCircle
             VillagerB.AddEVENT(new EVENTDialogueConfirmed("However; he will take care of the mare in the duration.", gameManager.Player, Village));
 
 
-            VillagerB.AddEVENT(MainHousersSayYes);
+            VillagerB.AddEVENT(KingsHallrsSayYes);
             VillagerB.AddEVENT(new EVENTOpenEvent("VillageEnding", Village));
             Village.AddEVENT("VillagerB", VillagerB);
-            SerialEVENTGroup BothMainHousers = new SerialEVENTGroup("BothMainHousers");
-            BothMainHousers.AddEVENT(new EVENTDialogueConfirmed("Either work out a way to share it by the time it's born, or I'll cut it in two and you can choose sides.", gameManager.Player, Village));
-            // BothMainHousers.AddEVENT(new EVENTDialogueConfirmed("Either work out a way to share it by the time it's born, or I'll cut it in two and you can choose sides.", gameManager.Player, Village));
-            BothMainHousers.AddEVENT(new EVENTStateConditionSet("NeutralDecision", this));
+            SerialEVENTGroup BothKingsHallrs = new SerialEVENTGroup("BothKingsHallrs");
+            BothKingsHallrs.AddEVENT(new EVENTDialogueConfirmed("Either work out a way to share it by the time it's born, or I'll cut it in two and you can choose sides.", gameManager.Player, Village));
+            BothKingsHallrs.AddEVENT(new EVENTStateConditionSet("NeutralDecision", this));
 
-            BothMainHousers.AddEVENT(MainHousersSayYes);
-            BothMainHousers.AddEVENT(new EVENTOpenEvent("VillageEnding", Village));
+            BothKingsHallrs.AddEVENT(KingsHallrsSayYes);
+            BothKingsHallrs.AddEVENT(new EVENTOpenEvent("VillageEnding", Village));
 
-            Village.AddEVENT("BothMainHousers", BothMainHousers);
-            SerialEVENTGroup NeitherMainHousers = new SerialEVENTGroup("NeitherMainHousers");
-            NeitherMainHousers.AddEVENT(new EVENTDialogueConfirmed("It seems to me that you've disproved each other's claims thoroughly.", gameManager.Player, Village));
-            NeitherMainHousers.AddEVENT(new EVENTDialogueConfirmed("You'll both raise the calf, and when it matures, the MainHouse will feast", gameManager.Player, Village));
-            NeitherMainHousers.AddEVENT(new EVENTStateConditionSet("NeutralDecision", this));
-            NeitherMainHousers.AddEVENT(MainHousersSayYes);
-            NeitherMainHousers.AddEVENT(new EVENTOpenEvent("VillageEnding", Village));
-            Village.AddEVENT("NeitherMainHouser", NeitherMainHousers);
+            Village.AddEVENT("BothKingsHallrs", BothKingsHallrs);
+            SerialEVENTGroup NeitherKingsHallrs = new SerialEVENTGroup("NeitherKingsHallrs");
+            NeitherKingsHallrs.AddEVENT(new EVENTDialogueConfirmed("It seems to me that you've disproved each other's claims thoroughly.", gameManager.Player, Village));
+            NeitherKingsHallrs.AddEVENT(new EVENTDialogueConfirmed("You'll both raise the calf, and when it matures, the KingsHall will feast", gameManager.Player, Village));
+            NeitherKingsHallrs.AddEVENT(new EVENTStateConditionSet("NeutralDecision", this));
+            NeitherKingsHallrs.AddEVENT(KingsHallrsSayYes);
+            NeitherKingsHallrs.AddEVENT(new EVENTOpenEvent("VillageEnding", Village));
+            Village.AddEVENT("NeitherKingsHallr", NeitherKingsHallrs);
             Village.AddEVENT("VillageEnding", VillageEnding);
 
             // Character Wraith = new Character("Wraith", "DJ", new Vector2(800, 1000), gameManager);
@@ -353,7 +467,7 @@ namespace StoneCircle
             //PE2.AddEVENT(new EVENTChangeAmbient(Village, new Vector3(1.0f, 1.0f, 1.0f), 1f));
             //PE2.AddEVENT(new EVENTDialogueConfirmed("Hmmm... Knight to E5", Maximus, ShadyArea));
             //ShadyIntro.AddEVENT(PE2);
-            //ShadyIntro.AddEVENT(new EVENTStageChange(this, "MainHouse", new Vector2(2000, 4050)));
+            //ShadyIntro.AddEVENT(new EVENTStageChange(this, "KingsHall", new Vector2(2000, 4050)));
 
 
             //stages.Add("ShadyArea", ShadyArea);
@@ -364,160 +478,160 @@ namespace StoneCircle
             // and impose on the king etc. There are some smaller buildings/ areas for people.                              
 
             
-            stages.Add("MainHouse", new Stage("MainHouse", this));
-            stages["MainHouse"].AMBStrength = 1f;
+            stages.Add("KingsHall", new Stage("KingsHall", this));
+            stages["KingsHall"].AMBStrength = 1f;
             SetProp CenterStone = new SetProp("CenterStone", "SarcenStone2", new Vector2(2000, 2000), gameManager);
-            stages["MainHouse"].addActor("CenterStone", new SetProp("CenterStone", "SarcenStone2", new Vector2(2000, 4000), gameManager));
-            stages["MainHouse"].AddTrigger(new Trigger("CenterStone", new TriggerPlayerInteracting(CenterStone), true, false));
-            stages["MainHouse"].AddEVENT("CenterStone", new EVENTDialogueTimed("This is the Lairdsstone. One day my name will be engraved here, along with the kings of old.", gameManager.Player, stages["MainHouse"], 5000f));
-            for (int i = 0; i < 72; i++) { stages["MainHouse"].addActor("SarcenStone" + i, new SetProp("Sarcen" + i, "SarcenStoneSmall", 2000 * (Vector2.One + Vector2.UnitY) + 1900 * new Vector2((float)Math.Cos(10 * i), 2 * (float)Math.Sin(10 * i)), gameManager)); }
+            stages["KingsHall"].addActor("CenterStone", new SetProp("CenterStone", "SarcenStone2", new Vector2(2000, 4000), gameManager));
+            stages["KingsHall"].AddTrigger(new Trigger("CenterStone", new TriggerPlayerInteracting(CenterStone), true, false));
+            stages["KingsHall"].AddEVENT("CenterStone", new EVENTDialogueTimed("This is the Lairdsstone. One day my name will be engraved here, along with the kings of old.", gameManager.Player, stages["KingsHall"], 5000f));
+            for (int i = 0; i < 72; i++) { stages["KingsHall"].addActor("SarcenStone" + i, new SetProp("Sarcen" + i, "SarcenStoneSmall", 2000 * (Vector2.One + Vector2.UnitY) + 1900 * new Vector2((float)Math.Cos(10 * i), 2 * (float)Math.Sin(10 * i)), gameManager)); }
 
-            stages["MainHouse"].addActor("Shack1", new SetProp("Shack1", "Shack", new Vector2(600, 4000), gameManager));
-            stages["MainHouse"].addActor("Shack2", new SetProp("Shack2", "Shack", new Vector2(900, 4000), gameManager));
-            stages["MainHouse"].addActor("Shack3", new SetProp("Shack3", "Shack", new Vector2(1200, 4000), gameManager));
-            stages["MainHouse"].addActor("Shack4", new SetProp("Shack4", "Shack", new Vector2(300, 4000), gameManager));
-            stages["MainHouse"].addActor("Shack5", new SetProp("Shack5", "Shack", new Vector2(3700, 4000), gameManager));
-            stages["MainHouse"].addActor("Shack6", new SetProp("Shack6", "Shack", new Vector2(2800, 4000), gameManager));
-            stages["MainHouse"].addActor("Shack7", new SetProp("Shack7", "Shack", new Vector2(3100, 4000), gameManager));
-            stages["MainHouse"].addActor("Shack8", new SetProp("Shack8", "Shack", new Vector2(3400, 4000), gameManager));
+            stages["KingsHall"].addActor("Shack1", new SetProp("Shack1", "Shack", new Vector2(600, 4000), gameManager));
+            stages["KingsHall"].addActor("Shack2", new SetProp("Shack2", "Shack", new Vector2(900, 4000), gameManager));
+            stages["KingsHall"].addActor("Shack3", new SetProp("Shack3", "Shack", new Vector2(1200, 4000), gameManager));
+            stages["KingsHall"].addActor("Shack4", new SetProp("Shack4", "Shack", new Vector2(300, 4000), gameManager));
+            stages["KingsHall"].addActor("Shack5", new SetProp("Shack5", "Shack", new Vector2(3700, 4000), gameManager));
+            stages["KingsHall"].addActor("Shack6", new SetProp("Shack6", "Shack", new Vector2(2800, 4000), gameManager));
+            stages["KingsHall"].addActor("Shack7", new SetProp("Shack7", "Shack", new Vector2(3100, 4000), gameManager));
+            stages["KingsHall"].addActor("Shack8", new SetProp("Shack8", "Shack", new Vector2(3400, 4000), gameManager));
 
-            stages["MainHouse"].addActor("Shack11", new SetProp("Shack11", "Shack", new Vector2(700, 3400), gameManager));
-            stages["MainHouse"].addActor("Shack12", new SetProp("Shack12", "Shack", new Vector2(1000, 3400), gameManager));
-            stages["MainHouse"].addActor("Shack13", new SetProp("Shack13", "Shack", new Vector2(1300, 3400), gameManager));
-            stages["MainHouse"].addActor("Shack14", new SetProp("Shack14", "Shack", new Vector2(400, 3400), gameManager));
-            stages["MainHouse"].addActor("Shack15", new SetProp("Shack15", "Shack", new Vector2(3600, 3400), gameManager));
-            stages["MainHouse"].addActor("Shack16", new SetProp("Shack16", "Shack", new Vector2(2700, 3400), gameManager));
-            stages["MainHouse"].addActor("Shack17", new SetProp("Shack17", "Shack", new Vector2(3000, 3400), gameManager));
-            stages["MainHouse"].addActor("Shack18", new SetProp("Shack18", "Shack", new Vector2(3300, 3400), gameManager));
+            stages["KingsHall"].addActor("Shack11", new SetProp("Shack11", "Shack", new Vector2(700, 3400), gameManager));
+            stages["KingsHall"].addActor("Shack12", new SetProp("Shack12", "Shack", new Vector2(1000, 3400), gameManager));
+            stages["KingsHall"].addActor("Shack13", new SetProp("Shack13", "Shack", new Vector2(1300, 3400), gameManager));
+            stages["KingsHall"].addActor("Shack14", new SetProp("Shack14", "Shack", new Vector2(400, 3400), gameManager));
+            stages["KingsHall"].addActor("Shack15", new SetProp("Shack15", "Shack", new Vector2(3600, 3400), gameManager));
+            stages["KingsHall"].addActor("Shack16", new SetProp("Shack16", "Shack", new Vector2(2700, 3400), gameManager));
+            stages["KingsHall"].addActor("Shack17", new SetProp("Shack17", "Shack", new Vector2(3000, 3400), gameManager));
+            stages["KingsHall"].addActor("Shack18", new SetProp("Shack18", "Shack", new Vector2(3300, 3400), gameManager));
 
-            stages["MainHouse"].addActor("Shack21", new SetProp("Shack21", "Shack", new Vector2(700, 4600), gameManager));
-            stages["MainHouse"].addActor("Shack22", new SetProp("Shack22", "Shack", new Vector2(1000, 4600), gameManager));
-            stages["MainHouse"].addActor("Shack23", new SetProp("Shack23", "Shack", new Vector2(1300, 4600), gameManager));
-            stages["MainHouse"].addActor("Shack24", new SetProp("Shack24", "Shack", new Vector2(400, 4600), gameManager));
-            stages["MainHouse"].addActor("Shack25", new SetProp("Shack25", "Shack", new Vector2(3600, 4600), gameManager));
-            stages["MainHouse"].addActor("Shack26", new SetProp("Shack26", "Shack", new Vector2(2700, 4600), gameManager));
-            stages["MainHouse"].addActor("Shack27", new SetProp("Shack27", "Shack", new Vector2(3000, 4600), gameManager));
-            stages["MainHouse"].addActor("Shack28", new SetProp("Shack28", "Shack", new Vector2(3300, 4600), gameManager));
-
-
-            stages["MainHouse"].addActor("Shack31", new SetProp("Shack31", "Shack", new Vector2(900, 5200), gameManager));
-            stages["MainHouse"].addActor("Shack32", new SetProp("Shack32", "Shack", new Vector2(1200, 5200), gameManager));
-            stages["MainHouse"].addActor("Shack33", new SetProp("Shack33", "Shack", new Vector2(1500, 5200), gameManager));
-            stages["MainHouse"].addActor("Shack34", new SetProp("Shack34", "Shack", new Vector2(600, 5200), gameManager));
-            stages["MainHouse"].addActor("Shack35", new SetProp("Shack35", "Shack", new Vector2(3400, 5200), gameManager));
-            stages["MainHouse"].addActor("Shack36", new SetProp("Shack36", "Shack", new Vector2(2500, 5200), gameManager));
-            stages["MainHouse"].addActor("Shack37", new SetProp("Shack37", "Shack", new Vector2(2800, 5200), gameManager));
-            stages["MainHouse"].addActor("Shack38", new SetProp("Shack38", "Shack", new Vector2(3100, 5200), gameManager));
+            stages["KingsHall"].addActor("Shack21", new SetProp("Shack21", "Shack", new Vector2(700, 4600), gameManager));
+            stages["KingsHall"].addActor("Shack22", new SetProp("Shack22", "Shack", new Vector2(1000, 4600), gameManager));
+            stages["KingsHall"].addActor("Shack23", new SetProp("Shack23", "Shack", new Vector2(1300, 4600), gameManager));
+            stages["KingsHall"].addActor("Shack24", new SetProp("Shack24", "Shack", new Vector2(400, 4600), gameManager));
+            stages["KingsHall"].addActor("Shack25", new SetProp("Shack25", "Shack", new Vector2(3600, 4600), gameManager));
+            stages["KingsHall"].addActor("Shack26", new SetProp("Shack26", "Shack", new Vector2(2700, 4600), gameManager));
+            stages["KingsHall"].addActor("Shack27", new SetProp("Shack27", "Shack", new Vector2(3000, 4600), gameManager));
+            stages["KingsHall"].addActor("Shack28", new SetProp("Shack28", "Shack", new Vector2(3300, 4600), gameManager));
 
 
-            stages["MainHouse"].addActor("Shack41", new SetProp("Shack41", "Shack", new Vector2(900, 2800), gameManager));
-            stages["MainHouse"].addActor("Shack42", new SetProp("Shack42", "Shack", new Vector2(1200, 2800), gameManager));
-            stages["MainHouse"].addActor("Shack43", new SetProp("Shack43", "Shack", new Vector2(1500, 2800), gameManager));
-            stages["MainHouse"].addActor("Shack44", new SetProp("Shack44", "Shack", new Vector2(600, 2800), gameManager));
-            stages["MainHouse"].addActor("Shack45", new SetProp("Shack45", "Shack", new Vector2(3400, 2800), gameManager));
-            stages["MainHouse"].addActor("Shack46", new SetProp("Shack46", "Shack", new Vector2(2500, 2800), gameManager));
-            stages["MainHouse"].addActor("Shack47", new SetProp("Shack47", "Shack", new Vector2(2800, 2800), gameManager));
-            stages["MainHouse"].addActor("Shack48", new SetProp("Shack48", "Shack", new Vector2(3100, 2800), gameManager));
-            stages["MainHouse"].AMBColor = new Vector3(.5f, .5f, 1f);
-            //  Follower Rhett = new Follower("Follower", new Vector2(2000, 4000), stages["MainHouse"], gameManager);
+            stages["KingsHall"].addActor("Shack31", new SetProp("Shack31", "Shack", new Vector2(900, 5200), gameManager));
+            stages["KingsHall"].addActor("Shack32", new SetProp("Shack32", "Shack", new Vector2(1200, 5200), gameManager));
+            stages["KingsHall"].addActor("Shack33", new SetProp("Shack33", "Shack", new Vector2(1500, 5200), gameManager));
+            stages["KingsHall"].addActor("Shack34", new SetProp("Shack34", "Shack", new Vector2(600, 5200), gameManager));
+            stages["KingsHall"].addActor("Shack35", new SetProp("Shack35", "Shack", new Vector2(3400, 5200), gameManager));
+            stages["KingsHall"].addActor("Shack36", new SetProp("Shack36", "Shack", new Vector2(2500, 5200), gameManager));
+            stages["KingsHall"].addActor("Shack37", new SetProp("Shack37", "Shack", new Vector2(2800, 5200), gameManager));
+            stages["KingsHall"].addActor("Shack38", new SetProp("Shack38", "Shack", new Vector2(3100, 5200), gameManager));
+
+
+            stages["KingsHall"].addActor("Shack41", new SetProp("Shack41", "Shack", new Vector2(900, 2800), gameManager));
+            stages["KingsHall"].addActor("Shack42", new SetProp("Shack42", "Shack", new Vector2(1200, 2800), gameManager));
+            stages["KingsHall"].addActor("Shack43", new SetProp("Shack43", "Shack", new Vector2(1500, 2800), gameManager));
+            stages["KingsHall"].addActor("Shack44", new SetProp("Shack44", "Shack", new Vector2(600, 2800), gameManager));
+            stages["KingsHall"].addActor("Shack45", new SetProp("Shack45", "Shack", new Vector2(3400, 2800), gameManager));
+            stages["KingsHall"].addActor("Shack46", new SetProp("Shack46", "Shack", new Vector2(2500, 2800), gameManager));
+            stages["KingsHall"].addActor("Shack47", new SetProp("Shack47", "Shack", new Vector2(2800, 2800), gameManager));
+            stages["KingsHall"].addActor("Shack48", new SetProp("Shack48", "Shack", new Vector2(3100, 2800), gameManager));
+            stages["KingsHall"].AMBColor = new Vector3(.5f, .5f, 1f);
+            //  Follower Rhett = new Follower("Follower", new Vector2(2000, 4000), stages["KingsHall"], gameManager);
 
 
             ParallelEVENTGroup MHI1 = new ParallelEVENTGroup();
 
             ParallelEVENTGroup MHIinit = new ParallelEVENTGroup();
-            SerialEVENTGroup MainHouseIntro = new SerialEVENTGroup("Introduction");
-             MHIinit.AddEVENT(new EVENTActorEnterStage(stages["MainHouse"], "Rhett", this, new Vector2(2100, 6000)));
-             MHI1.AddEVENT(new EVENTActorEquipItem(stages["MainHouse"], "Rhett", this, new Lantern(Rhett)));
+            SerialEVENTGroup KingsHallIntro = new SerialEVENTGroup("Introduction");
+             MHIinit.AddEVENT(new EVENTActorEnterStage(stages["KingsHall"], "Rhett", this, new Vector2(2100, 6000)));
+             MHI1.AddEVENT(new EVENTActorEquipItem(stages["KingsHall"], "Rhett", this, new Lantern(Rhett)));
               MHIinit.AddEVENT(new EVENTPlayerReactivate(gameManager.Player));
-              MHI1.AddEVENT(new EVENTActorEquipItem(stages["MainHouse"], "Player", this, new Lantern(gameManager.Player)));
+              MHI1.AddEVENT(new EVENTActorEquipItem(stages["KingsHall"], "Player", this, new Lantern(gameManager.Player)));
               MHI1.AddEVENT(new EVENTActorAddItem(gameManager.Player, new Lantern(gameManager.Player)));
           
             
-             MHI1.AddEVENT(new EVENTMoveActor(Rhett, new Vector2(2050, 3000), stages["MainHouse"]));
-            //MHI1.AddEVENT(new EVENTMoveActor(gameManager.Player, new Vector2(2000, 3000), stages["MainHouse"]));
-            MainHouseIntro.AddEVENT(MHIinit);
-            MainHouseIntro.AddEVENT(MHI1);
-            stages["MainHouse"].AddEVENT("Introduction", MainHouseIntro);
-            MainHouseIntro.AddEVENT(new EVENTDialogueConfirmed("We're talking.... Oh No! The king's manor is on fire!", Rhett, stages["MainHouse"]));
-            MainHouseIntro.AddEVENT(new EVENTCameraDeactivate(stages["MainHouse"]));
-           // MainHouseIntro.AddEVENT(new EVENTMoveCamera(stages["MainHouse"], new Vector2(800, 2000), 1000f));
-           // MainHouseIntro.AddEVENT(new EVENTMoveActor(Rhett, new Vector2(2200, 2000), stages["MainHouse"]));
-           // MainHouseIntro.AddEVENT(new EVENTMoveActor(Rhett, new Vector2(2200, 1000), stages["MainHouse"]));
+             MHI1.AddEVENT(new EVENTMoveActor(Rhett, new Vector2(2050, 3000), stages["KingsHall"]));
+            //MHI1.AddEVENT(new EVENTMoveActor(gameManager.Player, new Vector2(2000, 3000), stages["KingsHall"]));
+            KingsHallIntro.AddEVENT(MHIinit);
+            KingsHallIntro.AddEVENT(MHI1);
+            stages["KingsHall"].AddEVENT("Introduction", KingsHallIntro);
+            KingsHallIntro.AddEVENT(new EVENTDialogueConfirmed("We're talking.... Oh No! The king's manor is on fire!", Rhett, stages["KingsHall"]));
+            KingsHallIntro.AddEVENT(new EVENTCameraDeactivate(stages["KingsHall"]));
+           // KingsHallIntro.AddEVENT(new EVENTMoveCamera(stages["KingsHall"], new Vector2(800, 2000), 1000f));
+           // KingsHallIntro.AddEVENT(new EVENTMoveActor(Rhett, new Vector2(2200, 2000), stages["KingsHall"]));
+           // KingsHallIntro.AddEVENT(new EVENTMoveActor(Rhett, new Vector2(2200, 1000), stages["KingsHall"]));
 
-            //  stages["MainHouse"].AddTrigger(new Trigger("KingDies", new TriggerPlayerBoxCondition(new BoundingBox(new Vector3(1600, 400, 0), new Vector3(2400, 1200, 10)), gameManager.Player), true, true));
+            //  stages["KingsHall"].AddTrigger(new Trigger("KingDies", new TriggerPlayerBoxCondition(new BoundingBox(new Vector3(1600, 400, 0), new Vector3(2400, 1200, 10)), gameManager.Player), true, true));
 
             SerialEVENTGroup KingDies = new SerialEVENTGroup("KingDies");
             ParallelEVENTGroup PD1 = new ParallelEVENTGroup();
-            // PD1.AddEVENT(new EVENTMoveActor(Wraith, new Vector2(200, 2400), stages["MainHouse"]));
+            // PD1.AddEVENT(new EVENTMoveActor(Wraith, new Vector2(200, 2400), stages["KingsHall"]));
             SerialEVENTGroup KD1A = new SerialEVENTGroup("KD1A");
-            KD1A.AddEVENT(new EVENTDialogueConfirmed("Hunh?", gameManager.Player, stages["MainHouse"]));
-            KD1A.AddEVENT(new EVENTDialogueConfirmed("What was that", gameManager.Player, stages["MainHouse"]));
-            KD1A.AddEVENT(new EVENTDialogueConfirmed("What was what?", Rhett, stages["MainHouse"]));
-            KD1A.AddEVENT(new EVENTDialogueConfirmed("I thought I some something fleeing the building.", gameManager.Player, stages["MainHouse"]));
-            KD1A.AddEVENT(new EVENTDialogueConfirmed("You're just jumping at shadows.", Rhett, stages["MainHouse"]));
-            KD1A.AddEVENT(new EVENTDialogueTimed("Sooo...", Rhett, stages["MainHouse"]));
-            KD1A.AddEVENT(new EVENTDialogueConfirmed("Looks like the old king is dead. That sucks.", Rhett, stages["MainHouse"]));
-            KD1A.AddEVENT(new EVENTDialogueConfirmed("Yea, it does. Rhett I need you to go get the Crone.", gameManager.Player, stages["MainHouse"]));
-            KD1A.AddEVENT(new EVENTDialogueConfirmed("Do I HAVE to?You know we don't exaclty see eye to eye.", Rhett, stages["MainHouse"]));
-            KD1A.AddEVENT(new EVENTDialogueConfirmed("I need to be here, otherwise I'd go myself. We NEED her right now, much as you dislike her.", gameManager.Player, stages["MainHouse"]));
-            KD1A.AddEVENT(new EVENTDialogueConfirmed("Fine. I'll get her, but you OWE me for this.", Rhett, stages["MainHouse"]));
-            KD1A.AddEVENT(new EVENTMoveActor(Rhett, new Vector2(2200, 2000), stages["MainHouse"]));
+            KD1A.AddEVENT(new EVENTDialogueConfirmed("Hunh?", gameManager.Player, stages["KingsHall"]));
+            KD1A.AddEVENT(new EVENTDialogueConfirmed("What was that", gameManager.Player, stages["KingsHall"]));
+            KD1A.AddEVENT(new EVENTDialogueConfirmed("What was what?", Rhett, stages["KingsHall"]));
+            KD1A.AddEVENT(new EVENTDialogueConfirmed("I thought I some something fleeing the building.", gameManager.Player, stages["KingsHall"]));
+            KD1A.AddEVENT(new EVENTDialogueConfirmed("You're just jumping at shadows.", Rhett, stages["KingsHall"]));
+            KD1A.AddEVENT(new EVENTDialogueTimed("Sooo...", Rhett, stages["KingsHall"]));
+            KD1A.AddEVENT(new EVENTDialogueConfirmed("Looks like the old king is dead. That sucks.", Rhett, stages["KingsHall"]));
+            KD1A.AddEVENT(new EVENTDialogueConfirmed("Yea, it does. Rhett I need you to go get the Crone.", gameManager.Player, stages["KingsHall"]));
+            KD1A.AddEVENT(new EVENTDialogueConfirmed("Do I HAVE to?You know we don't exaclty see eye to eye.", Rhett, stages["KingsHall"]));
+            KD1A.AddEVENT(new EVENTDialogueConfirmed("I need to be here, otherwise I'd go myself. We NEED her right now, much as you dislike her.", gameManager.Player, stages["KingsHall"]));
+            KD1A.AddEVENT(new EVENTDialogueConfirmed("Fine. I'll get her, but you OWE me for this.", Rhett, stages["KingsHall"]));
+            KD1A.AddEVENT(new EVENTMoveActor(Rhett, new Vector2(2200, 2000), stages["KingsHall"]));
             //KD1A.AddEVENT(new EVENTActorEquipItem(Rhett, null));
-            KD1A.AddEVENT(new EVENTChangeAmbient(stages["MainHouse"], new Vector3(1.0f, 1.0f, 1.0f), 0, 10000f));
+            KD1A.AddEVENT(new EVENTChangeAmbient(stages["KingsHall"], new Vector3(1.0f, 1.0f, 1.0f), 0, 10000f));
 
             PD1.AddEVENT(KD1A);
             Character Elysia = new Character("Elysia", "ElysiaSheet", new Vector2(2000, 3000), gameManager);
-            stages["MainHouse"].AddActor(Elysia, new Vector2(3500, 2000));
-            PD1.AddEVENT(new EVENTMoveActor(Elysia, new Vector2(2300, 2200), stages["MainHouse"]));
+            stages["KingsHall"].AddActor(Elysia, new Vector2(3500, 2000));
+            PD1.AddEVENT(new EVENTMoveActor(Elysia, new Vector2(2300, 2200), stages["KingsHall"]));
             SerialEVENTGroup KD2A = new SerialEVENTGroup("KD2A");
-            KD2A.AddEVENT(new EVENTMoveCamera(stages["MainHouse"], new Vector2(2000, 2000), 3000f));
+            KD2A.AddEVENT(new EVENTMoveCamera(stages["KingsHall"], new Vector2(2000, 2000), 3000f));
             KD2A.AddEVENT(new EVENTDramaticPause(3000f));
             KD2A.AddEVENT(new EVENTStateConditionSet("KingsDead", this));
 
             KingDies.AddEVENT(PD1);
             KingDies.AddEVENT(KD2A);
-            stages["MainHouse"].AddEVENT(KingDies);
+            stages["KingsHall"].AddEVENT(KingDies);
 
-            // stages["MainHouse"].AddTrigger(new Trigger("MeetElysia",
+            // stages["KingsHall"].AddTrigger(new Trigger("MeetElysia",
             //new TriggerANDCondition(new TriggerStateCondition(this, "KingsDead"),
             //new TriggerPlayerBoxCondition(new BoundingBox(new Vector3(1700, 1700, 0), new Vector3(2300, 2300, 10)), gameManager.Player)), true, true));
             SerialEVENTGroup MeetElysia = new SerialEVENTGroup("MeetElysia");
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Elysia? Where's the old lady?", gameManager.Player, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Hi Eimar, it's nice to see you too.", Elysia, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Sorry Elysia, I need to speak to the Crone, I don't have time to chat.", gameManager.Player, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueTimed("Eimar, well, the Crone wasn't able to come and sent Elysia to speak in her stead.", Rhett, stages["MainHouse"], 80f));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("I can speak for myself you lummox!", Elysia, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("My master sent me to attend to the details, she'll be along soon enough.", Elysia, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Now if you don't have anymore questions I need to attend to the body", Elysia, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Wait, before you go I have some questions.", gameManager.Player, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Fine, but be quick about it.", Elysia, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("In the manor I saw a strange creature.", gameManager.Player, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("It was as tall as a man, with dark fur and a gleaming, eyeless skull where it's head should rightly be.", gameManager.Player, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("With two claws as long as a boys arm at the end of it's upper limbs.", gameManager.Player, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("I'm telling you, you were jumping at shadows anda  bit too much ale.", Rhett, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("That sounds like a Wendigo, a Spirit of Shadow.", Elysia, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Spirits? You might use that non-sense tofrighten the young, but don't expect us to fall for it.", Rhett, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("You would be wise to just forget about it and chalk it up to bad luck and good beer.", Rhett, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("The Spirits are not to be trifled with!", Elysia, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Least of all a Spirit of Shadow.", Elysia, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("We must be careful to keep this thing at Bay.", Elysia, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("How can we keep it from attacking the MainHouse?", gameManager.Player, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("We will be safe enough during the day, Wendigo cannot stand light.", Elysia, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("At night we'll need to light fires around the MainHouse, they fear fire.", Elysia, stages["MainHouse"]));
-            //  MeetElysia.AddEVENT(new EVENTDialogueConfirmed("That seems like a lot of work.", , stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Why don't we just get a hunting party together during the day and find it then?", gameManager.Player, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("You can't just kill Spirits as you would a man!", Elysia, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Mundane weapons cannot harm them, for they are not of this world.", Elysia, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("So why don't you just cast a spell and smite it with holy fire or something 'O Powerful One.'", Rhett, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Oh, shut up!", Elysia, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("So how CAN we kill it.", gameManager.Player, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("The Sword of the King has powerful enchantments that allow it to be used against the Otherworldly.", Elysia, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("But only in the hands of the king.", Elysia, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Well, there you go. Problem solved.", Rhett, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Sorry to put it so bluntly, but now that Rymar-King's dead, you're the King now Eimar.", Rhett, stages["MainHouse"]));
-            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Which means you can now truely wield the 'O Mighty Goblin-Whacker'", Rhett, stages["MainHouse"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Elysia? Where's the old lady?", gameManager.Player, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Hi Eimar, it's nice to see you too.", Elysia, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Sorry Elysia, I need to speak to the Crone, I don't have time to chat.", gameManager.Player, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueTimed("Eimar, well, the Crone wasn't able to come and sent Elysia to speak in her stead.", Rhett, stages["KingsHall"], 80f));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("I can speak for myself you lummox!", Elysia, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("My master sent me to attend to the details, she'll be along soon enough.", Elysia, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Now if you don't have anymore questions I need to attend to the body", Elysia, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Wait, before you go I have some questions.", gameManager.Player, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Fine, but be quick about it.", Elysia, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("In the manor I saw a strange creature.", gameManager.Player, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("It was as tall as a man, with dark fur and a gleaming, eyeless skull where it's head should rightly be.", gameManager.Player, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("With two claws as long as a boys arm at the end of it's upper limbs.", gameManager.Player, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("I'm telling you, you were jumping at shadows anda  bit too much ale.", Rhett, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("That sounds like a Wendigo, a Spirit of Shadow.", Elysia, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Spirits? You might use that non-sense tofrighten the young, but don't expect us to fall for it.", Rhett, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("You would be wise to just forget about it and chalk it up to bad luck and good beer.", Rhett, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("The Spirits are not to be trifled with!", Elysia, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Least of all a Spirit of Shadow.", Elysia, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("We must be careful to keep this thing at Bay.", Elysia, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("How can we keep it from attacking the KingsHall?", gameManager.Player, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("We will be safe enough during the day, Wendigo cannot stand light.", Elysia, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("At night we'll need to light fires around the KingsHall, they fear fire.", Elysia, stages["KingsHall"]));
+            //  MeetElysia.AddEVENT(new EVENTDialogueConfirmed("That seems like a lot of work.", , stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Why don't we just get a hunting party together during the day and find it then?", gameManager.Player, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("You can't just kill Spirits as you would a man!", Elysia, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Mundane weapons cannot harm them, for they are not of this world.", Elysia, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("So why don't you just cast a spell and smite it with holy fire or something 'O Powerful One.'", Rhett, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Oh, shut up!", Elysia, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("So how CAN we kill it.", gameManager.Player, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("The Sword of the King has powerful enchantments that allow it to be used against the Otherworldly.", Elysia, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("But only in the hands of the king.", Elysia, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Well, there you go. Problem solved.", Rhett, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Sorry to put it so bluntly, but now that Rymar-King's dead, you're the King now Eimar.", Rhett, stages["KingsHall"]));
+            MeetElysia.AddEVENT(new EVENTDialogueConfirmed("Which means you can now truely wield the 'O Mighty Goblin-Whacker'", Rhett, stages["KingsHall"]));
 
-            stages["MainHouse"].AddEVENT("MeetElysia", MeetElysia);
+            stages["KingsHall"].AddEVENT("MeetElysia", MeetElysia);
 
 
             // This is the "Cairn of Dead Kings". It's a cremation and funereal mound for the kings of old.
@@ -615,7 +729,7 @@ namespace StoneCircle
             stages["Cairn of Dead Kings"].AddEVENT(WarpOut);
             stages["Cairn of Dead Kings"].AddTrigger(new Trigger("Warp to Cairn", new TriggerANDCondition(new TriggerActorHasProperty(gameManager.Player, "Ancestor's Blessing"), new TriggerPlayerBoxCondition(new CollisionBox(new Vector3(1200, 800, 0), 200f, 300f, 50f), gameManager.Player)), true, false));
 
-            stages["Cairn of Dead Kings"].AddActor(new Character("Dead King Rymar", "body1", new Vector2(3200, 2900), gameManager), new Vector2(1200, 2900));
+            stages["Cairn of Dead Kings"].AddActor(new Character("Dead King Rymar", "OldMan", new Vector2(3200, 2900), gameManager), new Vector2(1200, 2900));
 
 
 
@@ -751,7 +865,7 @@ namespace StoneCircle
 
 
             // This is the shack in the woods where Elysia lives. It also serves as the entrance to the ritual grounds.
-
+                     
             stages.Add("Forest", new Stage("Forest", this));
             stages["Forest"].adjustRegionCounts(2, 3);
             stages["Forest"].AMBStrength = 0f;
@@ -765,7 +879,7 @@ namespace StoneCircle
                     x = rand.Next(25, 125);
                     y = rand.Next(25, 125);
 
-                    stages["Forest"].addActor("Tree" + i + "_" + j, new Tree(gameManager, 150 * new Vector2(i, 2 * j) + 4096 * new Vector2(1,2)+ new Vector2(x, y)));
+                    stages["Forest"].addActor("Tree" + i + "_" + j, new Tree(gameManager, 150 * new Vector2(i, 2 * j) + 4096 * new Vector2(1, 2) + new Vector2(x, y)));
 
                 }
             }
@@ -782,7 +896,7 @@ namespace StoneCircle
             stages["Forest"].removeActor("Tree8_5");
 
             for (int i = 0; i < 5; i++) stages["Forest"].removeActor("Tree4_" + i);
-            for (int i = 9; i < 15; i++) stages["Forest"].removeActor("Tree" + i +"_5");
+            for (int i = 9; i < 15; i++) stages["Forest"].removeActor("Tree" + i + "_5");
 
             stages["Forest"].addActor("Elysia's Shack", new SetProp("Elysia's Shack", "Shack", new Vector2(5096, 9215), gameManager));
             stages["Forest"].addActor("Crone's Shack", new SetProp("Crone's Shack", "Shack", new Vector2(5426, 9412), gameManager));
@@ -796,7 +910,7 @@ namespace StoneCircle
             ConversationWithElysia.AddEVENT(new EVENTDialogueConfirmed("HEY!", gameManager.Player, stages["Forest"]));
             ConversationWithElysia.AddEVENT(new EVENTDialogueConfirmed("Wake up in there! It's an emergency.", gameManager.Player, stages["Forest"]));
             ConversationWithElysia.AddEVENT(new EVENTDramaticPause(4000f));
-            ConversationWithElysia.AddEVENT(new EVENTDialogueConfirmed("HEY!", gameManager.Player, stages["Forest"]));            
+            ConversationWithElysia.AddEVENT(new EVENTDialogueConfirmed("HEY!", gameManager.Player, stages["Forest"]));
             ConversationWithElysia.AddEVENT(new EVENTDialogueConfirmed("I'm awake already! Stop banging on my house!", stages["Forest"].GetActor("Elysia's Shack"), stages["Forest"]));
             ConversationWithElysia.AddEVENT(new EVENTDialogueConfirmed("Well hurry it up! I don't have all night!", gameManager.Player, stages["Forest"]));
             ConversationWithElysia.AddEVENT(new EVENTDialogueConfirmed("I brought you into this world, Rhett, son-of-Arlan. Bang on my house one more time and I'll send you out again!", stages["Forest"].GetActor("Elysia's Shack"), stages["Forest"]));
@@ -804,7 +918,7 @@ namespace StoneCircle
             ConversationWithElysia.AddEVENT(new EVENTActorEnterStage(stages["Forest"], "Elysia", this, new Vector2(5242, 9238)));
             ConversationWithElysia.AddEVENT(new EVENTDialogueConfirmed("Why are you here?", Elysia, stages["Forest"]));
             ConversationWithElysia.AddEVENT(new EVENTDialogueConfirmed("'Brought me into this world?' Do you think I was born yesterday? Everyone knows you've only got a season on me. ", gameManager.Player, stages["Forest"]));
-            
+
             stages["Forest"].AddEVENT(ConversationWithElysia);
 
 
@@ -813,10 +927,10 @@ namespace StoneCircle
             stages["Forest"].AMBStrength = .2f;
 
             x = 0; y = 0;
-         
 
-           bool[,][] forestBox = new bool[20,20][];
-          for (int i = 0; i<20; i++)
+
+            bool[,][] forestBox = new bool[20, 20][];
+            for (int i = 0; i < 20; i++)
             {
                 for (int j = 0; j < 20; j++)
                 {
@@ -824,16 +938,16 @@ namespace StoneCircle
                 }
             }
 
-          List<Vector2> adjacentCells = new List<Vector2>();
-          List<Vector2> containedCells = new List<Vector2>();
-          List<Vector2> tempCells = new List<Vector2>();
+            List<Vector2> adjacentCells = new List<Vector2>();
+            List<Vector2> containedCells = new List<Vector2>();
+            List<Vector2> tempCells = new List<Vector2>();
 
             containedCells.Add(new Vector2(14, 19));
             adjacentCells.Add(new Vector2(14, 18));
             adjacentCells.Add(new Vector2(13, 19));
             adjacentCells.Add(new Vector2(15, 19));
             forestBox[17, 19][3] = false;
-            
+
 
 
             while (adjacentCells.Count > 0)
@@ -843,16 +957,16 @@ namespace StoneCircle
                 containedCells.Add(next);
                 tempCells.Clear();
                 if (containedCells.Contains(new Vector2(next.X - 1, next.Y))) tempCells.Add(new Vector2(next.X - 1, next.Y));
-                else if (next.X > 0) adjacentCells.Add(new Vector2(next.X-1, next.Y));
-                
-                if (containedCells.Contains(new Vector2(next.X , next.Y-1))) tempCells.Add(new Vector2(next.X, next.Y-1));
-                else if (next.Y > 0) adjacentCells.Add(new Vector2(next.X, next.Y-1));
-                
-                if (containedCells.Contains(new Vector2(next.X +1, next.Y))) tempCells.Add(new Vector2(next.X +1, next.Y));
-                else if (next.X < 19) adjacentCells.Add(new Vector2(next.X+1, next.Y));
-                
-                if (containedCells.Contains(new Vector2(next.X , next.Y+1))) tempCells.Add(new Vector2(next.X, next.Y+1));
-                else if (next.Y < 19) adjacentCells.Add(new Vector2(next.X, next.Y+1));
+                else if (next.X > 0) adjacentCells.Add(new Vector2(next.X - 1, next.Y));
+
+                if (containedCells.Contains(new Vector2(next.X, next.Y - 1))) tempCells.Add(new Vector2(next.X, next.Y - 1));
+                else if (next.Y > 0) adjacentCells.Add(new Vector2(next.X, next.Y - 1));
+
+                if (containedCells.Contains(new Vector2(next.X + 1, next.Y))) tempCells.Add(new Vector2(next.X + 1, next.Y));
+                else if (next.X < 19) adjacentCells.Add(new Vector2(next.X + 1, next.Y));
+
+                if (containedCells.Contains(new Vector2(next.X, next.Y + 1))) tempCells.Add(new Vector2(next.X, next.Y + 1));
+                else if (next.Y < 19) adjacentCells.Add(new Vector2(next.X, next.Y + 1));
 
                 Vector2 check = next - tempCells[rand.Next(tempCells.Count)];
                 if (check == -Vector2.UnitX)
@@ -860,34 +974,37 @@ namespace StoneCircle
                     forestBox[(int)next.X, (int)next.Y][3] = false;
                     if (next.X < 19) forestBox[(int)next.X + 1, (int)next.Y][1] = false;
 
-                } else  if (check == Vector2.UnitX)
+                }
+                else if (check == Vector2.UnitX)
                 {
                     forestBox[(int)next.X, (int)next.Y][1] = false;
                     if (next.X > 0) forestBox[(int)next.X - 1, (int)next.Y][3] = false;
 
-                } else  if (check == -Vector2.UnitY)
+                }
+                else if (check == -Vector2.UnitY)
                 {
                     forestBox[(int)next.X, (int)next.Y][2] = false;
-                    if (next.Y < 19 ) forestBox[(int)next.X, (int)next.Y + 1][0] = false;
+                    if (next.Y < 19) forestBox[(int)next.X, (int)next.Y + 1][0] = false;
 
-                } else  if (check == Vector2.UnitY)
+                }
+                else if (check == Vector2.UnitY)
                 {
-                    forestBox[(int)next.X, (int)next.Y][0] = false ;
+                    forestBox[(int)next.X, (int)next.Y][0] = false;
                     if (next.Y > 0) forestBox[(int)next.X, (int)next.Y - 1][2] = false;
 
-                } 
+                }
 
 
             }
 
 
 
-                    for (int i = 0; i < 20; i++)
-                    {
-                        for (int j = 0; j < 20; j++)
-                        {
-                            
-                              for (int k = rand.Next(1, 4); k > 0; k--)
+            for (int i = 0; i < 20; i++)
+            {
+                for (int j = 0; j < 20; j++)
+                {
+
+                    for (int k = rand.Next(1, 4); k > 0; k--)
                     {
                         x = rand.Next(50, 350);
                         y = rand.Next(50, 350);
@@ -897,40 +1014,43 @@ namespace StoneCircle
 
                     }
 
-                    stages["Forest"].addActor("Tree" + i + "_" + j +"NW", new Tree(gameManager, 400 * new Vector2(i,  j) + new Vector2(60, 60)));
-                    stages["Forest"].addActor("Tree" + i + "_" + j + "NE", new Tree(gameManager, 400 * new Vector2(i,  j) + new Vector2(340, 61)));
-                    stages["Forest"].addActor("Tree" + i + "_" + j + "SW", new Tree(gameManager, 400 * new Vector2(i,  j) + new Vector2(60, 340)));
-                    stages["Forest"].addActor("Tree" + i + "_" + j+ "SE", new Tree(gameManager, 400 * new Vector2(i,  j) + new Vector2(340, 341)));
+                    stages["Forest"].addActor("Tree" + i + "_" + j + "NW", new Tree(gameManager, 400 * new Vector2(i, j) + new Vector2(60, 60)));
+                    stages["Forest"].addActor("Tree" + i + "_" + j + "NE", new Tree(gameManager, 400 * new Vector2(i, j) + new Vector2(340, 61)));
+                    stages["Forest"].addActor("Tree" + i + "_" + j + "SW", new Tree(gameManager, 400 * new Vector2(i, j) + new Vector2(60, 340)));
+                    stages["Forest"].addActor("Tree" + i + "_" + j + "SE", new Tree(gameManager, 400 * new Vector2(i, j) + new Vector2(340, 341)));
 
                     stages["Forest"].addActor("Tree" + i + "_" + j + "CP", new Tree(gameManager, 400 * new Vector2(i, j) + new Vector2(400, 400)));
-                   
-                            if (forestBox[i,j][1])
-                            {
-                                stages["Forest"].addActor("Tree" + i + "_" + j + "NMW", new Tree(gameManager, 400 * new Vector2(i, j) + new Vector2(50, 155)));
-                                stages["Forest"].addActor("Tree" + i + "_" + j + "NME", new Tree(gameManager, 400 * new Vector2(i,  j) + new Vector2(50, 250)));
-                            }
-                            if (forestBox[i, j][0])
-                            {
-                                stages["Forest"].addActor("Tree" + i + "_" + j + "WMN", new Tree(gameManager, 400 * new Vector2(i, j) + new Vector2(155, 62)));
-                                stages["Forest"].addActor("Tree" + i + "_" + j + "WMM", new Tree(gameManager, 400 * new Vector2(i, j) + new Vector2(250, 59)));
-                             }
 
-                            if (forestBox[i, j][2])
-                            {
-                                stages["Forest"].addActor("Tree" + i + "_" + j + "SWM", new Tree(gameManager, 400 * new Vector2(i,  j) + new Vector2(155, 341)));
-                                stages["Forest"].addActor("Tree" + i + "_" + j + "SMM", new Tree(gameManager, 400 * new Vector2(i, j) + new Vector2(250, 342)));
-                                stages["Forest"].addActor("Tree" + i + "_" + j + "SCP", new Tree(gameManager, 400 * new Vector2(i,  j) + new Vector2(200, 400)));
-                            }
+                    if (forestBox[i, j][1])
+                    {
+                        stages["Forest"].addActor("Tree" + i + "_" + j + "NMW", new Tree(gameManager, 400 * new Vector2(i, j) + new Vector2(50, 155)));
+                        stages["Forest"].addActor("Tree" + i + "_" + j + "NME", new Tree(gameManager, 400 * new Vector2(i, j) + new Vector2(50, 250)));
+                    }
+                    if (forestBox[i, j][0])
+                    {
+                        stages["Forest"].addActor("Tree" + i + "_" + j + "WMN", new Tree(gameManager, 400 * new Vector2(i, j) + new Vector2(155, 62)));
+                        stages["Forest"].addActor("Tree" + i + "_" + j + "WMM", new Tree(gameManager, 400 * new Vector2(i, j) + new Vector2(250, 59)));
+                    }
 
-                            if (forestBox[i, j][3] )
-                            {
-                                stages["Forest"].addActor("Tree" + i + "_" + j + "EMN", new Tree(gameManager, 400 * new Vector2(i,  j) + new Vector2(354, 156)));
-                                stages["Forest"].addActor("Tree" + i + "_" + j + "EMM", new Tree(gameManager, 400 * new Vector2(i,  j) + new Vector2(340, 251)));
-                                stages["Forest"].addActor("Tree" + i + "_" + j + "EMS", new Tree(gameManager, 400 * new Vector2(i,  j) + new Vector2(400, 200)));
-                            }
+                    if (forestBox[i, j][2])
+                    {
+                        stages["Forest"].addActor("Tree" + i + "_" + j + "SWM", new Tree(gameManager, 400 * new Vector2(i, j) + new Vector2(155, 341)));
+                        stages["Forest"].addActor("Tree" + i + "_" + j + "SMM", new Tree(gameManager, 400 * new Vector2(i, j) + new Vector2(250, 342)));
+                        stages["Forest"].addActor("Tree" + i + "_" + j + "SCP", new Tree(gameManager, 400 * new Vector2(i, j) + new Vector2(200, 400)));
+                    }
+
+                    if (forestBox[i, j][3])
+                    {
+                        stages["Forest"].addActor("Tree" + i + "_" + j + "EMN", new Tree(gameManager, 400 * new Vector2(i, j) + new Vector2(354, 156)));
+                        stages["Forest"].addActor("Tree" + i + "_" + j + "EMM", new Tree(gameManager, 400 * new Vector2(i, j) + new Vector2(340, 251)));
+                        stages["Forest"].addActor("Tree" + i + "_" + j + "EMS", new Tree(gameManager, 400 * new Vector2(i, j) + new Vector2(400, 200)));
+                    }
 
 
-                        }
+                }
+
+
+
                     }
         
                  

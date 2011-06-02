@@ -287,7 +287,8 @@ namespace StoneCircle
         public override void Start()
         {
             player.Active = false;
-            //ready = true;
+            
+                ready = true;
         }
 
         public override bool Update(GameTime t)
@@ -696,17 +697,20 @@ namespace StoneCircle
 
         public override void Start()
         {
-            Vector2 test = new Vector2(destination.X - actor.Position.X, destination.Y - actor.Position.Y / 2);
-            actor.Facing = test;
-            actor.Facing /= actor.Facing.Length();
-
-            actor.SetAction("Walking");
+           actor.SetAction("Walking");
         }
 
         public override bool Update(GameTime t)
-        {
+        {   Vector2 test = (new Vector2(destination.X - actor.Location.X, destination.Y - actor.Location.Y));
+
+            actor.UpdateFacing(test);
+
             actor.ActionUpdate(t, Stage.Actors);
-            if ((destination - actor.Position).LengthSquared() < 50f) ready = true;
+            if ((test).LengthSquared() < 2500f)
+            {
+                ready = true;
+                actor.SetAction("Standing");
+            }
             return ready;
         }
 
@@ -755,6 +759,89 @@ namespace StoneCircle
 
 
     }
+
+    class EVENTMoveActorToPlayer : EVENT
+    {
+        Actor actor;
+        Vector2 destination;
+        Stage Stage;
+
+        public EVENTMoveActorToPlayer(Actor Actor, Vector2 Destination, Stage stage)
+        {
+            destination = Destination;
+            actor = Actor;
+            ready = false;
+            Stage = stage;
+        }
+
+        public EVENTMoveActorToPlayer(uint objectId) : base(objectId) { }
+
+        public override void Start()
+        {
+
+            actor.UpdateFacing(new Vector2(Stage.player.Location.X -actor.Location.X, Stage.player.Location.Y- actor.Location.Y));
+             actor.SetAction("Walking");
+        }
+
+        public override bool Update(GameTime t)
+        {
+            actor.UpdateFacing(new Vector2(Stage.player.Location.X - actor.Location.X, Stage.player.Location.Y - actor.Location.Y));
+            
+            actor.ActionUpdate(t, Stage.Actors);
+            if ((Stage.player.Location - actor.Location).LengthSquared() < 2500f)
+            {
+                ready = true;
+                actor.SetAction("Standing");
+            }
+            return ready;
+        }
+
+        public override void Save(BinaryWriter writer, SaveType type, Dictionary<ISaveable, uint> objectTable)
+        {
+            base.Save(writer, type, objectTable);
+            writer.Write(objectTable[actor]);
+            writer.Write(destination.X); writer.Write(destination.Y);
+            writer.Write(objectTable[Stage]);
+        }
+
+        public override List<ISaveable> GetSaveableRefs(SaveType type)
+        {
+            List<ISaveable> parentRef = Saver.ConstructSaveableList(base.GetSaveableRefs(type));
+            parentRef.Add(actor);
+            parentRef.Add(Stage);
+            return parentRef;
+        }
+
+        private DialogInflatables inflatables;
+        public override void Load(BinaryReader reader, SaveType type)
+        {
+            base.Load(reader, type);
+            inflatables = new DialogInflatables();
+            inflatables.actorId = reader.ReadUInt32();
+            destination = new Vector2(reader.ReadSingle(), reader.ReadSingle());
+            inflatables.stageId = reader.ReadUInt32();
+        }
+
+        public override void Inflate(Dictionary<uint, ISaveable> objectTable)
+        {
+            base.Inflate(objectTable);
+            actor = (Actor)objectTable[inflatables.actorId];
+            Stage = (Stage)objectTable[inflatables.stageId];
+        }
+
+        private class DialogInflatables
+        {
+            public uint actorId;
+            public uint stageId;
+        }
+        //Actor actor;
+        //Vector2 destination;
+        //Stage Stage;
+
+
+
+    }
+
 
     class EVENTWarpActor : EVENT
     {
