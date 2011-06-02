@@ -19,7 +19,6 @@ Content\Shaders\TerrainMapper.xnb
 Content\Shaders\LightEffects.xnb
 Content\Sound Effects\heartbeat.xnb
 Content\Levels\Cairn of Dead Kings_0_0IMG.xnb
-Content\Levels\MainHouse_0_0IMG.xnb
 Content\Set Props\Altar.xnb
 Content\Set Props\Manholecoverthing.xnb
 Content\Set Props\StoneGateway.xnb
@@ -47,3 +46,6 @@ Content\Background Music\Village Theme.xnb
 Content\Background Music\Flight Through the Forest.xnb
 Content\Background Music\Etc.xnb
 Content\Background Music\Battle in the Otherworld.xnb
+Content\Levels\King's Hall_0_0IMG.xnb
+Content\Characters\Ghost of OldMan.xnb
+Content\Characters\Ghost of VillagerM.xnb

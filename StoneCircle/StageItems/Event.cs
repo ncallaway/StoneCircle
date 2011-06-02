@@ -376,6 +376,12 @@ namespace StoneCircle
             ready = true;
         }
 
+        public override bool Update(GameTime t)
+        {
+            ready = true;
+            return ready;
+        }
+
         public override List<ISaveable> GetSaveableRefs(SaveType type)
         {
             List<ISaveable> parentRefs = Saver.ConstructSaveableList(base.GetSaveableRefs(type));

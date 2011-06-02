@@ -280,12 +280,14 @@ namespace StoneCircle
         public void addActor(String id, Actor actor)
         {
             actor.parent = this;
+            actor.Name = id;
             exists.Add(id, actor);
         }
 
         public void AddActor(Actor actor, Vector2 starting)
         {
             actor.parent = this;
+
             exists.Add(actor.Name, actor);
             actor.Location = new Vector3(starting, 0);
         }
@@ -383,7 +385,8 @@ namespace StoneCircle
             Vector2 tempPlayer = (player.Position - camera.Location) * camera.Scale + camera.screenadjust;
             tempPlayer.X /= 1366; tempPlayer.Y /= 768;
             statusShader.Parameters["health"].SetValue(player.CurrentLife / player.TotalLife * .707f);
-            statusShader.Parameters["fatigue"].SetValue(player.CurrentFatigue / player.TotalFatigue * .707f);
+            //statusShader.Parameters["fatigue"].SetValue(player.CurrentFatigue / player.TotalFatigue * .707f);
+            statusShader.Parameters["fatigue"].SetValue(.707f);
            
             lightSourceShader.Parameters["Position"].SetValue(LPosition);
             lightSourceShader.Parameters["index"].SetValue(lights.Count);
