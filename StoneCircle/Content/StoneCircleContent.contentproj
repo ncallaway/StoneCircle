@@ -184,8 +184,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Levels\King%27s Hall_0_0IMG.png">
-      <Name>King%27s Hall_0_0IMG</Name>
+    <Compile Include="Levels\KingsHall_0_0IMG.png">
+      <Name>KingsHall_0_0IMG</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

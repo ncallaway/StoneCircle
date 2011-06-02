@@ -120,6 +120,33 @@ namespace StoneCircle
 
     }
 
+    class SweetWine : Item
+    {
+
+        public SweetWine(Actor Owner)
+        {
+            owner = Owner;
+            name = "SweetWine";
+            II = new InventoryItem(this);
+            
+        }
+
+
+
+        public override void OnEquipItem()
+        {
+            owner.parent.RunEvent("Summon Wisp");
+        }
+
+        public override void OnUnequipItem()
+        {
+            owner.parent.StopEvent("Summon Wisp");
+        }
+
+
+
+
+    }
 
     class Weapon : Item
     {

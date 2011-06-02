@@ -250,8 +250,8 @@ namespace StoneCircle
 
         public virtual void Draw(SpriteBatch theSpriteBatch, Vector2 camera_pos, float camera_scale, float intensity, SpriteFont font) // Draws the sprite and shadow of actor in relation to camera.
         {
-                theSpriteBatch.Draw(image_map, screenadjust + (camera_scale * (Position - camera_pos)), new Rectangle(ImageXindex * ImageWidth, ImageYindex * ImageHeight, ImageWidth, ImageHeight), new Color(intensity, intensity, intensity, 1f), 0f, origin, camera_scale, SpriteEffects.None, .2f - Location.Y / 100000f);
-               // theSpriteBatch.DrawString(font, name, screenadjust + (camera_scale * (Position - camera_pos) - new Vector2(ImageWidth / 2, ImageHeight + 15)), Color.White);
+                theSpriteBatch.Draw(image_map, screenadjust + (camera_scale * (Position - camera_pos)), new Rectangle(ImageXindex * ImageWidth, ImageYindex * ImageHeight, ImageWidth, ImageHeight), Color.White, 0f, origin, camera_scale, SpriteEffects.None, .2f - Location.Y / 100000f);
+                theSpriteBatch.DrawString(font, name, screenadjust + (camera_scale * (Position - camera_pos) - new Vector2(ImageWidth / 2, ImageHeight + 15)), Color.White);
               
         }
 

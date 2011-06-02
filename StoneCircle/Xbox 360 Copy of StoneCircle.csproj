@@ -77,9 +77,9 @@
     <Compile Include="Actions\Push.cs" />
     <Compile Include="Actions\Walk.cs" />
     <Compile Include="Actors\Actor.cs" />
+    <Compile Include="Actors\FireFly.cs" />
     <Compile Include="Actors\Item.cs" />
     <Compile Include="Actors\SomeGuy.cs" />
-    <Compile Include="Actors\Fire.cs" />
     <Compile Include="Actors\Tree.cs" />
     <Compile Include="Actions\Burning.cs" />
     <Compile Include="AIManager.cs" />
@@ -98,6 +98,7 @@
     <Compile Include="Camera.cs" />
     <Compile Include="InputController.cs" />
     <Compile Include="StageItems\Lines.cs" />
+    <Compile Include="StageItems\SFX.cs" />
     <Compile Include="StageItems\Trigger.cs" />
     <Compile Include="UI\RingMenu.cs" />
     <Compile Include="StageManager.cs" />

@@ -35,6 +35,7 @@ namespace StoneCircle
 
         List<LightSource> lights = new List<LightSource>();
         List<Trigger> triggers = new List<Trigger>();
+        List<SFX> Effects = new List<SFX>();
         public InputController input = new InputController();
         public Camera camera;
 
@@ -234,6 +235,13 @@ namespace StoneCircle
 
         }
 
+        public void StopEvent(String target)
+        {   
+            EVENT Target = events[target];
+            if (currentEvents.Contains(Target)) { Target.End(); currentEvents.Remove(Target); }
+
+        }
+
         public void StartLine(Lines dialogue) { openConversations.Add(dialogue); }
         public void StopLine(Lines dialogue) { openConversations.Remove(dialogue); }
 
@@ -291,6 +299,13 @@ namespace StoneCircle
             exists.Add(actor.Name, actor);
             actor.Location = new Vector3(starting, 0);
         }
+
+        public void PlayEffect(String Effectname)
+        {
+            Effects.Add(new SFX());
+
+        }
+
 
         public Actor GetActor(String actor)
         {   

@@ -41,12 +41,6 @@ namespace StoneCircle
 
 
 
-        public bool inLight(BoundingBox targetBox)
-        {
-            BoundingSphere lightSphere = new BoundingSphere(new Vector3(location.X, location.Y, 0), radius);
-            return lightSphere.Intersects(targetBox);
-
-        }
 
         public float calcRotate(Actor target)
         {
@@ -89,6 +83,16 @@ namespace StoneCircle
 
         }
 
+        public void UpdatePosition(Vector2 newLocation)
+        {
+            location = newLocation;
+        }
+
+        public void ChangeColor(Color newColor)
+        {
+            color = newColor;
+
+        }
 
         
         

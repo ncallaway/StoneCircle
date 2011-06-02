@@ -7,23 +7,28 @@ using Microsoft.Xna.Framework;
 
 namespace StoneCircle
 {
-    class Fire : Actor
+    class Firefly : Actor
     {
         ActorLightSource lit;
         Actionstate burning = new Burning();
 
-        public Fire(Vector2 starting, Stage Parent, GameManager gameManager) : base(gameManager)
+        public Firefly(Vector2 starting, Stage Parent, GameManager gameManager) : base(gameManager)
         {
              name = "fire";
              Location = new Vector3(starting, 0);
-             asset_Name = "fireIMG";
+             asset_Name = "Characters/ElysiaSheet";
              parent = Parent;
-             lit = new ActorLightSource(this, 800f);
+             lit = new ActorLightSource(this, 300f);
+             lit.ChangeColor(Color.Green);
              ImageHeight = 80;
              ImageWidth = 80;
+             radius = 1;
+             height = 1;
+             learnAction(new Walk());
+             speed = 300;
         }
 
-        public Fire(uint objectId) : base(objectId) { }
+        public Firefly(uint objectId) : base(objectId) { }
 
         public override void Initialize()
         {

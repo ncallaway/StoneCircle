@@ -46,6 +46,7 @@ namespace StoneCircle
             radius = 20;
             currentLife = 100;
             currentFatigue = 100;
+            AddInventoryItem(new SweetWine(this));
         }
 
         public override void UpdateFacing(Vector2 newFacing)
